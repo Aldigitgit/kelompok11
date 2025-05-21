@@ -7,6 +7,7 @@ import {
   Settings,      // untuk pengaturan akun
   User,
   LogIn,
+  // IoIosPeople,
   UserPlus,
 } from 'lucide-react'
 import { Link, useLocation } from 'react-router-dom'
@@ -15,6 +16,7 @@ const menuItems = [
   { name: 'Dashboard', icon: <LayoutDashboard />, path: '/' },
   { name: 'Produk', icon: <Box />, path: '/produk' },
   { name: 'Laporan', icon: <BarChart2 />, path: '/laporan' },
+  { name: 'Pelanggan', icon: <UserPlus/>, path: '/pelanggan' },
 ]
 
 const accountItems = [
