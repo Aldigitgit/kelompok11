@@ -1,15 +1,16 @@
 import {
   LayoutDashboard,
-  Users,         // untuk pelanggan
-  ShoppingCart,  // untuk penjualan
-  Box,           // untuk produk
-  BarChart2,     // untuk laporan
-  Settings,      // untuk pengaturan akun
+  Users,
+  ShoppingCart,
+  Box,
+  BarChart2,
+  Settings,
   User,
   LogIn,
-  // IoIosPeople,
+  MessageCircleQuestion,
   UserPlus,
 } from 'lucide-react'
+
 import { Link, useLocation } from 'react-router-dom'
 
 const menuItems = [
@@ -20,6 +21,12 @@ const menuItems = [
   { name: 'Pelanggan', icon: <UserPlus/>, path: '/pelanggan' },
   { name: 'Riwayat Pembelian', icon: <UserPlus/>, path: '/riwayat' },
    { name: 'Review Pembelian', icon: <UserPlus/>, path: '/review' },
+  { name: 'Produk', icon: <Box />, path: '/produk' },
+  { name: 'Laporan', icon: <BarChart2 />, path: '/laporan' },
+  { name: 'Pelanggan', icon: <UserPlus />, path: '/pelanggan' },
+  { name: 'FAQ', icon: <MessageCircleQuestion />, path: '/faq' }, 
+  { name: 'Tracking Order', icon: <ShoppingCart />, path: '/tracking' },
+
 ]
 
 const accountItems = [

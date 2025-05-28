@@ -10,11 +10,12 @@ import ReviewPage from "./pages/ReviewPage.jsx";
 
 
 
+import FaQManagement from "./pages/FaQManagement.jsx"; 
+import TrackingManagement from "./pages/TrackingManagement.jsx";
 
 function App() {
   return (
     <Routes>
-      <Route element={<MainLayout></MainLayout>}>
        <Route path="/penjualan" element={<SalesManagement></SalesManagement>}></Route>
           <Route path="pelanggan" element={<CustomerManagement></CustomerManagement>} />
           <Route path="/riwayat" element={<RiwayatPembelian />} />
@@ -26,6 +27,11 @@ function App() {
       <Route path="/Auth" element={<AuthPage></AuthPage>}></Route>
       
       
+      <Route element={<MainLayout />}>
+        <Route index element={<Dashboard />} />
+        <Route path="pelanggan" element={<CustomerManagement />} />
+        <Route path="faq" element={<FaQManagement />} /> 
+        <Route path="tracking" element={<TrackingManagement />} />
       </Route>
     </Routes>
   );
