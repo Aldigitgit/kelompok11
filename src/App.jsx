@@ -15,6 +15,12 @@ import TrackingManagement from "./pages/TrackingManagement.jsx";
 import PromoScheduler from "./pages/PenjadwalPromo.jsx";
 import PromoSchedulerWithNotification from "./pages/PromoScheduler.jsx";
 import ProductPage from "./pages/Produk.jsx";
+import {Routes,Route} from 'react-router-dom'
+import Dashboard from './pages/Dashboard.jsx'
+import MainLayout from './Components/Mainlayout'
+import SalesManagement from './pages/SalesManagement.jsx'
+import Penjadwalan from './pages/Penjadwalan.jsx'
+import IntegrasiStok from './pages/IntegrasiStok.jsx'
 
 function App() {
   return (
@@ -28,14 +34,15 @@ function App() {
       <Route path="/PromoScheduler" element={<PromoSchedulerWithNotification></PromoSchedulerWithNotification>}></Route>
       <Route path="/Produk" element={<ProductPage></ProductPage>}></Route>
       <Route path="/Auth" element={<AuthPage></AuthPage>}></Route>
-      
-      
-      <Route element={<MainLayout />}>
+      <Route path="/penjualan" element={<SalesManagement></SalesManagement>}></Route>
+      <Route path="/penjadwalan" element={<Penjadwalan></Penjadwalan>}></Route>
+      <Route path="/integrasi-stok" element={<IntegrasiStok />} />
         <Route index element={<Dashboard />} />
         <Route path="pelanggan" element={<CustomerManagement />} />
         <Route path="faq" element={<FaQManagement />} /> 
         <Route path="tracking" element={<TrackingManagement />} />
-      </Route>
+   
+      
     </Routes>
   );
 }

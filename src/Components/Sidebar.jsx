@@ -22,6 +22,8 @@ const menuItems = [
   { name: 'Riwayat Pembelian', icon: <UserPlus/>, path: '/riwayat' },
    { name: 'Review Pembelian', icon: <UserPlus/>, path: '/review' },
   { name: 'Produk', icon: <Box />, path: '/produk' },
+  { name: 'Jadwal Posting', icon: <ShoppingCart />, path: '/penjadwalan' },
+  { name: 'Integrasi Stok', icon: <ShoppingCart />, path: '/integrasi-stok' },
   { name: 'Laporan', icon: <BarChart2 />, path: '/laporan' },
   { name: 'Pelanggan', icon: <UserPlus />, path: '/pelanggan' },
   { name: 'FAQ', icon: <MessageCircleQuestion />, path: '/faq' }, 
