@@ -12,6 +12,9 @@ import ReviewPage from "./pages/ReviewPage.jsx";
 
 import FaQManagement from "./pages/FaQManagement.jsx"; 
 import TrackingManagement from "./pages/TrackingManagement.jsx";
+import PromoScheduler from "./pages/PenjadwalPromo.jsx";
+import PromoSchedulerWithNotification from "./pages/PromoScheduler.jsx";
+import ProductPage from "./pages/Produk.jsx";
 
 function App() {
   return (
