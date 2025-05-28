@@ -18,6 +18,8 @@ const menuItems = [
   { name: 'Penjualan', icon: <ShoppingCart />, path: '/penjualan' },
 //   { name: 'Laporan', icon: <BarChart2 />, path: '/laporan' },
   { name: 'Pelanggan', icon: <UserPlus/>, path: '/pelanggan' },
+  { name: 'Riwayat Pembelian', icon: <UserPlus/>, path: '/riwayat' },
+   { name: 'Review Pembelian', icon: <UserPlus/>, path: '/review' },
 ]
 
 const accountItems = [
