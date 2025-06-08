@@ -1,6 +1,7 @@
 // App.jsx
 import { Routes, Route } from 'react-router-dom';
-import MainLayout from './components/MainLayout.jsx';
+import MainLayout from "./components/MainLayout";
+
 // test
 
 import Dashboard from './pages/Dashboard.jsx';
@@ -24,7 +25,7 @@ function App() {
       <Route path="/auth" element={<AuthPage />} />
 
       {/* Halaman lain memakai MainLayout */}
-      <Route path="/" element={<MainLayout />}>
+      <Route path="/" element={<MainLayout></MainLayout>}>
         <Route index element={<Dashboard />} />
         <Route path="penjualan" element={<SalesManagement />} />
         <Route path="pelanggan" element={<CustomerManagement />} />
