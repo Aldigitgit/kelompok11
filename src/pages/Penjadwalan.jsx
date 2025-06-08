@@ -1,57 +1,56 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 export default function Penjadwalan() {
   const [konten, setKonten] = useState("");
   const [tanggal, setTanggal] = useState(new Date());
-  const [jadwal, setJadwal] = useState([]);
 
-  useEffect(() => {
-    const dataDisimpan = localStorage.getItem("jadwal");
-    if (dataDisimpan) {
-      setJadwal(
-        JSON.parse(dataDisimpan, (key, value) => {
-          if (key === "tanggal") return new Date(value);
-          return value;
-        })
-      );
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("jadwal", JSON.stringify(jadwal));
-  }, [jadwal]);
+  const [jadwal, setJadwal] = useState([
+    {
+      id: 1,
+      konten: "Promo diskon 20% untuk pelanggan baru!",
+      tanggal: new Date(new Date().getTime() + 3600 * 1000 * 24), // Besok
+    },
+    {
+      id: 2,
+      konten: "Tips sukses jualan online bagi UMKM.",
+      tanggal: new Date(new Date().getTime() + 3600 * 1000 * 48), // Lusa
+    },
+  ]);
 
   const handleJadwalkan = () => {
     if (!konten.trim()) return;
-    const dataBaru = { id: Date.now(), konten, tanggal };
-    setJadwal([...jadwal, dataBaru]);
+
+    const dataBaru = {
+      id: Date.now(),
+      konten: konten.trim(),
+      tanggal,
+    };
+
+    setJadwal((prev) => [...prev, dataBaru]);
     setKonten("");
     setTanggal(new Date());
   };
 
   const handleHapus = (id) => {
-    setJadwal(jadwal.filter((item) => item.id !== id));
+    setJadwal((prev) => prev.filter((item) => item.id !== id));
   };
 
   return (
     <div className="p-6 max-w-3xl mx-auto bg-white rounded-xl shadow-md">
-      <h1 className="text-3xl block font-medium mb-6 text-center text-indigo-700">
+      <h1 className="text-3xl font-medium mb-6 text-center text-indigo-700">
         Penjadwalan Posting
       </h1>
 
       <div className="mb-6">
-        <label
-          htmlFor="konten"
-          className="block text-gray-700 font-semibold mb-2"
-        >
+        <label htmlFor="konten" className="block text-gray-700 font-semibold mb-2">
           Konten Posting
         </label>
         <textarea
           id="konten"
-          className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none transition"
-          rows={5}
+          className="w-full p-3 border border-gray-300 rounded-lg shadow-sm resize-none focus:ring-2 focus:ring-indigo-500"
+          rows={4}
           placeholder="Tulis konten posting di sini..."
           value={konten}
           onChange={(e) => setKonten(e.target.value)}
@@ -67,20 +66,19 @@ export default function Penjadwalan() {
           onChange={(date) => setTanggal(date)}
           showTimeSelect
           dateFormat="Pp"
-          className="w-full border border-gray-300 rounded-lg shadow-sm p-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          popperPlacement="bottom-start"
+          className="w-full p-2 border border-gray-300 rounded-lg"
         />
       </div>
 
       <button
         onClick={handleJadwalkan}
-        className="w-full py-3 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 active:bg-indigo-800 transition-shadow shadow-md"
-        aria-label="Jadwalkan Posting"
+        className="w-full py-3 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 disabled:bg-indigo-300"
+        disabled={!konten.trim()}
       >
         Jadwalkan
       </button>
 
-      <h2 className="text-2xl font-semibold mt-10 mb-4 border-b border-indigo-200 pb-2 text-indigo-700">
+      <h2 className="text-2xl font-semibold mt-10 mb-4 text-indigo-700 border-b border-indigo-200 pb-2">
         Daftar Postingan Terjadwal
       </h2>
 
@@ -91,19 +89,22 @@ export default function Penjadwalan() {
           {jadwal.map((item) => (
             <li
               key={item.id}
-              className="p-4 border border-gray-200 rounded-lg shadow-sm flex justify-between items-start bg-gray-50 hover:bg-white transition"
+              className="p-4 border border-gray-200 rounded-lg shadow-sm flex justify-between items-start bg-gray-50"
             >
               <div>
                 <p className="text-gray-800 whitespace-pre-wrap">{item.konten}</p>
-                <p className="mt-1 text-sm text-gray-500 flex items-center space-x-1">
-                  <span>📅</span>
-                  <time>{item.tanggal.toLocaleString()}</time>
+                <p className="mt-1 text-sm text-gray-500">
+                  📅{" "}
+                  <time>
+                    {item.tanggal instanceof Date && !isNaN(item.tanggal)
+                      ? item.tanggal.toLocaleString()
+                      : "Tanggal tidak valid"}
+                  </time>
                 </p>
               </div>
               <button
                 onClick={() => handleHapus(item.id)}
-                className="text-red-600 hover:text-red-800 font-semibold ml-4 self-start focus:outline-none"
-                aria-label={`Hapus posting ${item.konten.substring(0, 15)}...`}
+                className="text-red-600 hover:text-red-800 font-semibold ml-4"
               >
                 Hapus
               </button>

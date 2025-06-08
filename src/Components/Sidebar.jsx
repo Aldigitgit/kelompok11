@@ -5,30 +5,26 @@ import {
   Box,
   BarChart2,
   Settings,
-  User,
   LogIn,
   MessageCircleQuestion,
   UserPlus,
+  ClipboardList,
+  PackageCheck,
 } from 'lucide-react'
 
 import { Link, useLocation } from 'react-router-dom'
 
 const menuItems = [
   { name: 'Dashboard', icon: <LayoutDashboard />, path: '/' },
-//   { name: 'Produk', icon: <Box />, path: '/produk' },
   { name: 'Penjualan', icon: <ShoppingCart />, path: '/penjualan' },
-//   { name: 'Laporan', icon: <BarChart2 />, path: '/laporan' },
-  { name: 'Pelanggan', icon: <UserPlus/>, path: '/pelanggan' },
-  { name: 'Riwayat Pembelian', icon: <UserPlus/>, path: '/riwayat' },
-   { name: 'Review Pembelian', icon: <UserPlus/>, path: '/review' },
+  { name: 'Pelanggan', icon: <Users />, path: '/pelanggan' },
+  { name: 'Riwayat Pembelian', icon: <ClipboardList />, path: '/riwayat' },
+  { name: 'Review Pembelian', icon: <PackageCheck />, path: '/review' },
   { name: 'Produk', icon: <Box />, path: '/produk' },
-  { name: 'Jadwal Posting', icon: <ShoppingCart />, path: '/penjadwalan' },
-  { name: 'Integrasi Stok', icon: <ShoppingCart />, path: '/integrasi-stok' },
-  { name: 'Laporan', icon: <BarChart2 />, path: '/laporan' },
-  { name: 'Pelanggan', icon: <UserPlus />, path: '/pelanggan' },
-  { name: 'FAQ', icon: <MessageCircleQuestion />, path: '/faq' }, 
+  { name: 'Jadwal Posting', icon: <ClipboardList />, path: '/penjadwalan' },
+  { name: 'Integrasi Stok', icon: <Box />, path: '/integrasi-stok' },
+  { name: 'FAQ', icon: <MessageCircleQuestion />, path: '/faq' },
   { name: 'Tracking Order', icon: <ShoppingCart />, path: '/tracking' },
-
 ]
 
 const accountItems = [
@@ -44,7 +40,10 @@ const Sidebar = () => {
 
   return (
     <aside className="bg-white w-64 h-screen shadow-lg px-4 py-6 hidden md:block">
-      <div className="text-xl font-bold mb-8 text-purple-700">UMKM CRM</div>
+      <div className="text-xl font-bold mb-8 text-purple-700">
+        UMKM CRM
+      </div>
+
       <nav className="space-y-1">
         {menuItems.map((item) => (
           <Link
@@ -57,7 +56,7 @@ const Sidebar = () => {
             }`}
           >
             <span className="w-5 h-5">{item.icon}</span>
-            {item.name}
+            <span>{item.name}</span>
           </Link>
         ))}
       </nav>
@@ -75,7 +74,7 @@ const Sidebar = () => {
             }`}
           >
             <span className="w-5 h-5">{item.icon}</span>
-            {item.name}
+            <span>{item.name}</span>
           </Link>
         ))}
       </nav>
@@ -83,5 +82,4 @@ const Sidebar = () => {
   )
 }
 
-export default Sidebar;
-
+export default Sidebar
