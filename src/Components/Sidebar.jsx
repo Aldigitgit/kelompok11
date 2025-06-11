@@ -25,6 +25,7 @@ const menuItems = [
   { name: 'Integrasi Stok', icon: <Box />, path: '/integrasi-stok' },
   { name: 'FAQ', icon: <MessageCircleQuestion />, path: '/faq' },
   { name: 'Tracking Order', icon: <ShoppingCart />, path: '/tracking' },
+  { name: 'Contact', icon: <ShoppingCart />, path: '/kontak' },
 ]
 
 const accountItems = [
