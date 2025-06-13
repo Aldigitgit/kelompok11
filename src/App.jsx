@@ -21,7 +21,7 @@ import BookDetailPage from './pages/BookDetailPage.jsx';
 import RegisterPage from './pages/RegisterPage.jsx';
 import OrderManagementPage from './pages/OrderManagement.jsx';
 import ContactManagement from './pages/ContactManagement.jsx';
-import MainLayout from './components/MainLayout.jsx';
+import MainLayout from './Components/Mainlayout.jsx';
 
 
 function App() {
