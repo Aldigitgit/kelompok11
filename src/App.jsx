@@ -22,6 +22,10 @@ import RegisterPage from './pages/RegisterPage.jsx';
 import OrderManagementPage from './pages/OrderManagement.jsx';
 import ContactManagement from './pages/ContactManagement.jsx';
 import MainLayout from './Components/Mainlayout.jsx';
+import MarketSegmentation from './pages/MarketSegmentation.jsx';
+import CampaignAnalytics from './pages/CampaignAnalytics.jsx';
+import ContentManagement from './pages/ContentManagement.jsx';
+
 
 
 function App() {
@@ -49,6 +53,11 @@ function App() {
         <Route path="accountmanagement" element={<AccountManagementPage />} />
         <Route path="ordermanagement" element={<OrderManagementPage />} />
         <Route path="kontak" element={<ContactManagement />} />
+
+        <Route path="MarketSegmentation" element={<MarketSegmentation></MarketSegmentation>} />
+        <Route path="ContentManagement" element={<ContentManagement></ContentManagement>} />
+        <Route path="CampaignAnalytics" element={<CampaignAnalytics></CampaignAnalytics>} />
+        {/* <Route path="MarketSEgementation" element={} /> */}
       </Route>
     </Routes>
   );

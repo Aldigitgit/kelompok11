@@ -26,6 +26,9 @@ const menuItems = [
   { name: 'FAQ', icon: <MessageCircleQuestion />, path: '/faq' },
   { name: 'Tracking Order', icon: <ShoppingCart />, path: '/tracking' },
   { name: 'Contact', icon: <ShoppingCart />, path: '/kontak' },
+  { name: 'Campaign Analytics', icon: <ShoppingCart />, path: '/CampaignAnalytics' },
+  { name: 'Content Management', icon: <ShoppingCart />, path: '/ContentManagement' },
+  { name: 'Market Segmentation', icon: <ShoppingCart />, path: '/MarketSegmentation' },
 ]
 
 const accountItems = [
