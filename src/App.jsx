@@ -1,6 +1,6 @@
 // App.jsx
 import { Routes, Route } from 'react-router-dom';
-import MainLayout from "./components/MainLayout";
+
 
 // Pages
 import Dashboard from './pages/Dashboard.jsx';
@@ -21,6 +21,7 @@ import LoginPage from './pages/LoginPage.jsx';
 import RegisterPage from './pages/RegisterPage.jsx';
 import OrderManagementPage from './pages/OrderManagement.jsx';
 import ContactManagement from './pages/ContactManagement.jsx';
+import MainLayout from './components/MainLayout.jsx';
 
 function App() {
   return (
@@ -31,7 +32,7 @@ function App() {
       <Route path="/register" element={<RegisterPage />} />
 
       {/* Halaman dengan layout utama */}
-      <Route path="/" element={<MainLayout />}>
+      <Route path="/" element={<MainLayout></MainLayout>}>
         <Route index element={<Dashboard />} />
         <Route path="penjualan" element={<SalesManagement />} />
         <Route path="pelanggan" element={<CustomerManagement />} />
