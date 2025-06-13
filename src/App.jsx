@@ -14,27 +14,23 @@ import PromoScheduler from './pages/PenjadwalPromo.jsx';
 import PromoSchedulerWithNotification from './pages/PromoScheduler.jsx';
 import ProductPage from './pages/Produk.jsx';
 import Penjadwalan from './pages/Penjadwalan.jsx';
-import IntegrasiStok from './pages/IntegrasiStok.jsx';
-<<<<<<< HEAD
-import AuthPage from './pages/AuthPage.jsx'; // untuk login page
+import AuthPage from './pages/AuthPage.jsx';
 import AccountManagementPage from './pages/AccountManagement.jsx';
 import BookDetailPage from './pages/BookDetailPage.jsx';
-import LoginPage from './pages/Loginpage.jsx';
+import LoginPage from './pages/LoginPage.jsx';
 import RegisterPage from './pages/RegisterPage.jsx';
 import OrderManagementPage from './pages/OrderManagement.jsx';
-=======
-import AuthPage from './pages/AuthPage.jsx';
 import ContactManagement from './pages/ContactManagement.jsx';
-
->>>>>>> 4e26b124f740a9297d0af6904124bcf2c2c49ff3
 
 function App() {
   return (
     <Routes>
-      {/* Halaman Auth/login tidak memakai layout */}
+      {/* Halaman di luar layout utama */}
       <Route path="/auth" element={<AuthPage />} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/register" element={<RegisterPage />} />
 
-      {/* Halaman lain memakai MainLayout */}
+      {/* Halaman dengan layout utama */}
       <Route path="/" element={<MainLayout />}>
         <Route index element={<Dashboard />} />
         <Route path="penjualan" element={<SalesManagement />} />
@@ -47,16 +43,10 @@ function App() {
         <Route path="promoscheduler" element={<PromoSchedulerWithNotification />} />
         <Route path="produk" element={<ProductPage />} />
         <Route path="penjadwalan" element={<Penjadwalan />} />
-        <Route path="integrasi-stok" element={<IntegrasiStok />} />
-<<<<<<< HEAD
-        <Route path="/books/:id" element={<BookDetailPage></BookDetailPage>} />
-        <Route path="/AccountManagement" element={<AccountManagementPage></AccountManagementPage>} />
-        <Route path="/OrderManagement" element={<OrderManagementPage></OrderManagementPage>} />
-        <Route path="/login" element={<LoginPage></LoginPage>} />
-        <Route path="/register" element={<RegisterPage></RegisterPage>} />
-=======
-        <Route path="kontak" element={<ContactManagement />} /> {/* ✅ Tambahkan ini */}
->>>>>>> 4e26b124f740a9297d0af6904124bcf2c2c49ff3
+        <Route path="books/:id" element={<BookDetailPage />} />
+        <Route path="accountmanagement" element={<AccountManagementPage />} />
+        <Route path="ordermanagement" element={<OrderManagementPage />} />
+        <Route path="kontak" element={<ContactManagement />} />
       </Route>
     </Routes>
   );
