@@ -17,6 +17,11 @@ import ProductPage from './pages/Produk.jsx';
 import Penjadwalan from './pages/Penjadwalan.jsx';
 import IntegrasiStok from './pages/IntegrasiStok.jsx';
 import AuthPage from './pages/AuthPage.jsx'; // untuk login page
+import AccountManagementPage from './pages/AccountManagement.jsx';
+import BookDetailPage from './pages/BookDetailPage.jsx';
+import LoginPage from './pages/Loginpage.jsx';
+import RegisterPage from './pages/RegisterPage.jsx';
+import OrderManagementPage from './pages/OrderManagement.jsx';
 
 function App() {
   return (
@@ -38,6 +43,11 @@ function App() {
         <Route path="produk" element={<ProductPage />} />
         <Route path="penjadwalan" element={<Penjadwalan />} />
         <Route path="integrasi-stok" element={<IntegrasiStok />} />
+        <Route path="/books/:id" element={<BookDetailPage></BookDetailPage>} />
+        <Route path="/AccountManagement" element={<AccountManagementPage></AccountManagementPage>} />
+        <Route path="/OrderManagement" element={<OrderManagementPage></OrderManagementPage>} />
+        <Route path="/login" element={<LoginPage></LoginPage>} />
+        <Route path="/register" element={<RegisterPage></RegisterPage>} />
       </Route>
     </Routes>
   );

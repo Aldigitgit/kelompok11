@@ -17,20 +17,20 @@ import { Link, useLocation } from 'react-router-dom'
 const menuItems = [
   { name: 'Dashboard', icon: <LayoutDashboard />, path: '/' },
   { name: 'Penjualan', icon: <ShoppingCart />, path: '/penjualan' },
-  { name: 'Pelanggan', icon: <Users />, path: '/pelanggan' },
-  { name: 'Riwayat Pembelian', icon: <ClipboardList />, path: '/riwayat' },
-  { name: 'Review Pembelian', icon: <PackageCheck />, path: '/review' },
+  { name: 'Contact Management', icon: <Users />, path: '/pelanggan' },
+  { name: 'Riwayat Pembelian', icon: <ClipboardList />, path: '/riwayat' }, //mirip order management
+  { name: 'Review Pembelian', icon: <PackageCheck />, path: '/review' }, // ga ke pakai
   { name: 'Produk', icon: <Box />, path: '/produk' },
-  { name: 'Jadwal Posting', icon: <ClipboardList />, path: '/penjadwalan' },
-  { name: 'Integrasi Stok', icon: <Box />, path: '/integrasi-stok' },
+  { name: 'Jadwal Posting', icon: <ClipboardList />, path: '/penjadwalan' }, //hapus
+  { name: 'Produk configuration', icon: <Box />, path: '/integrasi-stok' },
   { name: 'FAQ', icon: <MessageCircleQuestion />, path: '/faq' },
   { name: 'Tracking Order', icon: <ShoppingCart />, path: '/tracking' },
 ]
 
 const accountItems = [
   { name: 'Pengaturan Akun', icon: <Settings />, path: '/akun' },
-  { name: 'Sign In', icon: <LogIn />, path: '/signin' },
-  { name: 'Sign Up', icon: <UserPlus />, path: '/signup' },
+  { name: 'Sign In', icon: <LogIn />, path: '/login' },
+  { name: 'Sign Up', icon: <UserPlus />, path: '/register' },
 ]
 
 const Sidebar = () => {

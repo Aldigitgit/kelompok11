@@ -6,7 +6,8 @@ const dummyBooks = [
     title: "Atomic Habits",
     author: "James Clear",
     genre: "Self-Help",
-    description: "Cara membangun kebiasaan baik dan menghilangkan kebiasaan buruk.",
+    description:
+      "Cara membangun kebiasaan baik dan menghilangkan kebiasaan buruk.",
     price: 120000,
     image: "https://covers.openlibrary.org/b/id/8231996-L.jpg",
   },
@@ -64,7 +65,9 @@ export default function ProductPage() {
 
   // Filter buku
   const filteredBooks = dummyBooks.filter((book) => {
-    const matchesTitle = book.title.toLowerCase().includes(filterTitle.toLowerCase());
+    const matchesTitle = book.title
+      .toLowerCase()
+      .includes(filterTitle.toLowerCase());
     const matchesGenre = filterGenre ? book.genre === filterGenre : true;
     return matchesTitle && matchesGenre;
   });
@@ -122,30 +125,41 @@ export default function ProductPage() {
           </p>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-            {filteredBooks.map(({ id, title, author, genre, description, price, image }) => (
-              <div
-                key={id}
-                className="bg-white rounded-xl shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300"
-              >
-                <img
-                  src={image}
-                  alt={title}
-                  className="w-full h-64 object-cover"
-                  loading="lazy"
-                />
-                <div className="p-6">
-                  <h2 className="text-2xl font-bold text-indigo-700 mb-1">{title}</h2>
-                  <p className="text-sm text-gray-500 italic mb-1">by {author}</p>
-                  <span className="inline-block bg-indigo-200 text-indigo-800 px-3 py-1 rounded-full text-xs font-semibold mb-3">
-                    {genre}
-                  </span>
-                  <p className="text-gray-700 mb-4 text-sm leading-relaxed">{description}</p>
-                  <p className="text-xl font-extrabold text-indigo-600">
-                    {formatRupiah(price)}
-                  </p>
-                </div>
-              </div>
-            ))}
+            {filteredBooks.map(
+              ({ id, title, author, genre, description, price, image }) => (
+                <Link
+                  key={id}
+                  to={`/books/${id}`}
+                  className="hover:no-underline"
+                >
+                  <div className="bg-white rounded-xl shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300">
+                    <img
+                      src={image}
+                      alt={title}
+                      className="w-full h-64 object-cover"
+                      loading="lazy"
+                    />
+                    <div className="p-6">
+                      <h2 className="text-2xl font-bold text-indigo-700 mb-1">
+                        {title}
+                      </h2>
+                      <p className="text-sm text-gray-500 italic mb-1">
+                        by {author}
+                      </p>
+                      <span className="inline-block bg-indigo-200 text-indigo-800 px-3 py-1 rounded-full text-xs font-semibold mb-3">
+                        {genre}
+                      </span>
+                      <p className="text-gray-700 mb-4 text-sm leading-relaxed">
+                        {description}
+                      </p>
+                      <p className="text-xl font-extrabold text-indigo-600">
+                        {formatRupiah(price)}
+                      </p>
+                    </div>
+                  </div>
+                </Link>
+              )
+            )}
           </div>
         )}
       </div>
