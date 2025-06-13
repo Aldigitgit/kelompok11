@@ -17,7 +17,7 @@ import Penjadwalan from './pages/Penjadwalan.jsx';
 import AuthPage from './pages/AuthPage.jsx';
 import AccountManagementPage from './pages/AccountManagement.jsx';
 import BookDetailPage from './pages/BookDetailPage.jsx';
-import LoginPage from './pages/LoginPage.jsx';
+
 import RegisterPage from './pages/RegisterPage.jsx';
 import OrderManagementPage from './pages/OrderManagement.jsx';
 import ContactManagement from './pages/ContactManagement.jsx';
@@ -28,7 +28,7 @@ function App() {
     <Routes>
       {/* Halaman di luar layout utama */}
       <Route path="/auth" element={<AuthPage />} />
-      <Route path="/login" element={<LoginPage />} />
+      {/* <Route path="/login" element={} /> */}
       <Route path="/register" element={<RegisterPage />} />
 
       {/* Halaman dengan layout utama */}
