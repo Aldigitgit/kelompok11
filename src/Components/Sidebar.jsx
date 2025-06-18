@@ -44,7 +44,7 @@ const Sidebar = () => {
 
   return (
     <aside className="bg-white w-64 h-screen shadow-lg px-4 py-6 hidden md:block">
-      <div className="text-xl font-bold mb-8 text-purple-700">
+      <div className="text-xl font-bold mb-8 text-red-700">
         UMKM CRM
       </div>
 
@@ -53,9 +53,9 @@ const Sidebar = () => {
           <Link
             key={item.name}
             to={item.path}
-            className={`flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-purple-100 transition ${
+            className={`flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-red-100 transition ${
               isActive(item.path)
-                ? 'bg-purple-200 text-purple-800 font-semibold'
+                ? 'bg-red-200 text-red-800 font-semibold'
                 : 'text-gray-700'
             }`}
           >
@@ -65,13 +65,13 @@ const Sidebar = () => {
         ))}
       </nav>
 
-      <div className="mt-8 text-xs font-semibold text-gray-500">AKUN</div>
+      <div className="mt-8 text-xs font-semibold text-red-500">AKUN</div>
       <nav className="mt-2 space-y-1">
         {accountItems.map((item) => (
           <Link
             key={item.name}
             to={item.path}
-            className={`flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-purple-100 transition ${
+            className={`flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-red-100 transition ${
               isActive(item.path)
                 ? 'bg-purple-200 text-purple-800 font-semibold'
                 : 'text-gray-700'

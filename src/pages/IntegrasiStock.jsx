@@ -138,7 +138,7 @@ export default function StokDashboard() {
 
         <button
           type="submit"
-          className="w-full bg-indigo-600 text-white py-3 rounded-md text-lg font-semibold hover:bg-indigo-700 transition"
+          className="w-full bg-red-600 text-white py-3 rounded-md text-lg font-semibold hover:bg-red-700 transition"
         >
           Tambah Stok
         </button>
