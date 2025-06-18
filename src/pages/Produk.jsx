@@ -1,6 +1,5 @@
 import { Link } from "lucide-react";
 import React, { useState } from "react";
-import { Link } from "react-router-dom"; // ← WAJIB untuk <Link>
 
 const dummyBooks = [
   {

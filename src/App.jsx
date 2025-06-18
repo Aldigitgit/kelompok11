@@ -26,6 +26,10 @@ import MarketSegmentation from './pages/MarketSegmentation.jsx';
 import CampaignAnalytics from './pages/CampaignAnalytics.jsx';
 import ContentManagement from './pages/ContentManagement.jsx';
 import IntegrasiStock from './pages/IntegrasiStock.jsx';
+import HomePage from './pages/Home.jsx';
+import ShopPage from './pages/ShopPage.jsx';
+import ContactPage from './pages/ContactPage.jsx';
+import CartPage from './pages/CartPage.jsx';
 
 
 
