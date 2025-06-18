@@ -12,6 +12,8 @@ export default {
         secondary: "#452372",
         secondaryOne: "#ffbcb1",
         tertiary: "#272626",
+        'custom-teal': '#0097A7', // Your main theme color
+        'custom-blue': '#2196F3', // A shade of blue for the sign-in button
         // tertiary: "#404040",
         gray: {
           10: "#EEEEEE",

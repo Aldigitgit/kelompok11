@@ -44,8 +44,13 @@ const Sidebar = () => {
 
   return (
     <aside className="bg-white w-64 h-screen shadow-lg px-4 py-6 hidden md:block">
-      <div className="text-xl font-bold mb-8 text-purple-700">
-        UMKM CRM
+      {/* Company Logo Section */}
+      <div className="mb-8 text-center">
+        <img
+          src="\src\frontend\assets\categories\LOGO2.png" // **Update this path to your logo file**
+          alt="PERIPLUS"
+          className="h-12 mx-auto" // Adjust height and margin as needed
+        />
       </div>
 
       <nav className="space-y-1">
