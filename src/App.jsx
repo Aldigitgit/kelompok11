@@ -15,7 +15,7 @@ import ProdukDetail from './pages/ProdukDetail.jsx'; // Tambahkan ini
 import Penjadwalan from './pages/Penjadwalan.jsx';
 import AuthPage from './pages/AuthPage.jsx';
 import RegisterPage from './pages/RegisterPage.jsx';
-import LoginPage from './pages/LoginPage.jsx'; // Tambahkan ini
+
 import AccountManagementPage from './pages/AccountManagement.jsx';
 import BookDetailPage from './pages/BookDetailPage.jsx';
 import OrderManagementPage from './pages/OrderManagement.jsx';
@@ -31,6 +31,7 @@ import CartPage from './pages/CartPage.jsx';
 
 import MainLayout from './Components/Mainlayout.jsx';
 import Produk from "./pages/ProductPage.jsx";
+import LoginPage from "./pages/Loginpage.jsx";
 
 function App() {
   const isAuthenticated = localStorage.getItem("isLoggedIn") === "true";
@@ -43,7 +44,7 @@ function App() {
       <Route path="/contact" element={<ContactPage />} />
       <Route path="/cart" element={<CartPage />} />
       <Route path="/auth" element={<AuthPage />} />
-      <Route path="/login" element={<LoginPage />} />
+      <Route path="/login" element={<LoginPage></LoginPage>} />
       <Route path="/register" element={<RegisterPage />} />
 
       {/* Jika sudah login, redirect login/register/auth ke dashboard */}
