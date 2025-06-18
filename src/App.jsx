@@ -25,6 +25,7 @@ import MainLayout from './Components/Mainlayout.jsx';
 import MarketSegmentation from './pages/MarketSegmentation.jsx';
 import CampaignAnalytics from './pages/CampaignAnalytics.jsx';
 import ContentManagement from './pages/ContentManagement.jsx';
+import IntegrasiStock from './pages/IntegrasiStock.jsx';
 
 
 
@@ -53,6 +54,8 @@ function App() {
         <Route path="accountmanagement" element={<AccountManagementPage />} />
         <Route path="ordermanagement" element={<OrderManagementPage />} />
         <Route path="kontak" element={<ContactManagement />} />
+        <Route path="integrasi-stok" element={<IntegrasiStock />} />
+        
 
         <Route path="MarketSegmentation" element={<MarketSegmentation></MarketSegmentation>} />
         <Route path="ContentManagement" element={<ContentManagement></ContentManagement>} />
