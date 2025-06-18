@@ -25,12 +25,21 @@ import MainLayout from './Components/Mainlayout.jsx';
 import MarketSegmentation from './pages/MarketSegmentation.jsx';
 import CampaignAnalytics from './pages/CampaignAnalytics.jsx';
 import ContentManagement from './pages/ContentManagement.jsx';
+import HomePage from './pages/Home.jsx';
+import ShopPage from './pages/ShopPage.jsx';
+import ContactPage from './pages/ContactPage.jsx';
+import CartPage from './pages/CartPage.jsx';
 
 
 
 function App() {
   return (
     <Routes>
+      {/* user */}
+       <Route path="/home" element={<HomePage></HomePage>} />
+       <Route path="/Shop" element={<ShopPage></ShopPage>} />
+       <Route path="/Contact" element={<ContactPage></ContactPage>} />
+        <Route path="/Cart" element={<CartPage></CartPage>} />
       {/* Halaman di luar layout utama */}
       <Route path="/auth" element={<AuthPage />} />
       {/* <Route path="/login" element={} /> */}
@@ -57,6 +66,7 @@ function App() {
         <Route path="MarketSegmentation" element={<MarketSegmentation></MarketSegmentation>} />
         <Route path="ContentManagement" element={<ContentManagement></ContentManagement>} />
         <Route path="CampaignAnalytics" element={<CampaignAnalytics></CampaignAnalytics>} />
+       
         {/* <Route path="MarketSEgementation" element={} /> */}
       </Route>
     </Routes>
