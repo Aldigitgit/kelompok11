@@ -51,6 +51,8 @@ const Sidebar = () => {
           alt="PERIPLUS"
           className="h-12 mx-auto" // Adjust height and margin as needed
         />
+      <div className="text-xl font-bold mb-8 text-purple-700">
+        PeriPlus
       </div>
 
       <nav className="space-y-1">

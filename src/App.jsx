@@ -2,30 +2,34 @@
 import { Routes, Route, Navigate } from "react-router-dom"; // Import Navigate for redirection
 
 // Pages
-import Dashboard from "./pages/Dashboard.jsx";
-import SalesManagement from "./pages/SalesManagement.jsx";
-import CustomerManagement from "./pages/CustomerManagement.jsx";
-import RiwayatPembelian from "./pages/Riwayatpembelian.jsx";
-import ReviewPage from "./pages/ReviewPage.jsx";
-import FaQManagement from "./pages/FaQManagement.jsx";
-import TrackingManagement from "./pages/TrackingManagement.jsx";
-import PromoScheduler from "./pages/PenjadwalPromo.jsx";
-import PromoSchedulerWithNotification from "./pages/PromoScheduler.jsx";
-import Produk from "./pages/ProductPage.jsx";
-import ProdukDetail from "./pages/ProdukDetail.jsx";
-import Penjadwalan from "./pages/Penjadwalan.jsx";
-import AuthPage from "./pages/AuthPage.jsx";
-import AccountManagementPage from "./pages/AccountManagement.jsx";
-import BookDetailPage from "./pages/BookDetailPage.jsx";
+import Dashboard from './pages/Dashboard.jsx';
+import SalesManagement from './pages/SalesManagement.jsx';
+import CustomerManagement from './pages/CustomerManagement.jsx';
+import RiwayatPembelian from './pages/Riwayatpembelian.jsx';
+import ReviewPage from './pages/ReviewPage.jsx';
+import FaQManagement from './pages/FaQManagement.jsx';
+import TrackingManagement from './pages/TrackingManagement.jsx';
+import PromoScheduler from './pages/PenjadwalPromo.jsx';
+import PromoSchedulerWithNotification from './pages/PromoScheduler.jsx';
+import ProductPage from './pages/Produk.jsx';
+import Penjadwalan from './pages/Penjadwalan.jsx';
+import AuthPage from './pages/AuthPage.jsx';
+import AccountManagementPage from './pages/AccountManagement.jsx';
+import BookDetailPage from './pages/BookDetailPage.jsx';
 
-import RegisterPage from "./pages/RegisterPage.jsx";
-import LoginPage from "./pages/LoginPage.jsx"; // Make sure this import is correct
-import OrderManagementPage from "./pages/OrderManagement.jsx";
-import ContactManagement from "./pages/ContactManagement.jsx";
-import MainLayout from "./Components/Mainlayout.jsx"; // Make sure this import is correct
-import MarketSegmentation from "./pages/MarketSegmentation.jsx";
-import CampaignAnalytics from "./pages/CampaignAnalytics.jsx";
-import ContentManagement from "./pages/ContentManagement.jsx";
+import RegisterPage from './pages/RegisterPage.jsx';
+import OrderManagementPage from './pages/OrderManagement.jsx';
+import ContactManagement from './pages/ContactManagement.jsx';
+import MainLayout from './Components/Mainlayout.jsx';
+import MarketSegmentation from './pages/MarketSegmentation.jsx';
+import CampaignAnalytics from './pages/CampaignAnalytics.jsx';
+import ContentManagement from './pages/ContentManagement.jsx';
+import IntegrasiStock from './pages/IntegrasiStock.jsx';
+import HomePage from './pages/Home.jsx';
+import ShopPage from './pages/ShopPage.jsx';
+import ContactPage from './pages/ContactPage.jsx';
+import CartPage from './pages/CartPage.jsx';
+
 
 function App() {
   const isAuthenticated = localStorage.getItem("isLoggedIn") === "true";
@@ -33,6 +37,12 @@ function App() {
   return (
     <Routes>
       {/* Halaman di luar layout utama (untuk Auth, Register, Login) */}
+      {/* user */}
+       <Route path="/home" element={<HomePage></HomePage>} />
+       <Route path="/Shop" element={<ShopPage></ShopPage>} />
+       <Route path="/Contact" element={<ContactPage></ContactPage>} />
+        <Route path="/Cart" element={<CartPage></CartPage>} />
+      {/* Halaman di luar layout utama */}
       <Route path="/auth" element={<AuthPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
@@ -70,6 +80,14 @@ function App() {
         <Route path="MarketSegmentation" element={<MarketSegmentation />} />
         <Route path="ContentManagement" element={<ContentManagement />} />
         <Route path="CampaignAnalytics" element={<CampaignAnalytics />} />
+        <Route path="integrasi-stok" element={<IntegrasiStock />} />
+        
+
+        <Route path="MarketSegmentation" element={<MarketSegmentation></MarketSegmentation>} />
+        <Route path="ContentManagement" element={<ContentManagement></ContentManagement>} />
+        <Route path="CampaignAnalytics" element={<CampaignAnalytics></CampaignAnalytics>} />
+       
+        {/* <Route path="MarketSEgementation" element={} /> */}
       </Route>
 
       <Route path="*" element={<Navigate to="/login" replace />} />

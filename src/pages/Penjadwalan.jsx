@@ -39,7 +39,7 @@ export default function Penjadwalan() {
 
   return (
     <div className="p-6 max-w-3xl mx-auto bg-white rounded-xl shadow-md">
-      <h1 className="text-3xl font-medium mb-6 text-center text-indigo-700">
+      <h1 className="text-3xl font-medium mb-6 text-center text-red-700">
         Penjadwalan Posting
       </h1>
 
@@ -72,7 +72,7 @@ export default function Penjadwalan() {
 
       <button
         onClick={handleJadwalkan}
-        className="w-full py-3 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 disabled:bg-indigo-300"
+        className="w-full py-3 bg-red-600 text-white font-semibold rounded-lg hover:bg-red-700 disabled:bg-red-300"
         disabled={!konten.trim()}
       >
         Jadwalkan
