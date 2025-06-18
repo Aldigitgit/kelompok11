@@ -32,8 +32,6 @@ import ContactPage from './pages/ContactPage.jsx';
 import CartPage from './pages/CartPage.jsx';
 
 
-
-
 function App() {
   return (
     <Routes>
