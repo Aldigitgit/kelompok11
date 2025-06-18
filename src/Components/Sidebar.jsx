@@ -10,6 +10,10 @@ import {
   UserPlus,
   ClipboardList,
   PackageCheck,
+  Mail,
+  PieChart,
+  FileText,
+  SlidersHorizontal,
 } from 'lucide-react'
 
 import { Link, useLocation } from 'react-router-dom'
@@ -17,18 +21,16 @@ import { Link, useLocation } from 'react-router-dom'
 const menuItems = [
   { name: 'Dashboard', icon: <LayoutDashboard />, path: '/' },
   { name: 'Penjualan', icon: <ShoppingCart />, path: '/penjualan' },
-  { name: 'Contact Management', icon: <Users />, path: '/pelanggan' },
-  { name: 'Riwayat Pembelian', icon: <ClipboardList />, path: '/riwayat' }, //mirip order management
-  { name: 'Review Pembelian', icon: <PackageCheck />, path: '/review' }, // ga ke pakai
+  { name: 'Pelanggan', icon: <Users />, path: '/pelanggan' },
+  { name: 'Riwayat Pembelian', icon: <ClipboardList />, path: '/riwayat' },
   { name: 'Produk', icon: <Box />, path: '/produk' },
-  { name: 'Jadwal Posting', icon: <ClipboardList />, path: '/penjadwalan' }, //hapus
-  { name: 'Produk configuration', icon: <Box />, path: '/integrasi-stok' },
+  { name: 'Stok Produk', icon: <SlidersHorizontal />, path: '/integrasi-stok' },
   { name: 'FAQ', icon: <MessageCircleQuestion />, path: '/faq' },
-  { name: 'Tracking Order', icon: <ShoppingCart />, path: '/tracking' },
-  { name: 'Contact', icon: <ShoppingCart />, path: '/kontak' },
-  { name: 'Campaign Analytics', icon: <ShoppingCart />, path: '/CampaignAnalytics' },
-  { name: 'Content Management', icon: <ShoppingCart />, path: '/ContentManagement' },
-  { name: 'Market Segmentation', icon: <ShoppingCart />, path: '/MarketSegmentation' },
+  { name: 'Tracking Order', icon: <PackageCheck />, path: '/tracking' },
+  { name: 'Kontak', icon: <Mail />, path: '/kontak' },
+  { name: 'Campaign Analytics', icon: <PieChart />, path: '/campaign-analytics' },
+  { name: 'Content Management', icon: <FileText />, path: '/content-management' },
+  { name: 'Market Segmentation', icon: <BarChart2 />, path: '/market-segmentation' },
 ]
 
 const accountItems = [
@@ -39,22 +41,21 @@ const accountItems = [
 
 const Sidebar = () => {
   const location = useLocation()
-
   const isActive = (path) => location.pathname === path
 
   return (
-    <aside className="bg-white w-64 h-screen shadow-lg px-4 py-6 hidden md:block">
-      {/* Company Logo Section */}
+    <aside className="bg-white w-64 h-900px shadow-lg px-4 py-6 hidden md:block">
+      {/* Logo PeriPlus */}
       <div className="mb-8 text-center">
         <img
-          src="\src\frontend\assets\categories\LOGO2.png" // **Update this path to your logo file**
-          alt="PERIPLUS"
-          className="h-12 mx-auto" // Adjust height and margin as needed
+          src="/assets/categories/LOGO2.png"
+          alt="tak de"
+          className="h-12 mx-auto"
         />
-      <div className="text-xl font-bold mb-8 text-purple-700">
-        PeriPlus
+        <div className="text-xl font-bold mt-2 text-purple-700">PeriPlus</div>
       </div>
 
+      {/* Menu utama */}
       <nav className="space-y-1">
         {menuItems.map((item) => (
           <Link
@@ -72,6 +73,7 @@ const Sidebar = () => {
         ))}
       </nav>
 
+      {/* Akun */}
       <div className="mt-8 text-xs font-semibold text-gray-500">AKUN</div>
       <nav className="mt-2 space-y-1">
         {accountItems.map((item) => (

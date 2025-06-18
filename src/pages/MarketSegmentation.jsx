@@ -81,7 +81,7 @@ export default function MarketSegmentation() {
                 <th className="px-4 py-3 text-left">Loyalitas</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="text-gray-800">
               {filtered.map((cust, i) => (
                 <tr key={i} className="border-b hover:bg-red-50">
                   <td className="px-4 py-2">{cust.nama}</td>

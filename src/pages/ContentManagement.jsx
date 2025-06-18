@@ -43,7 +43,7 @@ export default function ContentManagement() {
               <th className="px-6 py-3">Action</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="text-gray-800">
             {filteredData.map((book, index) => (
               <tr key={index} className="border-b hover:bg-red-50">
                 <td className="px-6 py-3">{book.nama}</td>

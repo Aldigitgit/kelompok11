@@ -67,7 +67,7 @@ const Produk = () => {
           Daftar Buku
         </h1>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6 text-gray-800" >
           <input
             type="text"
             value={search}
