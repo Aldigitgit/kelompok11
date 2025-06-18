@@ -55,7 +55,7 @@ export default function MarketSegmentation() {
 
   return (
     <div className="min-h-screen bg-gray-100 py-8 px-4">
-      <h1 className="text-3xl font-bold text-center text-purple-700 mb-6">
+      <h1 className="text-3xl font-bold text-center text-red-700 mb-6">
         Market Segmentation
       </h1>
 
@@ -70,7 +70,7 @@ export default function MarketSegmentation() {
 
         <div className="overflow-x-auto">
           <table className="min-w-full bg-white rounded-xl shadow text-sm">
-            <thead className="bg-purple-200 text-purple-800 uppercase">
+            <thead className="bg-red-200 text-red-800 uppercase">
               <tr>
                 <th className="px-4 py-3 text-left">Nama</th>
                 <th className="px-4 py-3 text-left">Umur</th>
@@ -83,7 +83,7 @@ export default function MarketSegmentation() {
             </thead>
             <tbody>
               {filtered.map((cust, i) => (
-                <tr key={i} className="border-b hover:bg-purple-50">
+                <tr key={i} className="border-b hover:bg-red-50">
                   <td className="px-4 py-2">{cust.nama}</td>
                   <td className="px-4 py-2">{cust.umur}</td>
                   <td className="px-4 py-2">{cust.gender}</td>

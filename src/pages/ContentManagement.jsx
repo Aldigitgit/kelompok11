@@ -17,7 +17,7 @@ export default function ContentManagement() {
   );
 
   return (
-    <div className="p-6 bg-purple-100 min-h-screen font-sans">
+    <div className="p-6 bg-white-100 min-h-screen font-sans">
       <div className="flex justify-between items-center mb-4">
         <input
           type="text"
@@ -26,14 +26,14 @@ export default function ContentManagement() {
           onChange={(e) => setSearch(e.target.value)}
           className="p-2 rounded-md border w-1/3 shadow-sm"
         />
-        <button className="bg-purple-500 text-white px-4 py-2 rounded-md hover:bg-purple-600">
+        <button className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600">
           + Tambah
         </button>
       </div>
 
       <div className="overflow-x-auto">
         <table className="w-full text-sm text-left bg-white rounded-xl shadow-md">
-          <thead className="text-xs text-purple-800 uppercase bg-purple-200">
+          <thead className="text-xs text-red-800 uppercase bg-red-200">
             <tr>
               <th className="px-6 py-3">Nama</th>
               <th className="px-6 py-3">Penulis</th>
@@ -45,7 +45,7 @@ export default function ContentManagement() {
           </thead>
           <tbody>
             {filteredData.map((book, index) => (
-              <tr key={index} className="border-b hover:bg-purple-50">
+              <tr key={index} className="border-b hover:bg-red-50">
                 <td className="px-6 py-3">{book.nama}</td>
                 <td className="px-6 py-3">{book.penulis}</td>
                 <td className="px-6 py-3">{book.kategori}</td>

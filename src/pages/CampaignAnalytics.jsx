@@ -28,7 +28,7 @@ export default function CampaignAnalytics() {
           <div key={i} className="bg-white rounded-xl shadow p-4">
             <p className="text-sm text-gray-500">{stat.title}</p>
             <h2 className="text-xl font-semibold">{stat.value}</h2>
-            <p className="text-xs text-purple-500">{stat.change}</p>
+            <p className="text-xs text-red-500">{stat.change}</p>
             <ResponsiveContainer width="100%" height={50}>
               <LineChart data={stat.chartData.map((v, i) => ({ index: i, value: v }))}>
                 <Line type="monotone" dataKey="value" stroke="#7C3AED" strokeWidth={2} dot={false} />
@@ -81,7 +81,7 @@ export default function CampaignAnalytics() {
                   <td className="p-2">{item.cySends}</td>
                   <td className="p-2">{item.yoySends}</td>
                   <td className="p-2 text-blue-600 font-semibold">{item.revenue}</td>
-                  <td className="p-2 text-purple-500">{item.changeRevenue}</td>
+                  <td className="p-2 text-red-500">{item.changeRevenue}</td>
                 </tr>
               ))}
             </tbody>

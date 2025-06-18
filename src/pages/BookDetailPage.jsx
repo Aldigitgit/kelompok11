@@ -44,7 +44,7 @@ export default function BookDetailPage() {
           <div className="flex-1">
             <h1 className="text-3xl font-bold text-indigo-700 mb-2">{book.title}</h1>
             <p className="text-gray-500 italic mb-2">by {book.author}</p>
-            <span className="bg-indigo-200 text-indigo-800 px-3 py-1 rounded-full text-xs font-semibold inline-block mb-3">
+            <span className="bg-red-200 text-indigo-800 px-3 py-1 rounded-full text-xs font-semibold inline-block mb-3">
               {book.genre}
             </span>
             <p className="text-gray-700 mb-4 leading-relaxed">{book.description}</p>

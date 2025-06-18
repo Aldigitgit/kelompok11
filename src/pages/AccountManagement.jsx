@@ -117,7 +117,7 @@ export default function AccountManagementPage() {
                 <td className="px-6 py-4 whitespace-pre-wrap">{user.password}</td>
                 <td className="px-6 py-4 whitespace-nowrap">{user.segmentation}</td>
                 <td className="px-6 py-4 whitespace-nowrap space-x-2">
-                  <button className="text-blue-600 hover:text-blue-800">
+                  <button className="text-red-600 hover:text-red-800">
                     <Pencil size={18} />
                   </button>
                   <button className="text-red-600 hover:text-red-800">

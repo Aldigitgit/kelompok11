@@ -187,7 +187,7 @@ const TrackingManagement = () => {
       case 'Payment verified, order ready':
         return <CheckCircle className="w-4 h-4 text-green-600" />;
       case 'Ready for pickup':
-        return <Package className="w-4 h-4 text-blue-600" />;
+        return <Package className="w-4 h-4 text-red-600" />;
       case 'Shipped':
         return <Truck className="w-4 h-4 text-purple-600" />;
       case 'Delivered':
@@ -276,7 +276,7 @@ const TrackingManagement = () => {
             <label htmlFor="platform" className="text-sm font-medium text-gray-700 mb-1">Choose Platform</label>
             <select
               id="platform"
-              className="border border-gray-300 px-3 py-2 rounded-md focus:ring-blue-500 focus:border-blue-500"
+              className="border border-gray-300 px-3 py-2 rounded-md focus:rin-red-500 focus:border-red-500"
               value={filterPlatform}
               onChange={(e) => setFilterPlatform(e.target.value)}
             >
@@ -394,7 +394,7 @@ const TrackingManagement = () => {
 
         <div className="flex space-x-2 mt-4">
           <button
-            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
             onClick={() => { /* Apply Filter logic */ }}
           >
             Filter
