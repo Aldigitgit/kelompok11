@@ -22,12 +22,7 @@ export default function ContactPage() {
                 <a href="/cart" className="text-red-600 hover:text-red-700 transition text-xl">
                   <FiShoppingCart />
                 </a>
-                <button className="border border-red-600 text-red-600 px-4 py-2 rounded-md text-sm hover:bg-red-100 transition">
-                  Login
-                </button>
-                <button className="bg-red-600 text-white px-4 py-2 rounded-md text-sm hover:bg-red-700 transition">
-                  Sign Up
-                </button>
+               
               </div>
             </header>
 
