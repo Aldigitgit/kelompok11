@@ -1,9 +1,21 @@
 import { useState } from "react";
-import { FiSearch, FiShoppingCart } from "react-icons/fi";
-import { FaBookOpen, FaChild, FaHeartbeat, FaGraduationCap, FaPray, FaHome, FaStore, FaPhone, FaUser } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import { FiShoppingCart } from "react-icons/fi";
+import {
+  FaBookOpen,
+  FaChild,
+  FaHeartbeat,
+  FaGraduationCap,
+  FaPray,
+  FaHome,
+  FaStore,
+  FaPhone,
+} from "react-icons/fa";
+
 export default function HomePage() {
-    const [category, setCategory] = useState("All");
+  const [category, setCategory] = useState("All");
+  const navigate = useNavigate();
+  const role = localStorage.getItem("role");
 
   const categories = [
     { name: "Fiction", icon: <FaBookOpen /> },
@@ -13,31 +25,57 @@ export default function HomePage() {
     { name: "Religious", icon: <FaPray /> },
   ];
 
+  const handleLogout = () => {
+    localStorage.removeItem("role");
+    window.dispatchEvent(new Event("roleChanged"));
+    navigate("/login");
+  };
+
   return (
     <div className="font-sans text-gray-800">
-       {/* Navbar */}
-       <header className="flex items-center justify-between px-6 py-4 shadow bg-white sticky top-0 z-50">
-  <div className="text-2xl font-bold text-red-700">PeriPlus</div>
-  
-  <nav className="space-x-6 text-sm font-medium flex items-center">
-  <a href="/home" className="!text-red-700 hover:!text-red-800 transition flex items-center gap-1">
-    <FaHome /> Home
-  </a>
-  <a href="/shop" className="!text-red-700 hover:!text-red-800 transition flex items-center gap-1">
-    <FaStore /> Shop
-  </a>
-  <a href="/contact" className="!text-red-700 hover:!text-red-800 transition flex items-center gap-1">
-    <FaPhone /> Contact
-  </a>
-</nav>
+      {/* ========== NAVBAR ========== */}
+      <header className="flex items-center justify-between px-6 py-4 shadow bg-white sticky top-0 z-50">
+        <div className="text-2xl font-bold text-red-700">PeriPlus</div>
 
+        <nav className="space-x-6 text-sm font-medium flex items-center">
+          <Link
+            to="/home"
+            className="!text-red-700 hover:!text-red-800 transition flex items-center gap-1"
+          >
+            <FaHome /> Home
+          </Link>
+          <Link
+            to="/shop"
+            className="!text-red-700 hover:!text-red-800 transition flex items-center gap-1"
+          >
+            <FaStore /> Shop
+          </Link>
+          <Link
+            to="/contact"
+            className="!text-red-700 hover:!text-red-800 transition flex items-center gap-1"
+          >
+            <FaPhone /> Contact
+          </Link>
+        </nav>
 
-  <div className="space-x-3 flex items-center">
-    <a href="/cart" className="!text-red-700 hover:text-red-800 transition text-xl">
-      <FiShoppingCart />
-    </a>
-  </div>
-</header>
+        <div className="space-x-3 flex items-center">
+          <Link
+            to="/cart"
+            className="!text-red-700 hover:text-red-800 transition text-xl"
+          >
+            <FiShoppingCart />
+          </Link>
+
+          {role && (
+            <button
+              onClick={handleLogout}
+              className="bg-red-600 text-white text-sm px-4 py-2 rounded-full hover:bg-red-700 transition"
+            >
+              Logout
+            </button>
+          )}
+        </div>
+      </header>
 
       {/* Hero */}
       <section className="bg-[#f9f7fd] py-16 px-6 md:px-20 flex flex-col md:flex-row items-center justify-between gap-8">

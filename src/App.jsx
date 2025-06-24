@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 
 // Pages Umum
@@ -43,8 +44,25 @@ import HelpCenter from "./pages/HelpCenter.jsx";
 import LiveChat from "./pages/LiveChat.jsx";
 
 function App() {
-  const role = localStorage.getItem("role"); // "admin" / "user"
+  const [role, setRole] = useState(localStorage.getItem("role"));
   const isAuthenticated = role === "admin" || role === "user";
+
+  // Dengarkan event perubahan role
+  useEffect(() => {
+    const updateRole = () => {
+      setRole(localStorage.getItem("role"));
+    };
+
+    // Custom Event listener untuk roleChanged
+    window.addEventListener("roleChanged", updateRole);
+
+    // Optional: jalankan sekali saat pertama render
+    updateRole();
+
+    return () => {
+      window.removeEventListener("roleChanged", updateRole);
+    };
+  }, []);
 
   return (
     <Routes>
@@ -56,21 +74,21 @@ function App() {
       <Route path="/auth" element={<AuthPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
-      <Route path="/about" element={<About></About>} />
-        <Route path="/privacy-policy" element={<PrivacyPolicy></PrivacyPolicy>} />
-        <Route path="/terms" element={<Terms></Terms>} />
-        <Route path="/blog" element={<Blog></Blog>} />
-        <Route path="/events" element={<Events></Events>} />
-        <Route path="/forum" element={<Forum></Forum>} />
-        <Route path="/help-center" element={<HelpCenter></HelpCenter>} />
-        <Route path="/live-chat" element={<LiveChat></LiveChat>} />
+      <Route path="/about" element={<About />} />
+      <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+      <Route path="/terms" element={<Terms />} />
+      <Route path="/blog" element={<Blog />} />
+      <Route path="/events" element={<Events />} />
+      <Route path="/forum" element={<Forum />} />
+      <Route path="/help-center" element={<HelpCenter />} />
+      <Route path="/live-chat" element={<LiveChat />} />
 
       {/* ------------- REDIRECT SETELAH LOGIN ------------- */}
       {isAuthenticated && (
         <>
-          <Route path="/login" element={<Navigate to={role === "admin" ? "/dashboard" : "/home"} replace />} />
-          <Route path="/register" element={<Navigate to={role === "admin" ? "/dashboard" : "/home"} replace />} />
-          <Route path="/auth" element={<Navigate to={role === "admin" ? "/dashboard" : "/home"} replace />} />
+          <Route path="/login" element={<Navigate to={role === "admin" ? "/dashboard" : "/"} replace />} />
+          <Route path="/register" element={<Navigate to={role === "admin" ? "/dashboard" : "/"} replace />} />
+          <Route path="/auth" element={<Navigate to={role === "admin" ? "/dashboard" : "/"} replace />} />
         </>
       )}
 
@@ -109,7 +127,7 @@ function App() {
               isAuthenticated
                 ? role === "admin"
                   ? "/dashboard"
-                  : "/home"
+                  : "/"
                 : "/login"
             }
             replace

@@ -19,15 +19,20 @@ const LoginPage = () => {
     // Logika sederhana: jika sesuai, admin atau user
     if (email === "admin@gmail.com" && password === "123") {
       localStorage.setItem("role", "admin");
+      window.dispatchEvent(new Event("roleChanged")); // trigger update role
       navigate("/dashboard");
     } else if (email === "user@gmail.com" && password === "123") {
       localStorage.setItem("role", "user");
+      window.dispatchEvent(new Event("roleChanged")); // trigger update role
       navigate("/");
     } else {
       setError("Email atau password salah.");
     }
+    
   };
 
+
+  
   const handleSignUp = () => {
     navigate("/register");
   };
