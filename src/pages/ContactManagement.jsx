@@ -9,11 +9,11 @@ const dummyContacts = Array(12).fill({
 
 export default function ContactManagement() {
   return (
-    <div className="p-6 bg-purple-100 min-h-screen font-sans">
-      <h1 className="text-2xl font-bold text-purple-700 mb-6">Daftar Kontak</h1>
+    <div className="p-6 bg-red-100 min-h-screen font-sans">
+      <h1 className="text-2xl font-bold text-red-700 mb-6">Daftar Kontak</h1>
       <div className="overflow-x-auto bg-white rounded-xl shadow">
         <table className="w-full text-sm text-left">
-          <thead className="text-xs text-purple-800 uppercase bg-purple-200">
+          <thead className="text-xs text-red-800 uppercase bg-red-200">
             <tr>
               <th className="px-6 py-3">Nama</th>
               <th className="px-6 py-3">Email</th>
@@ -23,7 +23,7 @@ export default function ContactManagement() {
           </thead>
           <tbody className="text-gray-800">
             {dummyContacts.map((contact, index) => (
-              <tr key={index} className="border-b hover:bg-purple-50">
+              <tr key={index} className="border-b hover:bg-red-50">
                 <td className="px-6 py-3">{contact.nama}</td>
                 <td className="px-6 py-3">{contact.email}</td>
                 <td className="px-6 py-3">{contact.phone}</td>

@@ -189,7 +189,7 @@ const TrackingManagement = () => {
       case 'Ready for pickup':
         return <Package className="w-4 h-4 text-red-600" />;
       case 'Shipped':
-        return <Truck className="w-4 h-4 text-purple-600" />;
+        return <Truck className="w-4 h-4 text-red-600" />;
       case 'Delivered':
         return <CheckCircle className="w-4 h-4 text-green-600" />;
       case 'Payment pending':
@@ -426,7 +426,7 @@ const TrackingManagement = () => {
           </div>
           <div className="flex space-x-2">
             <div className="relative group">
-              <button className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 flex items-center gap-2">
+              <button className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 flex items-center gap-2">
                 Change Status <MoreHorizontal className="w-4 h-4" />
               </button>
               <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg hidden group-hover:block z-10">

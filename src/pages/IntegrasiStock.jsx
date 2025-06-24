@@ -25,7 +25,7 @@ const initialDataStok = [
   {
     jenis: "Buku Pelajaran",
     stok: 200,
-    color: "text-purple-600",
+    color: "text-red-600",
     changeColor: "",
     change: 0,
   },

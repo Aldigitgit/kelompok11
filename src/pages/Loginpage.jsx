@@ -19,10 +19,10 @@ const LoginPage = () => {
     // Logika sederhana: jika sesuai, admin atau user
     if (email === "admin@gmail.com" && password === "123") {
       localStorage.setItem("role", "admin");
-      navigate("/");
+      navigate("/dashboard");
     } else if (email === "user@gmail.com" && password === "123") {
       localStorage.setItem("role", "user");
-      navigate("/home");
+      navigate("/");
     } else {
       setError("Email atau password salah.");
     }

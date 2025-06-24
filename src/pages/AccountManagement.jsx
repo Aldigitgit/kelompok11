@@ -90,17 +90,17 @@ const users = [
 
 export default function AccountManagementPage() {
   return (
-    <div className="p-6 bg-gradient-to-br from-white to-purple-100 min-h-screen">
+    <div className="p-6 bg-gradient-to-br from-white to-red-100 min-h-screen">
       <div className="mb-4 text-sm text-gray-400">Pages/ <span className="text-black font-semibold">Account Management</span></div>
       <div className="flex justify-between items-center mb-4">
         <input type="text" placeholder="Type here..." className="px-4 py-2 rounded-xl border border-gray-300 w-1/3" />
-        <button className="flex items-center bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-xl">
+        <button className="flex items-center bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-xl">
           <Plus className="w-4 h-4 mr-2" />Tambah
         </button>
       </div>
       <div className="bg-white rounded-xl shadow overflow-x-auto">
         <table className="min-w-full text-sm">
-          <thead className="bg-purple-200 text-left text-gray-700">
+          <thead className="bg-red-200 text-left text-gray-700">
             <tr>
               <th className="px-6 py-3">NAMA</th>
               <th className="px-6 py-3">EMAIL</th>
@@ -111,7 +111,7 @@ export default function AccountManagementPage() {
           </thead>
           <tbody>
             {users.map((user) => (
-              <tr key={user.id} className="border-t border-gray-100 hover:bg-purple-50">
+              <tr key={user.id} className="border-t border-gray-100 hover:bg-red-50">
                 <td className="px-6 py-4 whitespace-nowrap">{user.name}</td>
                 <td className="px-6 py-4 whitespace-nowrap">{user.email}</td>
                 <td className="px-6 py-4 whitespace-pre-wrap">{user.password}</td>
@@ -133,7 +133,7 @@ export default function AccountManagementPage() {
             {[1, 2, 3, 4, 5, '...', 20].map((num, i) => (
               <button
                 key={i}
-                className={`px-3 py-1 rounded-full ${num === 1 ? 'bg-purple-600 text-white' : 'bg-gray-200 text-gray-700'} hover:bg-purple-400`}
+                className={`px-3 py-1 rounded-full ${num === 1 ? 'bg-red-600 text-white' : 'bg-gray-200 text-gray-700'} hover:bg-red-400`}
               >
                 {num}
               </button>

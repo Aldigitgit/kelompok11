@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function RegisterPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-purple-50 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-red-50 px-4">
       <div className="bg-white rounded-xl shadow-lg max-w-4xl w-full flex overflow-hidden">
         {/* Left Image */}
         <div className="w-1/2 p-6 hidden md:block">
@@ -24,14 +24,14 @@ export default function RegisterPage() {
 
             <button
               type="submit"
-              className="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 rounded-lg font-semibold"
+              className="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg font-semibold"
             >
               Daftar
             </button>
           </form>
 
           <p className="mt-4 text-center text-sm text-gray-600">
-            Sudah punya akun? <a href="/login" className="text-purple-600 hover:underline">Masuk</a>
+            Sudah punya akun? <a href="/login" className="text-red-600 hover:underline">Masuk</a>
           </p>
         </div>
       </div>

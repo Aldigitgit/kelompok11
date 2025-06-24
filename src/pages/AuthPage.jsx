@@ -4,7 +4,7 @@ export default function AuthPage() {
   const [page, setPage] = useState("login"); // 'login' | 'register' | 'forgot'
 
   return (
-    <div className="min-h-screen bg-gradient-to-tr from-purple-600 via-pink-500 to-red-500 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-gradient-to-tr from-red-600 via-pink-500 to-red-500 flex items-center justify-center px-4">
       <div className="bg-white rounded-3xl shadow-2xl max-w-md w-full p-10">
         {page === "login" && <LoginForm switchPage={setPage} />}
         {page === "register" && <RegisterForm switchPage={setPage} />}
@@ -65,28 +65,28 @@ function RegisterForm({ switchPage }) {
           type="text"
           placeholder="Nama Lengkap"
           required
-          className="w-full p-4 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-400"
+          className="w-full p-4 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-400"
         />
         <input
           type="email"
           placeholder="Email"
           required
-          className="w-full p-4 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-400"
+          className="w-full p-4 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-400"
         />
         <input
           type="password"
           placeholder="Kata Sandi"
           required
-          className="w-full p-4 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-400"
+          className="w-full p-4 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-400"
         />
         <button
           type="submit"
-          className="w-full bg-purple-600 text-white py-3 rounded-xl font-semibold hover:bg-purple-700 transition"
+          className="w-full bg-red-600 text-white py-3 rounded-xl font-semibold hover:bg-red-700 transition"
         >
           Daftar
         </button>
       </form>
-      <div className="mt-6 text-center text-sm text-purple-600">
+      <div className="mt-6 text-center text-sm text-red-600">
         Sudah punya akun?{" "}
         <button
           onClick={() => switchPage("login")}

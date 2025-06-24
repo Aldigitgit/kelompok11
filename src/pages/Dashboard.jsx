@@ -98,7 +98,7 @@ export default function BookstoreDashboard() {
           "#3b82f6", // blue-500
           "#f97316", // orange-500
           "#10b981", // green-500
-          "#8b5cf6", // purple-500
+          "#8b5cf6", // red-500
           "#ef4444", // red-500
           "#9ca3af", // gray-400
         ],
