@@ -42,6 +42,8 @@ import Events from "./pages/Event.jsx";
 import Forum from "./pages/Forum.jsx";
 import HelpCenter from "./pages/HelpCenter.jsx";
 import LiveChat from "./pages/LiveChat.jsx";
+import AccountForm from "./Components/AccountForm.jsx";
+import Account from "./pages/ListAccount.jsx";
 
 function App() {
   const [role, setRole] = useState(localStorage.getItem("role"));
@@ -115,6 +117,7 @@ function App() {
           <Route path="content-management" element={<ContentManagement />} />
           <Route path="campaign-analytics" element={<CampaignAnalytics />} />
           <Route path="integrasi-stok" element={<IntegrasiStock />} />
+          <Route path="ListAccount" element={<Account></Account>} />
         </Route>
       )}
 

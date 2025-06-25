@@ -31,6 +31,7 @@ const menuItems = [
   { name: 'Campaign Analytics', icon: <PieChart />, path: '/dashboard/campaign-analytics' },
   { name: 'Content Management', icon: <FileText />, path: '/dashboard/content-management' },
   { name: 'Market Segmentation', icon: <BarChart2 />, path: '/dashboard/market-segmentation' },
+  { name: 'List Account', icon: <BarChart2 />, path: '/dashboard/ListAccount' },
 ]
 
 const accountItems = [
