@@ -20,17 +20,18 @@ import { Link, useLocation } from 'react-router-dom'
 
 const menuItems = [
   { name: 'Dashboard', icon: <LayoutDashboard />, path: '/dashboard' },
-  { name: 'Penjualan', icon: <ShoppingCart />, path: '/dashboard/penjualan' },
-  { name: 'Pelanggan', icon: <Users />, path: '/dashboard/pelanggan' },
-  { name: 'Riwayat Pembelian', icon: <ClipboardList />, path: '/dashboard/riwayat' },
-  { name: 'Produk', icon: <Box />, path: '/dashboard/produk' },
-  { name: 'Stok Produk', icon: <SlidersHorizontal />, path: '/dashboard/integrasi-stok' },
+  { name: 'Sales Management', icon: <ShoppingCart />, path: '/dashboard/penjualan' },
+  { name: 'Customer Management', icon: <Users />, path: '/dashboard/pelanggan' },
+  { name: 'Riwayat Pembelian', icon: <ClipboardList />, path: '/dashboard/riwayat' }, //hapus
+  { name: 'Produk', icon: <Box />, path: '/dashboard/produk' }, //ganti isi
+  { name: 'Stok Produk', icon: <SlidersHorizontal />, path: '/dashboard/integrasi-stok' }, //hapus
   { name: 'FAQ', icon: <MessageCircleQuestion />, path: '/dashboard/faq' },
-  { name: 'Tracking Order', icon: <PackageCheck />, path: '/dashboard/tracking' },
-  { name: 'Kontak', icon: <Mail />, path: '/dashboard/kontak' },
-  { name: 'Campaign Analytics', icon: <PieChart />, path: '/dashboard/campaign-analytics' },
-  { name: 'Content Management', icon: <FileText />, path: '/dashboard/content-management' },
+  { name: 'Tracking Order', icon: <PackageCheck />, path: '/dashboard/tracking' }, //hapus
+  { name: 'Kontak', icon: <Mail />, path: '/dashboard/kontak' }, //hapus
+  { name: 'Campaign Analytics', icon: <PieChart />, path: '/dashboard/campaign-analytics' }, ///ha[us]
+  { name: 'Content Management', icon: <FileText />, path: '/dashboard/content-management' },  
   { name: 'Market Segmentation', icon: <BarChart2 />, path: '/dashboard/market-segmentation' },
+  { name: 'List Account', icon: <BarChart2 />, path: '/dashboard/ListAccount' },
 ]
 
 const accountItems = [
