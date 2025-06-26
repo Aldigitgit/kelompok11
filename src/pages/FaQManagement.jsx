@@ -1,54 +1,142 @@
-import { useState, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { Trash2, Reply, HelpCircle, CheckCircle, Clock } from 'lucide-react';
-
-const initialFaqs = [
-  { id: 1, question: 'Bagaimana cara memesan buku di Periplus.com?', answer: '', category: 'Pemesanan', status: 'Belum Dijawab' },
-  { id: 2, question: 'Apakah saya bisa mengembalikan barang yang sudah dibeli?', answer: 'Ya, Anda bisa melakukan retur dalam waktu 7 hari setelah pembelian, dengan syarat dan ketentuan berlaku.', category: 'Pengembalian', status: 'Sudah Dijawab' },
-  { id: 3, question: 'Bagaimana cara melacak pesanan saya?', answer: 'Anda dapat melacak pesanan Anda melalui halaman "Lacak Pesanan" dengan memasukkan nomor invoice Anda.', category: 'Pemesanan', status: 'Sudah Dijawab' },
-  { id: 4, question: 'Apakah Periplus melayani pengiriman internasional?', answer: '', category: 'Pengiriman', status: 'Belum Dijawab' },
-  { id: 5, question: 'Metode pembayaran apa saja yang tersedia?', answer: 'Kami menerima pembayaran melalui transfer bank, kartu kredit/debit, dan dompet digital tertentu.', category: 'Pembayaran', status: 'Sudah Dijawab' },
-  { id: 6, question: 'Bagaimana jika buku yang saya terima rusak?', answer: 'Silakan hubungi layanan pelanggan kami dalam waktu 2x24 jam setelah menerima buku dan kami akan membantu Anda.', category: 'Pengembalian', status: 'Sudah Dijawab' },
-  { id: 7, question: 'Bisakah saya mengubah alamat pengiriman setelah pesanan dikonfirmasi?', answer: '', category: 'Pemesanan', status: 'Belum Dijawab' },
-  { id: 8, question: 'Apakah ada diskon untuk pembelian dalam jumlah besar?', answer: 'Untuk pembelian dalam jumlah besar, silakan hubungi tim penjualan korporat kami untuk informasi lebih lanjut mengenai diskon khusus.', category: 'Promosi', status: 'Sudah Dijawab' },
-];
+import { supabase } from '../supabase.js';// <--- Perhatikan '../'
 
 const FaQManagement = () => {
-  const [faqs, setFaqs] = useState(initialFaqs);
+  // State untuk menyimpan data FAQ dari Supabase
+  const [faqs, setFaqs] = useState([]);
+  // State untuk indikator loading saat mengambil data
+  const [loading, setLoading] = useState(true);
+  // State untuk menyimpan pesan error jika terjadi masalah
+  const [error, setError] = useState(null);
+
+  // State untuk filter dan pencarian
   const [filterStatus, setFilterStatus] = useState('Semua');
   const [filterCategory, setFilterCategory] = useState('Semua');
   const [searchTerm, setSearchTerm] = useState('');
+
+  // State untuk input pertanyaan baru
   const [newQuestion, setNewQuestion] = useState('');
 
-  const handleAnswer = (id) => {
+  // --- Fungsi untuk Mengambil Data FAQ dari Supabase ---
+  // useCallback digunakan untuk mencegah fungsi ini dibuat ulang setiap render,
+  // yang bisa menyebabkan masalah dengan useEffect.
+  const fetchFaqs = useCallback(async () => {
+    setLoading(true); // Set loading ke true saat memulai fetch
+    setError(null);   // Reset error sebelumnya
+    try {
+      // Mengambil data dari tabel 'faqs' di Supabase
+      // .select('*') berarti ambil semua kolom
+      // .order('created_at', { ascending: false }) mengurutkan dari yang terbaru
+      const { data, error } = await supabase
+        .from('faqs')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        // Jika ada error dari Supabase, lempar error tersebut
+        throw error;
+      }
+      setFaqs(data); // Update state faqs dengan data yang diterima
+    } catch (err) {
+      console.error("Error fetching FAQs:", err.message);
+      setError("Gagal memuat FAQ: " + err.message); // Set pesan error
+    } finally {
+      setLoading(false); // Set loading ke false setelah fetch selesai (berhasil/gagal)
+    }
+  }, []); // Dependensi kosong karena fungsi ini tidak bergantung pada state/props lain yang berubah
+
+  // useEffect untuk memanggil fetchFaqs saat komponen pertama kali dimuat
+  useEffect(() => {
+    fetchFaqs();
+  }, [fetchFaqs]); // fetchFaqs adalah dependensi di sini (karena menggunakan useCallback)
+
+  // --- Fungsi untuk Menjawab FAQ ---
+  const handleAnswer = async (id) => {
     const userAnswer = prompt('Masukkan jawaban:');
     if (userAnswer !== null && userAnswer.trim() !== '') {
-      setFaqs((prev) =>
-        prev.map((faq) => (faq.id === id ? { ...faq, answer: userAnswer, status: 'Sudah Dijawab' } : faq))
-      );
+      try {
+        // Memperbarui baris di tabel 'faqs' berdasarkan 'id'
+        const { error } = await supabase
+          .from('faqs')
+          .update({ answer: userAnswer.trim(), status: 'Sudah Dijawab' })
+          .eq('id', id); // .eq() digunakan untuk mencari baris dengan ID yang sesuai
+
+        if (error) {
+          throw error;
+        }
+        // Jika update di Supabase berhasil, perbarui state lokal
+        setFaqs((prev) =>
+          prev.map((faq) =>
+            faq.id === id ? { ...faq, answer: userAnswer.trim(), status: 'Sudah Dijawab' } : faq
+          )
+        );
+      } catch (err) {
+        console.error("Error updating FAQ:", err.message);
+        alert("Gagal memperbarui jawaban: " + err.message);
+      }
     } else if (userAnswer !== null && userAnswer.trim() === '') {
       alert('Jawaban tidak boleh kosong.');
     }
   };
 
-  const handleDelete = (id) => {
+  // --- Fungsi untuk Menghapus FAQ ---
+  const handleDelete = async (id) => {
     if (confirm('Yakin ingin menghapus pertanyaan ini?')) {
-      setFaqs((prev) => prev.filter((faq) => faq.id !== id));
+      try {
+        // Menghapus baris dari tabel 'faqs' berdasarkan 'id'
+        const { error } = await supabase
+          .from('faqs')
+          .delete()
+          .eq('id', id);
+
+        if (error) {
+          throw error;
+        }
+        // Jika delete di Supabase berhasil, perbarui state lokal
+        setFaqs((prev) => prev.filter((faq) => faq.id !== id));
+      } catch (err) {
+        console.error("Error deleting FAQ:", err.message);
+        alert("Gagal menghapus pertanyaan: " + err.message);
+      }
     }
   };
 
-  const handleAddQuestion = () => {
+  // --- Fungsi untuk Menambah Pertanyaan Baru ---
+  const handleAddQuestion = async () => {
     if (newQuestion.trim() !== '') {
-      const newId = faqs.length > 0 ? Math.max(...faqs.map(f => f.id)) + 1 : 1;
-      setFaqs((prev) => [
-        ...prev,
-        { id: newId, question: newQuestion.trim(), answer: '', category: 'Lain-lain', status: 'Belum Dijawab' }
-      ]);
-      setNewQuestion('');
+      try {
+        // Menambahkan baris baru ke tabel 'faqs'
+        // .select() digunakan untuk mengembalikan data dari baris yang baru di-insert,
+        // termasuk ID yang dihasilkan oleh database.
+        const { data, error } = await supabase
+          .from('faqs')
+          .insert([
+            { question: newQuestion.trim(), answer: '', category: 'Lain-lain', status: 'Belum Dijawab' },
+          ])
+          .select();
+
+        if (error) {
+          throw error;
+        }
+        // Jika insert di Supabase berhasil, perbarui state lokal
+        // data[0] karena insert mengembalikan array (walaupun hanya satu item)
+        if (data && data.length > 0) {
+            setFaqs((prev) => [data[0], ...prev]); // Tambahkan item baru ke awal daftar
+        }
+        setNewQuestion(''); // Kosongkan input setelah berhasil menambah
+      } catch (err) {
+        console.error("Error adding new FAQ:", err.message);
+        alert("Gagal menambah pertanyaan: " + err.message);
+      }
     } else {
       alert('Pertanyaan tidak boleh kosong.');
     }
   };
 
+  // --- Filter dan Pencarian ---
+  // useMemo digunakan untuk mengoptimalkan kinerja dengan hanya menghitung ulang
+  // filteredFaqs jika dependensi berubah.
   const filteredFaqs = useMemo(() => {
     return faqs.filter((faq) => {
       const matchesStatus = filterStatus === 'Semua' || faq.status === filterStatus;
@@ -58,13 +146,32 @@ const FaQManagement = () => {
         faq.answer.toLowerCase().includes(searchTerm.toLowerCase());
       return matchesStatus && matchesCategory && matchesSearch;
     });
-  }, [faqs, filterStatus, filterCategory, searchTerm]);
+  }, [faqs, filterStatus, filterCategory, searchTerm]); // Dependensi
 
+  // Ambil kategori unik dari FAQ yang ada untuk dropdown filter
   const uniqueCategories = useMemo(() => {
-    const categories = new Set(initialFaqs.map(faq => faq.category));
+    const categories = new Set(faqs.map(faq => faq.category));
     return ['Semua', ...Array.from(categories)];
-  }, []);
+  }, [faqs]); // Bergantung pada 'faqs' agar kategori dinamis
 
+  // --- Kondisi Loading dan Error ---
+  if (loading) {
+    return (
+      <div className="p-6 bg-gray-100 min-h-screen flex items-center justify-center">
+        <p className="text-xl text-gray-700">Memuat FAQ...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="p-6 bg-gray-100 min-h-screen flex items-center justify-center">
+        <p className="text-xl text-red-600">Error: {error}</p>
+      </div>
+    );
+  }
+
+  // --- Render UI Utama ---
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
       <div className="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-lg">
