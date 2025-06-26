@@ -15,10 +15,19 @@ export default function ContentManagement() {
     cover: '',
   });
 
+  // Ambil data dari Supabase
   const fetchBooks = async () => {
-    const { data, error } = await supabase.from('books').select('*').order('created_at', { ascending: false });
-    if (error) console.error(error);
-    else setBooks(data);
+    const { data, error } = await supabase
+      .from('content') // gunakan tabel 'content'
+      .select('*')
+      .order('nama', { ascending: true }); // urutkan berdasarkan nama (kolom yang pasti ada)
+
+    if (error) {
+      console.error("Gagal fetch data:", error.message);
+      alert("Gagal mengambil data dari Supabase.");
+    } else {
+      setBooks(data);
+    }
   };
 
   useEffect(() => {
@@ -35,22 +44,44 @@ export default function ContentManagement() {
   };
 
   const handleSubmit = async () => {
-    if (!formData.nama || !formData.penulis || !formData.kategori || !formData.harga || !formData.cover) {
-      alert("Semua field wajib diisi!");
+    const hargaNumeric = parseFloat(formData.harga);
+
+    if (
+      !formData.nama ||
+      !formData.penulis ||
+      !formData.kategori ||
+      isNaN(hargaNumeric) ||
+      !formData.cover
+    ) {
+      alert('Semua field wajib diisi!');
       return;
     }
 
+    const payload = {
+      nama: formData.nama,
+      penulis: formData.penulis,
+      kategori: formData.kategori,
+      harga: hargaNumeric,
+      cover: formData.cover,
+    };
+
     if (editingId) {
       const { error } = await supabase
-        .from('books')
-        .update(formData)
+        .from('content')
+        .update(payload)
         .eq('id', editingId);
-      if (error) console.error(error);
+      if (error) {
+        console.error("Gagal update:", error.message);
+        alert("Gagal memperbarui data.");
+      }
     } else {
       const { error } = await supabase
-        .from('books')
-        .insert(formData);
-      if (error) console.error(error);
+        .from('content')
+        .insert([payload]);
+      if (error) {
+        console.error("Gagal insert:", error.message);
+        alert("Gagal menambahkan data.");
+      }
     }
 
     setFormData({ nama: '', penulis: '', kategori: '', harga: '', cover: '' });
@@ -67,14 +98,19 @@ export default function ContentManagement() {
 
   const handleDelete = async (id) => {
     if (window.confirm('Yakin ingin menghapus buku ini?')) {
-      const { error } = await supabase.from('books').delete().eq('id', id);
-      if (error) console.error(error);
-      else fetchBooks();
+      const { error } = await supabase.from('content').delete().eq('id', id);
+      if (error) {
+        console.error("Gagal delete:", error.message);
+        alert("Gagal menghapus data.");
+      } else {
+        fetchBooks();
+      }
     }
   };
 
   return (
     <div className="p-6 bg-white min-h-screen font-sans">
+      {/* Pencarian dan Tombol Tambah */}
       <div className="flex justify-between items-center mb-4">
         <input
           type="text"
@@ -97,6 +133,7 @@ export default function ContentManagement() {
         </button>
       </div>
 
+      {/* Form Tambah/Edit */}
       {showForm && (
         <div className="bg-white p-4 rounded shadow-md mb-6 border">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -150,6 +187,7 @@ export default function ContentManagement() {
         </div>
       )}
 
+      {/* Tabel Konten */}
       <div className="overflow-x-auto">
         <table className="w-full text-sm text-left bg-white rounded-xl shadow-md">
           <thead className="text-xs text-red-800 uppercase bg-red-200">
@@ -159,7 +197,7 @@ export default function ContentManagement() {
               <th className="px-6 py-3">Kategori</th>
               <th className="px-6 py-3">Harga</th>
               <th className="px-6 py-3">Cover Buku</th>
-              <th className="px-6 py-3">Action</th>
+              <th className="px-6 py-3">Aksi</th>
             </tr>
           </thead>
           <tbody className="text-gray-800">

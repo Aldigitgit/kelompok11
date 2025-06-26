@@ -3,7 +3,62 @@ import React, { useState } from "react";
 export default function MarketSegmentation() {
   const [search, setSearch] = useState("");
 
-  const dataPelanggan = [/* ... (data pelanggan dari sebelumnya, sama persis) ... */];
+  const dataPelanggan = [
+    {
+      nama: "Andi Wijaya",
+      umur: 28,
+      gender: "Pria",
+      lokasi: "Jakarta",
+      pendapatan: "Rp 5.000.000",
+      gayaHidup: "Pembelajar, digital savvy",
+      loyalitas: "Loyal",
+    },
+    {
+      nama: "Siti Rahma",
+      umur: 35,
+      gender: "Wanita",
+      lokasi: "Bandung",
+      pendapatan: "Rp 3.500.000",
+      gayaHidup: "Ibu rumah tangga, suka parenting",
+      loyalitas: "Semi-loyal",
+    },
+    {
+      nama: "Dewi Ayu",
+      umur: 21,
+      gender: "Wanita",
+      lokasi: "Surabaya",
+      pendapatan: "Rp 1.200.000",
+      gayaHidup: "Mahasiswa, suka novel",
+      loyalitas: "Loyal",
+    },
+    {
+      nama: "Budi Santoso",
+      umur: 41,
+      gender: "Pria",
+      lokasi: "Pekanbaru",
+      pendapatan: "Rp 8.000.000",
+      gayaHidup: "Karyawan, baca bisnis",
+      loyalitas: "Tidak loyal",
+    },
+    {
+      nama: "Rina Marlina",
+      umur: 30,
+      gender: "Wanita",
+      lokasi: "Makassar",
+      pendapatan: "Rp 6.500.000",
+      gayaHidup: "Freelancer, self-help dan spiritual",
+      loyalitas: "Semi-loyal",
+    },
+    {
+      nama: "Fajar Hidayat",
+      umur: 18,
+      gender: "Pria",
+      lokasi: "Medan",
+      pendapatan: "Rp 1.000.000",
+      gayaHidup: "Pelajar, baca buku TOEFL & motivasi",
+      loyalitas: "Loyal",
+    },
+  ];
 
   const filtered = dataPelanggan.filter((item) =>
     item.nama.toLowerCase().includes(search.toLowerCase())
@@ -12,11 +67,11 @@ export default function MarketSegmentation() {
   const getLoyaltyColor = (loyalty) => {
     switch (loyalty) {
       case "Loyal":
-        return "text-green-700 bg-green-100";
+        return "text-green-800 bg-green-100 border border-green-300";
       case "Semi-loyal":
-        return "text-yellow-700 bg-yellow-100";
+        return "text-yellow-800 bg-yellow-100 border border-yellow-300";
       case "Tidak loyal":
-        return "text-red-700 bg-red-100";
+        return "text-red-800 bg-red-100 border border-red-300";
       default:
         return "";
     }
@@ -26,7 +81,7 @@ export default function MarketSegmentation() {
     <div className="min-h-screen bg-gray-100 py-10 px-4">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-4xl font-bold text-red-700 mb-8 text-center tracking-tight">
-          Market Segmentation
+          Segmentasi Pasar Pelanggan
         </h1>
 
         <div className="mb-6">
@@ -39,8 +94,8 @@ export default function MarketSegmentation() {
           />
         </div>
 
-        <div className="overflow-x-auto bg-white shadow-md rounded-xl">
-          <table className="min-w-full text-sm">
+        <div className="overflow-x-auto bg-white shadow-lg rounded-xl">
+          <table className="min-w-full text-sm table-auto">
             <thead className="bg-red-200 text-red-800 uppercase text-xs">
               <tr>
                 <th className="px-6 py-4 text-left">Nama</th>
