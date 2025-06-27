@@ -108,7 +108,7 @@ export default function SalesManagement() {
           setShowForm((prev) => !prev);
           if (!showForm) setEditingSale(null);
         }}
-        className="mb-4 px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition"
+        className="mb-4 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition"
       >
         {showForm ? "Batal Tambah/Edit" : "Tambah Penjualan"}
       </button>
@@ -182,7 +182,7 @@ export default function SalesManagement() {
 
           <button
             onClick={handleSubmit}
-            className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition"
+            className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition"
           >
             {editingSale ? "Perbarui" : "Simpan"}
           </button>
