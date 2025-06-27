@@ -80,7 +80,7 @@ export default function CustomerManagement() {
           setShowForm((prev) => !prev);
           if (!showForm) setEditingCustomer(null);
         }}
-        className="mb-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+        className="mb-4 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition"
       >
         {showForm ? "Batal Tambah/Edit" : "Tambah Pelanggan"}
       </button>
@@ -133,7 +133,7 @@ export default function CustomerManagement() {
           </div>
           <button
             onClick={handleSubmit}
-            className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition"
+            className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition"
           >
             {editingCustomer ? "Perbarui" : "Simpan"}
           </button>

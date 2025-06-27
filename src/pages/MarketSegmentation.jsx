@@ -80,7 +80,7 @@ export default function MarketSegmentation() {
   return (
     <div className="min-h-screen bg-gray-100 py-10 px-4">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-4xl font-bold text-red-700 mb-8 text-center tracking-tight">
+        <h1 className="text-2xl font-semibold mb-4 text-center tracking-tight">
           Segmentasi Pasar Pelanggan
         </h1>
 

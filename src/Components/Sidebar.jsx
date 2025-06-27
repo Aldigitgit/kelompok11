@@ -22,14 +22,14 @@ const menuItems = [
   { name: 'Dashboard', icon: <LayoutDashboard />, path: '/dashboard' },
   { name: 'Sales Management', icon: <ShoppingCart />, path: '/dashboard/penjualan' },
   { name: 'Customer Management', icon: <Users />, path: '/dashboard/pelanggan' },
-  { name: 'Riwayat Pembelian', icon: <ClipboardList />, path: '/dashboard/riwayat' }, 
-  { name: 'Produk', icon: <Box />, path: '/dashboard/produk' }, //ganti isi
-  { name: 'Stok Produk', icon: <SlidersHorizontal />, path: '/dashboard/integrasi-stok' }, //hapus
+  { name: 'Riwayat Pembelian', icon: <ClipboardList />, path: '/dashboard/riwayat' },
+  { name: 'Produk', icon: <Box />, path: '/dashboard/produk' },
+  { name: 'Stok Produk', icon: <SlidersHorizontal />, path: '/dashboard/integrasi-stok' },
   { name: 'FAQ', icon: <MessageCircleQuestion />, path: '/dashboard/faq' },
-  { name: 'Tracking Order', icon: <PackageCheck />, path: '/dashboard/tracking' }, //hapus
-  { name: 'Kontak', icon: <Mail />, path: '/dashboard/kontak' }, //hapus
-  { name: 'Campaign Analytics', icon: <PieChart />, path: '/dashboard/campaign-analytics' }, ///ha[us]
-  { name: 'Content Management', icon: <FileText />, path: '/dashboard/content-management' },  
+  { name: 'Tracking Order', icon: <PackageCheck />, path: '/dashboard/tracking' },
+  { name: 'Kontak', icon: <Mail />, path: '/dashboard/kontak' },
+  { name: 'Campaign Analytics', icon: <PieChart />, path: '/dashboard/campaign-analytics' },
+  { name: 'Content Management', icon: <FileText />, path: '/dashboard/content-management' },
   { name: 'Market Segmentation', icon: <BarChart2 />, path: '/dashboard/market-segmentation' },
   { name: 'List Account', icon: <BarChart2 />, path: '/dashboard/ListAccount' },
 ]
@@ -45,18 +45,16 @@ const Sidebar = () => {
   const isActive = (path) => location.pathname === path
 
   return (
-    <aside className="bg-white w-64 h-screen shadow-lg px-4 py-6 hidden md:block">
-      {/* Logo */}
+    <aside className="bg-white w-64 h-screen overflow-y-auto shadow-lg px-4 py-6 fixed hidden md:block text-red-700">
       <div className="mb-8 text-center">
-        <img
-          src="/assets/categories/LOGO2.png"
-          alt="PeriPlus Logo"
-          className="h-12 mx-auto"
-        />
-        <div className="text-xl font-bold mt-2 text-red-700">PeriPlus</div>
-      </div>
+   <img
+    src="/logoPeriplus.png"
+    alt="PeriPlus Logo"
+    className="h-30 mx-auto object-contain"
+  />
+</div>
 
-      {/* Menu utama */}
+
       <nav className="space-y-1">
         {menuItems.map((item) => (
           <Link
@@ -65,7 +63,7 @@ const Sidebar = () => {
             className={`flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-red-100 transition ${
               isActive(item.path)
                 ? 'bg-red-200 text-red-800 font-semibold'
-                : 'text-gray-700'
+                : 'text-red-700'
             }`}
           >
             <span className="w-5 h-5">{item.icon}</span>
@@ -74,8 +72,7 @@ const Sidebar = () => {
         ))}
       </nav>
 
-      {/* Akun */}
-      <div className="mt-8 text-xs font-semibold text-gray-500">AKUN</div>
+      <div className="mt-8 text-xs font-semibold text-gray-400">AKUN</div>
       <nav className="mt-2 space-y-1">
         {accountItems.map((item) => (
           <Link
@@ -84,7 +81,7 @@ const Sidebar = () => {
             className={`flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-red-100 transition ${
               isActive(item.path)
                 ? 'bg-red-200 text-red-800 font-semibold'
-                : 'text-gray-700'
+                : 'text-red-700'
             }`}
           >
             <span className="w-5 h-5">{item.icon}</span>
