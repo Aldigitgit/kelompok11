@@ -22,7 +22,7 @@ const menuItems = [
   { name: 'Dashboard', icon: <LayoutDashboard />, path: '/dashboard' },
   { name: 'Sales Management', icon: <ShoppingCart />, path: '/dashboard/penjualan' },
   { name: 'Customer Management', icon: <Users />, path: '/dashboard/pelanggan' },
-  { name: 'Riwayat Pembelian', icon: <ClipboardList />, path: '/dashboard/riwayat' }, //hapus
+  { name: 'Riwayat Pembelian', icon: <ClipboardList />, path: '/dashboard/riwayat' }, 
   { name: 'Produk', icon: <Box />, path: '/dashboard/produk' }, //ganti isi
   { name: 'Stok Produk', icon: <SlidersHorizontal />, path: '/dashboard/integrasi-stok' }, //hapus
   { name: 'FAQ', icon: <MessageCircleQuestion />, path: '/dashboard/faq' },
