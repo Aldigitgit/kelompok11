@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "../supabase"; // sesuaikan path file kamu
+import { supabase } from "../supabase";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -26,7 +26,7 @@ const RegisterPage = () => {
       return;
     }
 
-    // 1. Register ke Supabase Auth
+    // 1. Daftarkan ke Supabase Auth (opsional, jika kamu pakai auth bawaan)
     const { data: authData, error: authError } = await supabase.auth.signUp({
       email: form.email,
       password: form.password,
@@ -37,9 +37,9 @@ const RegisterPage = () => {
       return;
     }
 
-    const userId = authData.user.id;
+    const userId = authData.user?.id;
 
-    // 2. Masukkan ke tabel `account`
+    // 2. Tambahkan ke tabel `account` dengan role default: "user"
     const { error: dbError } = await supabase.from("account").insert({
       id: userId,
       name: form.name,
@@ -47,10 +47,11 @@ const RegisterPage = () => {
       password: form.password,
       wilayah: form.wilayah,
       foto_profil: form.foto_profil,
+      role: "user" // default role
     });
 
     if (dbError) {
-      setError("Gagal simpan data ke tabel account: " + dbError.message);
+      setError("Gagal menyimpan ke tabel account: " + dbError.message);
       return;
     }
 

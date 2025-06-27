@@ -1,58 +1,131 @@
-import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { supabase } from "../supabase";
 
-const dummyBooks = [
-  {
-    id: 1,
-    title: "Atomic Habits",
-    author: "James Clear",
-    genre: "Self-Help",
-    description: "Cara membangun kebiasaan baik dan menghilangkan kebiasaan buruk.",
-    price: 120000,
-    image: "https://covers.openlibrary.org/b/id/8231996-L.jpg",
-  },
-  // ... salin semua data dummyBooks dari ProductPage
-];
-
-function formatRupiah(number) {
-  return new Intl.NumberFormat("id-ID", {
-    style: "currency",
-    currency: "IDR",
-  }).format(number);
-}
-
-export default function BookDetailPage() {
+export default function BookDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const book = dummyBooks.find((b) => b.id === parseInt(id));
+  const [produk, setProduk] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  if (!book) {
-    return <div className="text-center py-20 text-xl text-gray-500">Buku tidak ditemukan.</div>;
-  }
+  // Ambil data produk berdasarkan ID dari URL
+  useEffect(() => {
+    const fetchProdukById = async () => {
+      const { data, error } = await supabase
+        .from("produk")
+        .select("*")
+        .eq("id", id)
+        .single();
+
+      if (error) {
+        console.error("Gagal mengambil detail produk:", error.message);
+      } else {
+        setProduk(data);
+      }
+      setLoading(false);
+    };
+
+    fetchProdukById();
+  }, [id]);
+
+  // Tombol "Beli Sekarang" langsung menuju halaman checkout
+  const handleCheckout = () => {
+    navigate("/checkout", { state: { produk } });
+  };
+
+  // Tombol "Tambah ke Keranjang"
+  const handleAddToCart = async () => {
+    const userId = localStorage.getItem("user_id");
+
+    if (!userId) {
+      alert("Harap login terlebih dahulu.");
+      return;
+    }
+
+    try {
+      // Cek apakah produk sudah ada di keranjang
+      const { data: existing, error: fetchError } = await supabase
+        .from("cart_items")
+        .select("*")
+        .eq("user_id", userId)
+        .eq("produk_id", produk.id)
+        .maybeSingle();
+
+      if (fetchError) {
+        console.error("Supabase error saat fetch keranjang:", fetchError);
+        alert("Terjadi kesalahan saat mengecek keranjang.");
+        return;
+      }
+
+      if (existing) {
+        // Jika sudah ada, tambahkan quantity
+        const { error: updateError } = await supabase
+          .from("cart_items")
+          .update({ quantity: existing.quantity + 1 })
+          .eq("id", existing.id);
+
+        if (updateError) {
+          console.error("Gagal update quantity:", updateError);
+          alert("Gagal menambahkan jumlah.");
+          return;
+        }
+      } else {
+        // Jika belum ada, tambahkan entry baru
+        const { error: insertError } = await supabase
+          .from("cart_items")
+          .insert({
+            user_id: userId,
+            produk_id: produk.id,
+            quantity: 1,
+          });
+
+        if (insertError) {
+          console.error("Gagal insert ke keranjang:", insertError);
+          alert("Gagal menambahkan ke keranjang.");
+          return;
+        }
+      }
+
+      alert("Berhasil ditambahkan ke keranjang!");
+      navigate("/cart");
+    } catch (err) {
+      console.error("Unexpected error:", err);
+      alert("Terjadi kesalahan tak terduga.");
+    }
+  };
+
+  if (loading) return <div className="p-6">Loading...</div>;
+  if (!produk) return <div className="p-6 text-red-600">Produk tidak ditemukan.</div>;
 
   return (
-    <div className="min-h-screen bg-indigo-50 py-12 px-6">
-      <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow-lg p-8">
+    <div className="p-6 max-w-4xl mx-auto">
+      <img
+        src={produk.url_gambar}
+        alt={produk.judul}
+        className="w-full max-h-[400px] object-cover rounded mb-4"
+      />
+      <h1 className="text-2xl font-bold mb-2">{produk.judul}</h1>
+      <p className="text-sm text-gray-600 mb-1">Penulis: {produk.penulis}</p>
+      <p className="text-sm text-gray-600 mb-1">Penerbit: {produk.penerbit}</p>
+      <p className="text-sm text-gray-600 mb-1">Halaman: {produk.halaman}</p>
+      <p className="text-sm text-red-700 font-bold text-lg mt-4">
+        Rp {parseInt(produk.harga).toLocaleString("id-ID")}
+      </p>
+
+      <div className="flex gap-4 mt-6">
         <button
-          className="mb-6 text-indigo-600 font-semibold hover:underline"
-          onClick={() => navigate(-1)}
+          onClick={handleAddToCart}
+          className="bg-yellow-500 text-white py-2 px-6 rounded hover:bg-yellow-600 transition font-semibold"
         >
-          ← Kembali
+          Tambah ke Keranjang
         </button>
-        <div className="flex flex-col md:flex-row gap-8">
-          <img src={book.image} alt={book.title} className="w-full md:w-1/2 rounded-xl shadow" />
-          <div className="flex-1">
-            <h1 className="text-3xl font-bold text-indigo-700 mb-2">{book.title}</h1>
-            <p className="text-gray-500 italic mb-2">by {book.author}</p>
-            <span className="bg-red-200 text-indigo-800 px-3 py-1 rounded-full text-xs font-semibold inline-block mb-3">
-              {book.genre}
-            </span>
-            <p className="text-gray-700 mb-4 leading-relaxed">{book.description}</p>
-            <p className="text-2xl font-extrabold text-indigo-600">
-              {formatRupiah(book.price)}
-            </p>
-          </div>
-        </div>
+
+        <button
+          onClick={handleCheckout}
+          className="bg-red-600 text-white py-2 px-6 rounded hover:bg-red-700 transition font-semibold"
+        >
+          Beli Sekarang
+        </button>
       </div>
     </div>
   );

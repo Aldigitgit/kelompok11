@@ -26,7 +26,6 @@ import PromoSchedulerWithNotification from './pages/PromoScheduler.jsx';
 import Produk from "./pages/ProductPage.jsx";
 import ProdukDetail from './pages/ProdukDetail.jsx';
 import Penjadwalan from './pages/Penjadwalan.jsx';
-import BookDetailPage from './pages/BookDetailPage.jsx';
 import AccountManagementPage from './pages/AccountManagement.jsx';
 import OrderManagementPage from './pages/OrderManagement.jsx';
 import ContactManagement from './pages/ContactManagement.jsx';
@@ -44,6 +43,10 @@ import HelpCenter from "./pages/HelpCenter.jsx";
 import LiveChat from "./pages/LiveChat.jsx";
 import AccountForm from "./Components/AccountForm.jsx";
 import Account from "./pages/ListAccount.jsx";
+import FaqPageUser from "./pages/FaqPageUser.jsx";
+import BookDetail from "./pages/BookDetailPage.jsx";
+import CheckoutPage from "./pages/CheckOutPage.jsx";
+
 
 function App() {
   const [role, setRole] = useState(localStorage.getItem("role"));
@@ -84,6 +87,10 @@ function App() {
       <Route path="/forum" element={<Forum />} />
       <Route path="/help-center" element={<HelpCenter />} />
       <Route path="/live-chat" element={<LiveChat />} />
+      <Route path="FaqUser" element={<FaqPageUser></FaqPageUser>} />
+      <Route path="/book/:id" element={<BookDetail></BookDetail>} />
+      <Route path="/checkout" element={<CheckoutPage></CheckoutPage>} />
+
 
       {/* ------------- REDIRECT SETELAH LOGIN ------------- */}
       {isAuthenticated && (
@@ -109,7 +116,6 @@ function App() {
           <Route path="produk" element={<Produk />} />
           <Route path="produk/:id" element={<ProdukDetail />} />
           <Route path="penjadwalan" element={<Penjadwalan />} />
-          <Route path="books/:id" element={<BookDetailPage />} />
           <Route path="accountmanagement" element={<AccountManagementPage />} />
           <Route path="ordermanagement" element={<OrderManagementPage />} />
           <Route path="kontak" element={<ContactManagement />} />
@@ -118,6 +124,7 @@ function App() {
           <Route path="campaign-analytics" element={<CampaignAnalytics />} />
           <Route path="integrasi-stok" element={<IntegrasiStock />} />
           <Route path="ListAccount" element={<Account></Account>} />
+          
         </Route>
       )}
 

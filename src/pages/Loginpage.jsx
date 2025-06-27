@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  FaFacebookF,
-  FaGooglePlusG,
-  FaLinkedinIn,
-} from "react-icons/fa";
+import { supabase } from "../supabase";
+import { FaFacebookF, FaGooglePlusG, FaLinkedinIn } from "react-icons/fa";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -12,27 +9,42 @@ const LoginPage = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleSignIn = (e) => {
+  const handleSignIn = async (e) => {
     e.preventDefault();
     setError("");
 
-    // Logika sederhana: jika sesuai, admin atau user
-    if (email === "admin@gmail.com" && password === "123") {
-      localStorage.setItem("role", "admin");
-      window.dispatchEvent(new Event("roleChanged")); // trigger update role
-      navigate("/dashboard");
-    } else if (email === "user@gmail.com" && password === "123") {
-      localStorage.setItem("role", "user");
-      window.dispatchEvent(new Event("roleChanged")); // trigger update role
-      navigate("/");
-    } else {
-      setError("Email atau password salah.");
+    const { data, error } = await supabase
+      .from("account")
+      .select("*")
+      .eq("email", email)
+      .eq("password", password) // jika belum hash, bandingkan langsung
+      .maybeSingle();
+
+    if (error) {
+      console.error("Login error:", error.message);
+      setError("Terjadi kesalahan saat login.");
+      return;
     }
-    
+
+    if (!data) {
+      setError("Email atau password salah.");
+      return;
+    }
+
+    // Simpan data ke localStorage
+    localStorage.setItem("role", data.role);
+    localStorage.setItem("user_id", data.id);
+    localStorage.setItem("email", data.email);
+    window.dispatchEvent(new Event("roleChanged"));
+
+    // Redirect berdasarkan role
+    if (data.role === "admin") {
+      navigate("/dashboard");
+    } else {
+      navigate("/");
+    }
   };
 
-
-  
   const handleSignUp = () => {
     navigate("/register");
   };
