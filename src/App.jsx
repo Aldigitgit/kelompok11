@@ -46,6 +46,7 @@ import Account from "./pages/ListAccount.jsx";
 import FaqPageUser from "./pages/FaqPageUser.jsx";
 import BookDetail from "./pages/BookDetailPage.jsx";
 import CheckoutPage from "./pages/CheckOutPage.jsx";
+import UserOrdersPage from "./pages/UserOrderPage.jsx";
 
 
 function App() {
@@ -90,6 +91,7 @@ function App() {
       <Route path="FaqUser" element={<FaqPageUser></FaqPageUser>} />
       <Route path="/book/:id" element={<BookDetail></BookDetail>} />
       <Route path="/checkout" element={<CheckoutPage></CheckoutPage>} />
+      <Route path="/UserOrder" element={<UserOrdersPage></UserOrdersPage>} />
 
 
       {/* ------------- REDIRECT SETELAH LOGIN ------------- */}

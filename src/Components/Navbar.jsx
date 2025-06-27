@@ -10,7 +10,7 @@ const Navbar = ({ role, handleLogout }) => {
 
       <nav className="space-x-6 text-sm font-medium flex items-center">
         <Link
-          to="/home"
+          to="/"
           className="!text-red-700 hover:!text-red-800 transition flex items-center gap-1"
         >
           <FaHome /> Home
@@ -26,6 +26,12 @@ const Navbar = ({ role, handleLogout }) => {
           className="!text-red-700 hover:!text-red-800 transition flex items-center gap-1"
         >
           <FaPhone /> Contact
+        </Link>
+         <Link
+          to="/UserOrder"
+          className="!text-red-700 hover:!text-red-800 transition flex items-center gap-1"
+        >
+          <FaPhone /> Riwayat pesanan
         </Link>
       </nav>
 

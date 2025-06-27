@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { supabase } from "../supabase.js";
+import Navbar from "../Components/Navbar";
+import Footer from "../Components/Footer";
 import {
   FiSearch,
   FiShoppingCart,
@@ -19,25 +22,33 @@ export default function ShopPage() {
   const [category, setCategory] = useState("All");
   const [produkList, setProdukList] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const role = localStorage.getItem("role");
+  const navigate = useNavigate();
 
-const categories = [
-  { name: "Programming", icon: <FaBookOpen /> },
-  { name: "Artificial Intelligence", icon: <FaGraduationCap /> },
-  { name: "Design", icon: <FaChild /> },
-  { name: "Self-Help", icon: <FaHeartbeat /> },
-  { name: "Business", icon: <FaStore /> },
-  { name: "Marketing", icon: <FaPhone /> },
-  { name: "UX/UI", icon: <FaBookOpen /> },
-  { name: "Philosophy", icon: <FaPray /> },
-  { name: "Psychology", icon: <FaHeartbeat /> },
-  { name: "Language", icon: <FaBookOpen /> },
-  { name: "Cloud Computing", icon: <FaStore /> },
-  { name: "Statistics", icon: <FaGraduationCap /> },
-  { name: "Big Data", icon: <FaStore /> },
-  { name: "Data Science", icon: <FaStore /> },
-  { name: "Career", icon: <FaBookOpen /> },
-  { name: "Project Management", icon: <FaBookOpen /> },
-];
+  const handleLogout = () => {
+    localStorage.removeItem("role");
+    window.dispatchEvent(new Event("roleChanged"));
+    navigate("/login");
+  };
+
+  const categories = [
+    { name: "Programming", icon: <FaBookOpen /> },
+    { name: "Artificial Intelligence", icon: <FaGraduationCap /> },
+    { name: "Design", icon: <FaChild /> },
+    { name: "Self-Help", icon: <FaHeartbeat /> },
+    { name: "Business", icon: <FaStore /> },
+    { name: "Marketing", icon: <FaPhone /> },
+    { name: "UX/UI", icon: <FaBookOpen /> },
+    { name: "Philosophy", icon: <FaPray /> },
+    { name: "Psychology", icon: <FaHeartbeat /> },
+    { name: "Language", icon: <FaBookOpen /> },
+    { name: "Cloud Computing", icon: <FaStore /> },
+    { name: "Statistics", icon: <FaGraduationCap /> },
+    { name: "Big Data", icon: <FaStore /> },
+    { name: "Data Science", icon: <FaStore /> },
+    { name: "Career", icon: <FaBookOpen /> },
+    { name: "Project Management", icon: <FaBookOpen /> },
+  ];
 
   useEffect(() => {
     fetchProduk();
@@ -50,33 +61,18 @@ const categories = [
   };
 
   const filteredProduk = produkList.filter((produk) => {
-  const matchesSearch = produk.judul.toLowerCase().includes(searchQuery.toLowerCase());
-  const matchesCategory = category === "All" || produk.genre === category;
-  return matchesSearch && matchesCategory;
-});
+    const matchesSearch = produk.judul.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesCategory = category === "All" || produk.genre === category;
+    return matchesSearch && matchesCategory;
+  });
+
+  const handleClickDetail = (id) => {
+    navigate(`/book/${id}`);
+  };
 
   return (
     <div className="font-sans text-gray-800 bg-white">
-      {/* Navbar */}
-      <header className="flex items-center justify-between px-6 py-4 shadow bg-white sticky top-0 z-50">
-        <div className="text-2xl font-bold text-red-700">PeriPlus</div>
-        <nav className="space-x-6 text-sm font-medium flex items-center">
-          <a href="/" className="hover:text-red-700 transition flex items-center gap-1">
-            <FaHome /> Home
-          </a>
-          <a href="/shop" className="hover:text-red-700 transition flex items-center gap-1">
-            <FaStore /> Shop
-          </a>
-          <a href="/contact" className="hover:text-red-700 transition flex items-center gap-1">
-            <FaPhone /> Contact
-          </a>
-        </nav>
-        <div className="space-x-3 flex items-center">
-          <a href="/cart" className="text-red-600 hover:text-red-700 transition text-xl">
-            <FiShoppingCart />
-          </a>
-        </div>
-      </header>
+      <Navbar role={role} handleLogout={handleLogout} />
 
       {/* Search + Categories */}
       <section className="px-6 py-6 border-b">
@@ -129,7 +125,8 @@ const categories = [
               filteredProduk.map((produk) => (
                 <div
                   key={produk.id}
-                  className="bg-white border rounded-lg p-3 shadow-sm hover:shadow-md transition"
+                  onClick={() => handleClickDetail(produk.id)}
+                  className="cursor-pointer bg-white border rounded-lg p-3 shadow-sm hover:shadow-md transition"
                 >
                   <img
                     src={produk.url_gambar}
@@ -138,7 +135,9 @@ const categories = [
                   />
                   <h3 className="text-sm font-semibold text-gray-800 mb-1">{produk.judul}</h3>
                   <p className="text-xs text-gray-500 mb-1">{produk.genre || "Unknown Genre"}</p>
-                  <p className="text-xs text-red-600 font-semibold">Rp {Number(produk.harga).toLocaleString()}</p>
+                  <p className="text-xs text-red-600 font-semibold">
+                    Rp {Number(produk.harga).toLocaleString("id-ID")}
+                  </p>
                 </div>
               ))
             )}
@@ -146,42 +145,7 @@ const categories = [
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-gray-100 py-10 px-6 mt-10">
-        <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-sm">
-          <div>
-            <h4 className="font-semibold mb-2">Bacaku</h4>
-            <p className="text-gray-600">Discover books that ignite your imagination</p>
-          </div>
-          <div>
-            <h4 className="font-semibold mb-2">Learn More</h4>
-            <ul className="space-y-1 text-gray-600">
-              <li>About</li>
-              <li>Privacy Policy</li>
-              <li>Terms & Conditions</li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="font-semibold mb-2">Community</h4>
-            <ul className="space-y-1 text-gray-600">
-              <li>Blog</li>
-              <li>Events</li>
-              <li>Forum</li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="font-semibold mb-2">Contact Us</h4>
-            <ul className="space-y-1 text-gray-600">
-              <li>Help Center</li>
-              <li>Live Chat</li>
-              <li>support@bacaku.com</li>
-            </ul>
-          </div>
-        </div>
-        <div className="text-center mt-8 text-xs text-gray-500">
-          © 2025 Bacaku. All rights reserved.
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

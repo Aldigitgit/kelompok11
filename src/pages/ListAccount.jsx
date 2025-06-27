@@ -61,38 +61,54 @@ function Account() {
   }, []);
 
   return (
-    <div className="max-w-xl mx-auto p-4">
+    <div className="max-w-5xl mx-auto p-6">
       <h1 className="text-2xl font-bold mb-4">CRUD Pengguna dengan Supabase</h1>
       <AccountForm
         addAccount={addAccount}
         updateAccount={updateAccount}
         editingAccount={editingAccount}
       />
-      <ul className="mt-4">
-        {accounts.map(account => (
-          <li key={account.id} className="border p-2 my-2 flex justify-between">
-            <div>
-              <p className="font-semibold">{account.name}</p>
-              <p className="text-sm text-gray-600">{account.email}</p>
-              <p className="text-sm text-gray-600">{account.segmentation}</p>
-            </div>
-            <div className="space-x-2">
-              <button
-                onClick={() => setEditingAccount(account)}
-                className="text-blue-600 hover:underline"
-              >
-                Edit
-              </button>
-              <button
-                onClick={() => deleteAccount(account.id)}
-                className="text-red-600 hover:underline"
-              >
-                Hapus
-              </button>
-            </div>
-          </li>
-        ))}
-      </ul>
+
+      <div className="overflow-x-auto mt-6">
+        <table className="w-full border-collapse table-auto">
+          <thead className="bg-gray-100">
+            <tr>
+              <th className="border p-2 text-left">Nama</th>
+              <th className="border p-2 text-left">Email</th>
+              <th className="border p-2 text-left">Role</th>
+              <th className="border p-2 text-left">Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            {accounts.map(account => (
+              <tr key={account.id} className="hover:bg-gray-50">
+                <td className="border p-2">{account.name}</td>
+                <td className="border p-2">{account.email}</td>
+                <td className="border p-2">{account.role || '-'}</td>
+                <td className="border p-2 space-x-2">
+                  <button
+                    onClick={() => setEditingAccount(account)}
+                    className="text-blue-600 hover:underline"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => deleteAccount(account.id)}
+                    className="text-red-600 hover:underline"
+                  >
+                    Hapus
+                  </button>
+                </td>
+              </tr>
+            ))}
+            {accounts.length === 0 && (
+              <tr>
+                <td colSpan="4" className="p-4 text-center text-gray-500">Tidak ada data akun.</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

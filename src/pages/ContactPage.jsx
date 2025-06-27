@@ -1,30 +1,21 @@
 import { useState } from "react";
 import { FiSearch, FiShoppingCart } from "react-icons/fi";
 import { FaBookOpen, FaChild, FaHeartbeat, FaGraduationCap, FaPray, FaHome, FaStore, FaPhone, FaUser } from "react-icons/fa";
+import Navbar from "../Components/Navbar";
+import Footer from "../Components/Footer";
 export default function ContactPage() {
+   const role = localStorage.getItem("role");
+
+      const handleLogout = () => {
+    localStorage.removeItem("role");
+    window.dispatchEvent(new Event("roleChanged"));
+    navigate("/login");
+  };
+
   return (
     <div className="font-sans text-gray-800">
       {/* Navbar */}
-            <header className="flex items-center justify-between px-6 py-4 shadow bg-white sticky top-0 z-50">
-              <div className="text-2xl font-bold text-red-700">PeriPlus</div>
-              <nav className="space-x-6 text-sm font-medium flex items-center">
-                <a href="/home" className="hover:text-red-700 transition flex items-center gap-1">
-                  <FaHome /> Home
-                </a>
-                <a href="/shop" className="hover:text-red-700 transition flex items-center gap-1">
-                  <FaStore /> Shop
-                </a>
-                <a href="/contact" className="hover:text-red-700 transition flex items-center gap-1">
-                  <FaPhone /> Contact
-                </a>
-              </nav>
-              <div className="space-x-3 flex items-center">
-                <a href="/cart" className="text-red-600 hover:text-red-700 transition text-xl">
-                  <FiShoppingCart />
-                </a>
-               
-              </div>
-            </header>
+       <Navbar role={role} handleLogout={handleLogout} />
 
       {/* Contact Section */}
       <section className="py-16 px-6 md:px-20 bg-[#fff7f7]">
@@ -83,42 +74,7 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-gray-100 py-10 px-6 mt-10">
-        <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-sm">
-          <div>
-            <h4 className="font-semibold mb-2">Bacaku</h4>
-            <p className="text-gray-600">Discover books that ignite your imagination</p>
-          </div>
-          <div>
-            <h4 className="font-semibold mb-2">Learn More</h4>
-            <ul className="space-y-1 text-gray-600">
-              <li>About</li>
-              <li>Privacy Policy</li>
-              <li>Terms & Conditions</li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="font-semibold mb-2">Community</h4>
-            <ul className="space-y-1 text-gray-600">
-              <li>Blog</li>
-              <li>Events</li>
-              <li>Forum</li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="font-semibold mb-2">Contact Us</h4>
-            <ul className="space-y-1 text-gray-600">
-              <li>Help Center</li>
-              <li>Live Chat</li>
-              <li>support@bacaku.com</li>
-            </ul>
-          </div>
-        </div>
-        <div className="text-center mt-8 text-xs text-gray-500">
-          © 2025 Bacaku. All rights reserved.
-        </div>
-      </footer>
+      <Footer></Footer>
     </div>
   );
 }

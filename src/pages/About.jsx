@@ -1,8 +1,18 @@
 import React from 'react';
+import Navbar from "../Components/Navbar";
+import Footer from "../Components/Footer";
 
 export default function About() {
+    const role = localStorage.getItem("role");
+
+      const handleLogout = () => {
+    localStorage.removeItem("role");
+    window.dispatchEvent(new Event("roleChanged"));
+    navigate("/login");
+  };
   return (
     <section className="bg-white py-16 px-6 md:px-10 lg:px-32">
+        <Navbar role={role} handleLogout={handleLogout} />
       <div className="max-w-5xl mx-auto text-gray-800">
         <h1 className="text-4xl font-bold text-red-600 mb-6">About Bacaku</h1>
         <p className="text-lg mb-4 leading-relaxed">
@@ -29,6 +39,7 @@ export default function About() {
           Last updated: June 2025
         </div>
       </div>
+      <Footer></Footer>
     </section>
   );
 }

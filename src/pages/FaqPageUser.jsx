@@ -1,8 +1,18 @@
 import { useState, useEffect } from 'react';
 import { HelpCircle, CheckCircle } from 'lucide-react';
 import { supabase } from '../supabase.js';
+import Navbar from "../Components/Navbar";
+import Footer from "../Components/Footer";
 
 export default function FaqPageUser() {
+  const role = localStorage.getItem("role");
+
+      const handleLogout = () => {
+    localStorage.removeItem("role");
+    window.dispatchEvent(new Event("roleChanged"));
+    navigate("/login");
+  };
+
   const [faqs, setFaqs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -37,6 +47,7 @@ export default function FaqPageUser() {
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
+        <Navbar role={role} handleLogout={handleLogout} />
       <div className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-lg">
         <h1 className="text-3xl font-bold text-gray-800 mb-6 flex items-center">
           <HelpCircle className="w-8 h-8 mr-3 text-red-600" />
@@ -76,6 +87,7 @@ export default function FaqPageUser() {
           </div>
         )}
       </div>
+      <Footer></Footer>
     </div>
   );
 }

@@ -1,8 +1,18 @@
 import React from 'react';
+import Navbar from "../Components/Navbar";
+import Footer from "../Components/Footer";
 
 export default function Events() {
+  const role = localStorage.getItem("role");
+
+      const handleLogout = () => {
+    localStorage.removeItem("role");
+    window.dispatchEvent(new Event("roleChanged"));
+    navigate("/login");
+  };
   return (
     <section className="bg-white py-16 px-6 md:px-10 lg:px-32 text-gray-800">
+        <Navbar role={role} handleLogout={handleLogout} />
       <div className="max-w-4xl mx-auto">
         <h1 className="text-4xl font-bold text-red-600 mb-6">Upcoming Events</h1>
         <ul className="space-y-6 text-gray-700">
@@ -16,6 +26,7 @@ export default function Events() {
           </li>
         </ul>
       </div>
+      <Footer></Footer>
     </section>
   );
 }

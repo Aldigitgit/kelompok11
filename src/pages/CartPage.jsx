@@ -1,19 +1,25 @@
+// CartPage.jsx
 import React, { useEffect, useState } from "react";
 import { supabase } from "../supabase";
-import {
-  FiShoppingCart
-} from "react-icons/fi";
-import {
-  FaHome, FaStore, FaPhone
-} from "react-icons/fa";
+import { FiShoppingCart } from "react-icons/fi";
+import { FaHome, FaStore, FaPhone } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import Navbar from "../Components/Navbar";
+import Footer from "../Components/Footer";
 
 export default function CartPage() {
   const [cartItems, setCartItems] = useState([]);
   const [total, setTotal] = useState(0);
-
   const userId = localStorage.getItem("user_id");
   const navigate = useNavigate();
+ 
+  const role = localStorage.getItem("role");
+
+      const handleLogout = () => {
+    localStorage.removeItem("role");
+    window.dispatchEvent(new Event("roleChanged"));
+    navigate("/login");
+  };
 
   useEffect(() => {
     const fetchCartItems = async () => {
@@ -27,7 +33,13 @@ export default function CartPage() {
       } else {
         setCartItems(data);
 
-        const totalHarga = data.reduce((sum, item) => sum + item.quantity * item.produk.harga, 0);
+        const totalHarga = data.reduce((sum, item) => {
+          if (item.produk) {
+            return sum + item.quantity * item.produk.harga;
+          }
+          return sum;
+        }, 0);
+
         setTotal(totalHarga);
       }
     };
@@ -35,65 +47,73 @@ export default function CartPage() {
     if (userId) fetchCartItems();
   }, [userId]);
 
-  const handleCheckout = async () => {
-    try {
-      if (!cartItems.length) return alert("Keranjang kosong!");
+ const handleCheckout = async () => {
+  try {
+    if (!cartItems.length) return alert("Keranjang kosong!");
 
-      const { data: order, error: orderError } = await supabase
-        .from("orders")
-        .insert([
-          {
-            account_id: userId,
-            total_amount: total,
-            created_at: new Date().toISOString(),
-          },
-        ])
-        .select()
-        .single();
+    const userId = localStorage.getItem("user_id");
+    if (!userId) {
+      alert("User belum login");
+      return;
+    }
 
-      if (orderError) throw orderError;
+    // Step 1: Buat order
+    const { data: order, error: orderError } = await supabase
+      .from("orders")
+      .insert([
+        {
+          account_id: userId, // sesuai dengan kolom `account_id` di tabel orders
+          total: total,        // kamu punya kolom `total` dan `total_amount`, isi dua-duanya kalau mau
+          total_amount: total,
+          created_at: new Date().toISOString(),
+        },
+      ])
+      .select()
+      .single();
 
-      const orderItems = cartItems.map((item) => ({
+    if (orderError) throw orderError;
+
+    // Step 2: Insert ke order_items
+    const orderItems = cartItems
+      .filter((item) => item.produk)
+      .map((item) => ({
         order_id: order.id,
-        produk_id: item.produk.id,
+        produk_id: item.produk.id, // produk.id = int8
         quantity: item.quantity,
-        harga_satuan: item.produk.harga,
+        subtotal: item.quantity * item.produk.harga, // kamu punya kolom subtotal
       }));
 
-      const { error: itemError } = await supabase.from("order_items").insert(orderItems);
-      if (itemError) throw itemError;
+    const { error: itemError } = await supabase
+      .from("order_items")
+      .insert(orderItems);
 
-      const { error: deleteError } = await supabase
-        .from("cart_items")
-        .delete()
-        .eq("user_id", userId);
+    if (itemError) throw itemError;
 
-      if (deleteError) throw deleteError;
+    // Step 3: Kosongkan keranjang
+    const { error: deleteError } = await supabase
+      .from("cart_items")
+      .delete()
+      .eq("user_id", userId);
 
-      alert("Checkout berhasil!");
-      setCartItems([]);
-      setTotal(0);
-      navigate("/riwayat"); // arahkan ke halaman riwayat atau invoice
-    } catch (err) {
-      console.error("Checkout error:", err.message);
-      alert("Gagal checkout, coba lagi.");
-    }
-  };
+    if (deleteError) throw deleteError;
+
+    alert("Checkout berhasil!");
+    setCartItems([]);
+    setTotal(0);
+    navigate("/");
+
+  } catch (err) {
+    console.error("Checkout error detail:", err);
+    alert("Gagal checkout: " + err.message);
+  }
+};
+
+
 
   return (
     <div className="bg-gray-50 min-h-screen">
-      {/* Navbar */}
-      <header className="flex items-center justify-between px-6 py-4 shadow bg-white sticky top-0 z-50">
-        <div className="text-2xl font-bold text-red-700">PeriPlus</div>
-        <nav className="space-x-6 text-sm font-medium hidden md:flex items-center">
-          <a href="/" className="hover:text-red-700 flex items-center gap-1"><FaHome /> Home</a>
-          <a href="/shop" className="hover:text-red-700 flex items-center gap-1"><FaStore /> Shop</a>
-          <a href="/contact" className="hover:text-red-700 flex items-center gap-1"><FaPhone /> Contact</a>
-        </nav>
-        <div className="text-red-600 text-xl"><FiShoppingCart /></div>
-      </header>
+        <Navbar role={role} handleLogout={handleLogout} />
 
-      {/* Cart List */}
       <main className="px-6 md:px-16 py-10">
         <h2 className="text-3xl font-bold mb-6">Cart <span className="text-red-600">List</span></h2>
 
@@ -103,23 +123,33 @@ export default function CartPage() {
           ) : (
             cartItems.map((item) => (
               <div key={item.id} className="flex justify-between items-center border-b pb-4">
-                <div className="flex items-center gap-4">
-                  <img src={item.produk.url_gambar} alt="Book" className="w-20 h-28 object-cover rounded" />
-                  <div>
-                    <p className="font-semibold text-lg">{item.produk.judul}</p>
-                    <p className="text-sm text-gray-500">Category: {item.produk.status}</p>
-                    <p className="text-sm text-gray-600">Qty: {item.quantity}</p>
-                  </div>
-                </div>
-                <p className="font-semibold text-lg text-red-600">
-                  Rp {(item.quantity * item.produk.harga).toLocaleString("id-ID")}
-                </p>
+                {!item.produk ? (
+                  <div className="text-red-600">Produk tidak ditemukan atau telah dihapus.</div>
+                ) : (
+                  <>
+                    <div className="flex items-center gap-4">
+                      <img src={item.produk.url_gambar} alt="Book" className="w-20 h-28 object-cover rounded" />
+                      <div>
+                        <p
+                          className="font-semibold text-lg cursor-pointer text-blue-700 hover:underline"
+                          onClick={() => navigate(`/detail/${item.produk.id}`)}
+                        >
+                          {item.produk.judul}
+                        </p>
+                        <p className="text-sm text-gray-500">Category: {item.produk.status}</p>
+                        <p className="text-sm text-gray-600">Qty: {item.quantity}</p>
+                      </div>
+                    </div>
+                    <p className="font-semibold text-lg text-red-600">
+                      Rp {(item.quantity * item.produk.harga).toLocaleString("id-ID")}
+                    </p>
+                  </>
+                )}
               </div>
             ))
           )}
         </div>
 
-        {/* Cart Total */}
         {cartItems.length > 0 && (
           <>
             <h2 className="text-3xl font-bold mt-10 mb-4">Cart <span className="text-red-600">Total</span></h2>
@@ -130,7 +160,6 @@ export default function CartPage() {
               <div className="flex justify-between border-t pt-2 mt-2 font-semibold">
                 <span>Total:</span><span>Rp {total.toLocaleString("id-ID")}</span>
               </div>
-
               <button
                 onClick={handleCheckout}
                 className="w-full mt-6 bg-red-600 text-white py-3 rounded-full hover:bg-red-700 transition font-semibold"
@@ -141,6 +170,7 @@ export default function CartPage() {
           </>
         )}
       </main>
+      <Footer></Footer>
     </div>
   );
 }

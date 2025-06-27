@@ -22,16 +22,17 @@ const menuItems = [
   { name: 'Dashboard', icon: <LayoutDashboard />, path: '/dashboard' },
   { name: 'Sales Management', icon: <ShoppingCart />, path: '/dashboard/penjualan' },
   { name: 'Customer Management', icon: <Users />, path: '/dashboard/pelanggan' },
-  { name: 'Riwayat Pembelian', icon: <ClipboardList />, path: '/dashboard/riwayat' },
+  // { name: 'Riwayat Pembelian', icon: <ClipboardList />, path: '/dashboard/riwayat' },
   { name: 'Produk', icon: <Box />, path: '/dashboard/produk' },
-  { name: 'Stok Produk', icon: <SlidersHorizontal />, path: '/dashboard/integrasi-stok' },
+  // { name: 'Stok Produk', icon: <SlidersHorizontal />, path: '/dashboard/integrasi-stok' },
   { name: 'FAQ', icon: <MessageCircleQuestion />, path: '/dashboard/faq' },
-  { name: 'Tracking Order', icon: <PackageCheck />, path: '/dashboard/tracking' },
-  { name: 'Kontak', icon: <Mail />, path: '/dashboard/kontak' },
+  // { name: 'Tracking Order', icon: <PackageCheck />, path: '/dashboard/tracking' },
+  // { name: 'Kontak', icon: <Mail />, path: '/dashboard/kontak' },
   { name: 'Campaign Analytics', icon: <PieChart />, path: '/dashboard/campaign-analytics' },
   { name: 'Content Management', icon: <FileText />, path: '/dashboard/content-management' },
   { name: 'Market Segmentation', icon: <BarChart2 />, path: '/dashboard/market-segmentation' },
   { name: 'List Account', icon: <BarChart2 />, path: '/dashboard/ListAccount' },
+  { name: 'OrderManagement', icon: <BarChart2 />, path: '/dashboard/OrderManagement' },
 ]
 
 const accountItems = [
@@ -46,13 +47,16 @@ const Sidebar = () => {
 
   return (
     <aside className="bg-white w-64 h-screen overflow-y-auto shadow-lg px-4 py-6 fixed hidden md:block text-red-700">
-      <div className="mb-8 text-center">
-   <img
-    src="/logoPeriplus.png"
-    alt="PeriPlus Logo"
-    className="h-30 mx-auto object-contain"
-  />
+     <div className="mb-8 text-center">
+  <a href="/">
+    <img
+      src="/logoPeriplus.png"
+      alt="PeriPlus Logo"
+      className="h-30 mx-auto object-contain cursor-pointer"
+    />
+  </a>
 </div>
+
 
 
       <nav className="space-y-1">
