@@ -145,7 +145,42 @@ export default function ShopPage() {
         </div>
       </section>
 
-      <Footer />
+      {/* Footer */}
+      <footer className="bg-gray-100 py-10 px-6 mt-10">
+        <div className="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-sm">
+          <div>
+            <h4 className="font-semibold mb-2">Periplus</h4>
+            <p className="text-gray-600">Discover books that ignite your imagination</p>
+          </div>
+          <div>
+            <h4 className="font-semibold mb-2">Learn More</h4>
+            <ul className="space-y-1 text-gray-600">
+              <li>About</li>
+              <li>Privacy Policy</li>
+              <li>Terms & Conditions</li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="font-semibold mb-2">Community</h4>
+            <ul className="space-y-1 text-gray-600">
+              <li>Blog</li>
+              <li>Events</li>
+              <li>Forum</li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="font-semibold mb-2">Contact Us</h4>
+            <ul className="space-y-1 text-gray-600">
+              <li>Help Center</li>
+              <li>Live Chat</li>
+              <li>periplus.com</li>
+            </ul>
+          </div>
+        </div>
+        <div className="text-center mt-8 text-xs text-gray-500">
+          © 2025 Periplus. All rights reserved.
+        </div>
+      </footer>
     </div>
   );
 }
