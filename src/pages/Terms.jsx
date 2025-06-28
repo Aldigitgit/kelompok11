@@ -1,43 +1,68 @@
-import React from 'react';
+import React from "react";
 import Navbar from "../Components/Navbar";
 import Footer from "../Components/Footer";
 
 export default function Terms() {
-   const role = localStorage.getItem("role");
+  const role = localStorage.getItem("role");
 
-      const handleLogout = () => {
+  const handleLogout = () => {
     localStorage.removeItem("role");
     window.dispatchEvent(new Event("roleChanged"));
     navigate("/login");
   };
   return (
+    <div className="">
+      <Navbar role={role} handleLogout={handleLogout} />
     <section className="bg-white py-16 px-6 md:px-10 lg:px-32">
-        <Navbar role={role} handleLogout={handleLogout} />
       <div className="max-w-4xl mx-auto text-gray-800">
-        <h1 className="text-3xl font-bold text-red-600 mb-6">Terms & Conditions</h1>
+        <h1 className="text-3xl font-bold text-red-600 mb-6">
+          Terms & Conditions
+        </h1>
         <p className="mb-6 text-gray-700 leading-relaxed">
-          By accessing Bacaku’s platform, you agree to the following terms. Please read them carefully to understand your rights and responsibilities.
+          By accessing PeriPlus’s platform, you agree to the following terms.
+          Please read them carefully to understand your rights and
+          responsibilities.
         </p>
 
         <div className="space-y-6 text-sm text-gray-600">
           <div>
-            <h3 className="font-semibold text-gray-700">1. Account Registration</h3>
-            <p>You must provide accurate personal information and keep your credentials secure. You are responsible for all activity under your account.</p>
+            <h3 className="font-semibold text-gray-700">
+              1. Account Registration
+            </h3>
+            <p>
+              You must provide accurate personal information and keep your
+              credentials secure. You are responsible for all activity under
+              your account.
+            </p>
           </div>
 
           <div>
-            <h3 className="font-semibold text-gray-700">2. Content Ownership</h3>
-            <p>All content including book listings, descriptions, and images are property of Bacaku or its partners. Unauthorized use is prohibited.</p>
+            <h3 className="font-semibold text-gray-700">
+              2. Content Ownership
+            </h3>
+            <p>
+              All content including book listings, descriptions, and images are
+              property of PeriPlus or its partners. Unauthorized use is
+              prohibited.
+            </p>
           </div>
 
           <div>
-            <h3 className="font-semibold text-gray-700">3. Limitations of Use</h3>
-            <p>You may not resell, duplicate, or exploit the platform for any commercial purpose without written consent.</p>
+            <h3 className="font-semibold text-gray-700">
+              3. Limitations of Use
+            </h3>
+            <p>
+              You may not resell, duplicate, or exploit the platform for any
+              commercial purpose without written consent.
+            </p>
           </div>
 
           <div>
             <h3 className="font-semibold text-gray-700">4. Termination</h3>
-            <p>We reserve the right to suspend or terminate your account for violation of terms or malicious activity.</p>
+            <p>
+              We reserve the right to suspend or terminate your account for
+              violation of terms or malicious activity.
+            </p>
           </div>
         </div>
 
@@ -45,7 +70,8 @@ export default function Terms() {
           Last updated: June 2025
         </div>
       </div>
-      <Footer></Footer>
     </section>
+      <Footer></Footer>
+    </div>
   );
 }

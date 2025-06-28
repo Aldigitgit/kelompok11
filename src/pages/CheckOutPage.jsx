@@ -1,12 +1,25 @@
 import { useLocation } from "react-router-dom";
+import Navbar from "../Components/Navbar";
+import Footer from "../Components/Footer";
 
 export default function CheckoutPage() {
   const { state } = useLocation();
   const produk = state?.produk;
+     const role = localStorage.getItem("role");
+
+      const handleLogout = () => {
+    localStorage.removeItem("role");
+    window.dispatchEvent(new Event("roleChanged"));
+    navigate("/login");
+  };
 
   if (!produk) return <div className="p-6">Tidak ada produk yang dipilih.</div>;
 
   return (
+    <div>
+
+        <Navbar role={role} handleLogout={handleLogout} /> 
+ 
     <div className="p-6 max-w-3xl mx-auto">
       <h2 className="text-2xl font-bold mb-4">Checkout</h2>
       <div className="bg-white rounded shadow p-6 mb-6">
@@ -27,5 +40,7 @@ export default function CheckoutPage() {
         Konfirmasi & Bayar
       </button>
     </div>
+      <Footer></Footer>
+       </div>
   );
 }

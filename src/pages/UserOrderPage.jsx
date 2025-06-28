@@ -1,12 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../supabase";
 import { FaBox, FaClipboardList } from "react-icons/fa";
+import Navbar from "../Components/Navbar";
+import Footer from "../Components/Footer";
 
 export default function UserOrdersPage() {
   const [orders, setOrders] = useState([]);
   const [orderItems, setOrderItems] = useState([]);
 
   const userId = localStorage.getItem("user_id");
+     const role = localStorage.getItem("role");
+
+      const handleLogout = () => {
+    localStorage.removeItem("role");
+    window.dispatchEvent(new Event("roleChanged"));
+    navigate("/login");
+  };
 
   useEffect(() => {
     if (userId) {
@@ -42,6 +51,8 @@ export default function UserOrdersPage() {
   };
 
   return (
+    <div className="">
+        <Navbar role={role} handleLogout={handleLogout} />
     <div className="p-6 max-w-6xl mx-auto">
       <h1 className="text-3xl font-bold mb-6 text-red-700 flex items-center gap-2">
         <FaClipboardList /> Riwayat Pesanan Anda
@@ -110,6 +121,8 @@ export default function UserOrdersPage() {
           </div>
         </section>
       )}
+    </div>
+      <Footer></Footer>
     </div>
   );
 }

@@ -47,6 +47,8 @@ import FaqPageUser from "./pages/FaqPageUser.jsx";
 import BookDetail from "./pages/BookDetailPage.jsx";
 import CheckoutPage from "./pages/CheckOutPage.jsx";
 import EventDetail from "./pages/EventDetail.jsx";
+import UserOrdersPage from "./pages/UserOrderPage.jsx";
+import ProfilePage from "./pages/Profil.jsx";
 
 function App() {
   const [role, setRole] = useState(localStorage.getItem("role"));
@@ -98,6 +100,8 @@ function App() {
       <Route path="FaqUser" element={<FaqPageUser></FaqPageUser>} />
       <Route path="/book/:id" element={<BookDetail></BookDetail>} />
       <Route path="/checkout" element={<CheckoutPage></CheckoutPage>} />
+      <Route path="/UserOrder" element={<UserOrdersPage></UserOrdersPage>} />
+      <Route path="/profil" element={<ProfilePage></ProfilePage>} />
       {/* ------------- REDIRECT SETELAH LOGIN ------------- */}
       {isAuthenticated && (
         <>

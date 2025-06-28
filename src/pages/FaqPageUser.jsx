@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { HelpCircle, Search, ChevronDown, ChevronUp, Send, Loader } from 'lucide-react'; // Menambahkan Send dan Loader
 import { supabase } from '../supabase.js'; // Pastikan path ini benar
+import Navbar from "../Components/Navbar";
+import Footer from "../Components/Footer";
 
 export default function FaqPageUser() {
   const role = localStorage.getItem("role");
@@ -10,6 +12,7 @@ export default function FaqPageUser() {
     window.dispatchEvent(new Event("roleChanged"));
     navigate("/login");
   };
+  
 
   const [faqs, setFaqs] = useState([]);
   const [loadingFaqs, setLoadingFaqs] = useState(true); // Ganti nama state loading
@@ -102,6 +105,8 @@ export default function FaqPageUser() {
   };
 
   return (
+    <div className="">
+        <Navbar role={role} handleLogout={handleLogout} /> 
     <div className="min-h-screen bg-gray-50 font-sans">
       {/* Hero Section - Visual Lebih Menarik */}
       <div className="relative bg-gradient-to-br from-red-800 to-red-950 text-white py-24 px-6 sm:px-10 lg:px-20 overflow-hidden shadow-xl">
@@ -276,6 +281,7 @@ export default function FaqPageUser() {
           </form>
         </div>
       </div>
+    </div>
       <Footer></Footer>
     </div>
   );

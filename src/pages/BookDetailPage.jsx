@@ -1,6 +1,8 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { supabase } from "../supabase";
+import Navbar from "../Components/Navbar";
+import Footer from "../Components/Footer";
 
 export default function BookDetail() {
   const { id } = useParams();
@@ -8,6 +10,13 @@ export default function BookDetail() {
   const [produk, setProduk] = useState(null);
   const [loading, setLoading] = useState(true);
 
+     const role = localStorage.getItem("role");
+
+      const handleLogout = () => {
+    localStorage.removeItem("role");
+    window.dispatchEvent(new Event("roleChanged"));
+    navigate("/login");
+  };
   // Ambil data produk berdasarkan ID dari URL
   useEffect(() => {
     const fetchProdukById = async () => {
@@ -98,6 +107,8 @@ export default function BookDetail() {
   if (!produk) return <div className="p-6 text-red-600">Produk tidak ditemukan.</div>;
 
   return (
+    <div>
+        <Navbar role={role} handleLogout={handleLogout} />
     <div className="p-6 max-w-4xl mx-auto">
       <img
         src={produk.url_gambar}
@@ -127,6 +138,8 @@ export default function BookDetail() {
           Beli Sekarang
         </button>
       </div>
+    </div>
+      <Footer></Footer>
     </div>
   );
 }

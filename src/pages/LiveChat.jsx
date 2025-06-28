@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
+import Navbar from "../Components/Navbar";
+import Footer from "../Components/Footer";
 
 export default function LiveChat() {
   const [messages, setMessages] = useState([
@@ -12,6 +14,13 @@ export default function LiveChat() {
   const [newMessage, setNewMessage] = useState('');
   const messagesEndRef = useRef(null);
 
+     const role = localStorage.getItem("role");
+
+      const handleLogout = () => {
+    localStorage.removeItem("role");
+    window.dispatchEvent(new Event("roleChanged"));
+    navigate("/login");
+  };
   // Auto-scroll to bottom when messages change
   useEffect(() => {
     scrollToBottom();
@@ -59,6 +68,8 @@ export default function LiveChat() {
   };
 
   return (
+    <div className="">
+        <Navbar role={role} handleLogout={handleLogout} /> 
     <section className="bg-gray-100 py-8 px-6 md:px-10 lg:px-32 text-gray-800">
       <h1 className="text-3xl font-bold text-red-600 mb-6 text-center">Live Chat Periplus</h1>
       
@@ -139,7 +150,8 @@ export default function LiveChat() {
         <p>Our support team is available Monday–Friday, 9AM–5PM.</p>
         <p className="mt-1">For urgent matters, please email us at <a className="text-red-500 underline" href="mailto:periplus.com">periplus.com</a></p>
       </div>
-      <Footer></Footer>
     </section>
+      <Footer></Footer>
+    </div>
   );
 }

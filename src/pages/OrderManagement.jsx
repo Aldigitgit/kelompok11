@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../supabase";
-import { FaBox, FaShoppingCart, FaClipboardList } from "react-icons/fa";
+import { FaBox, FaClipboardList, FaDownload } from "react-icons/fa";
 
 export default function AdminOrdersPage() {
   const [orders, setOrders] = useState([]);
   const [orderItems, setOrderItems] = useState([]);
-  const [cartItems, setCartItems] = useState([]);
 
   useEffect(() => {
     fetchAllData();
@@ -23,19 +22,65 @@ export default function AdminOrdersPage() {
       .select("*, produk(judul, harga)")
       .order("id", { ascending: false });
     setOrderItems(itemsData || []);
+  };
 
-    const { data: cartsData } = await supabase
-      .from("cart_items")
-      .select("*, account(name), produk(judul, harga)")
-      .order("id", { ascending: false });
-    setCartItems(cartsData || []);
+  const handleDownloadCSV = () => {
+    const header = [
+      "Order ID",
+      "Account Name",
+      "Email",
+      "Produk",
+      "Harga Satuan",
+      "Quantity",
+      "Subtotal",
+      "Tanggal Order",
+    ];
+    const rows = [];
+
+    orderItems.forEach((item) => {
+      const order = orders.find((o) => o.id === item.order_id);
+      const harga = item.harga_satuan ?? item.produk?.harga ?? 0;
+      const subtotal = item.subtotal ?? harga * item.quantity;
+
+      rows.push([
+        item.order_id,
+        order?.account?.name || "-",
+        order?.account?.email || "-",
+        item.produk?.judul || "-",
+        harga,
+        item.quantity,
+        subtotal,
+        order ? new Date(order.created_at).toLocaleString("id-ID") : "-",
+      ]);
+    });
+
+    const csvContent = [header, ...rows]
+      .map((row) => row.join(","))
+      .join("\n");
+
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const tempLink = document.createElement("a");
+    tempLink.href = url;
+    tempLink.setAttribute("download", "data_order.csv");
+    document.body.appendChild(tempLink);
+    tempLink.click();
+    document.body.removeChild(tempLink);
   };
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6 text-red-700 flex items-center gap-2">
-        <FaClipboardList /> Admin - Order Overview
-      </h1>
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-3xl font-bold text-red-700 flex items-center gap-2">
+          <FaClipboardList /> Admin - Order Overview
+        </h1>
+        <button
+          onClick={handleDownloadCSV}
+          className="bg-green-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-green-700 transition"
+        >
+          <FaDownload /> Download CSV
+        </button>
+      </div>
 
       {/* Orders Table */}
       <section className="mb-10">
@@ -55,8 +100,12 @@ export default function AdminOrdersPage() {
                 <tr key={order.id} className="hover:bg-gray-50">
                   <td className="p-2 border">{order.account?.name}</td>
                   <td className="p-2 border">{order.account?.email}</td>
-                  <td className="p-2 border">Rp {parseInt(order.total).toLocaleString("id-ID")}</td>
-                  <td className="p-2 border">{new Date(order.created_at).toLocaleString()}</td>
+                  <td className="p-2 border">
+                    Rp {parseInt(order.total).toLocaleString("id-ID")}
+                  </td>
+                  <td className="p-2 border">
+                    {new Date(order.created_at).toLocaleString("id-ID")}
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -81,20 +130,27 @@ export default function AdminOrdersPage() {
               </tr>
             </thead>
             <tbody>
-              {orderItems.map((item) => (
-                <tr key={item.id} className="hover:bg-gray-50">
-                  <td className="p-2 border">{item.produk?.judul}</td>
-                  <td className="p-2 border">Rp {item.harga_satuan?.toLocaleString("id-ID")}</td>
-                  <td className="p-2 border">{item.quantity}</td>
-                  <td className="p-2 border">Rp {(item.subtotal || item.harga_satuan * item.quantity).toLocaleString("id-ID")}</td>
-                  <td className="p-2 border">{item.order_id}</td>
-                </tr>
-              ))}
+              {orderItems.map((item) => {
+                const harga = item.harga_satuan ?? item.produk?.harga ?? 0;
+                const subtotal = item.subtotal ?? harga * item.quantity;
+                return (
+                  <tr key={item.id} className="hover:bg-gray-50">
+                    <td className="p-2 border">{item.produk?.judul}</td>
+                    <td className="p-2 border">
+                      Rp {harga.toLocaleString("id-ID")}
+                    </td>
+                    <td className="p-2 border">{item.quantity}</td>
+                    <td className="p-2 border">
+                      Rp {subtotal.toLocaleString("id-ID")}
+                    </td>
+                    <td className="p-2 border">{item.order_id}</td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
       </section>
-
     </div>
   );
 }

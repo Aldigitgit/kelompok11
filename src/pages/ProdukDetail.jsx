@@ -1,10 +1,19 @@
 // src/pages/ProdukDetail.jsx
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import Navbar from "../Components/Navbar";
+import Footer from "../Components/Footer";
 
 const ProdukDetail = () => {
   const { id } = useParams();
   const [buku, setBuku] = useState(null);
+     const role = localStorage.getItem("role");
+
+      const handleLogout = () => {
+    localStorage.removeItem("role");
+    window.dispatchEvent(new Event("roleChanged"));
+    navigate("/login");
+  };
 
   useEffect(() => {
     fetch('/data/data_buku.json')
@@ -19,6 +28,7 @@ const ProdukDetail = () => {
 
   return (
     <div className="p-6">
+        <Navbar role={role} handleLogout={handleLogout} />
       <Link to="/produk" className="text-blue-500 hover:underline mb-4 inline-block">← Kembali ke Daftar Buku</Link>
       <div className="flex gap-6">
         <img src={buku.cover} alt={buku.judul} className="w-40 rounded shadow" />
@@ -35,6 +45,7 @@ const ProdukDetail = () => {
           <p className="mt-4 text-gray-800"><strong>Deskripsi:</strong> {buku.deskripsi}</p>
         </div>
       </div>
+      <Footer></Footer>
     </div>
   );
 };

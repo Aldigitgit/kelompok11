@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { FaMapMarkerAlt, FaCalendarAlt, FaPlayCircle, FaArrowLeft, FaMoneyBillWave, FaTag } from 'react-icons/fa';
+import Navbar from "../Components/Navbar";
+import Footer from "../Components/Footer";
 
 export default function EventDetail() {
   const { id } = useParams(); // Mengambil ID dari URL
@@ -16,6 +18,13 @@ export default function EventDetail() {
     paymentMethod: '',
   });
   const [paymentStatus, setPaymentStatus] = useState(''); // 'idle', 'pending', 'success', 'failed'
+     const role = localStorage.getItem("role");
+
+      const handleLogout = () => {
+    localStorage.removeItem("role");
+    window.dispatchEvent(new Event("roleChanged"));
+    navigate("/login");
+  };
 
   // Dummy event data (memastikan konsisten dengan Event.js dan menambahkan harga)
   // Saya menggunakan kembali link gambar yang sudah Anda sesuaikan
@@ -165,6 +174,8 @@ export default function EventDetail() {
   }
 
   return (
+    <div className="">
+      <Navbar role={role} handleLogout={handleLogout} />
     <div className="min-h-screen bg-gray-100 font-sans text-gray-800">
       {/* Header Section */}
       <div className="bg-red-800 text-white py-6 px-6 sm:px-10 lg:px-20 shadow-md">
@@ -331,6 +342,8 @@ export default function EventDetail() {
           )}
         </div>
       </div>
+    </div>
+      <Footer></Footer>
     </div>
   );
 }

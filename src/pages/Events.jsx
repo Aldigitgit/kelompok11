@@ -2,11 +2,20 @@
 import React, { useState } from 'react';
 import { FaSearch, FaMapMarkerAlt, FaTag, FaCalendarAlt } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import Navbar from "../Components/Navbar";
+import Footer from "../Components/Footer";
 
 export default function Events() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedLocation, setSelectedLocation] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
+     const role = localStorage.getItem("role");
+
+      const handleLogout = () => {
+    localStorage.removeItem("role");
+    window.dispatchEvent(new Event("roleChanged"));
+    navigate("/login");
+  };
 
   // Dummy event data for Periplus (8 events)
   const events = [
@@ -104,6 +113,7 @@ export default function Events() {
 
   return (
     <div className="min-h-screen bg-gray-100 font-sans"> {/* Slightly lighter gray background */}
+      <Navbar role={role} handleLogout={handleLogout} />
       {/* Hero Section */}
       <div className="relative bg-gradient-to-br from-red-800 to-red-950 text-white py-24 px-6 sm:px-10 lg:px-20 overflow-hidden shadow-xl">
         <div className="max-w-7xl mx-auto z-10 relative">
@@ -222,6 +232,7 @@ export default function Events() {
           </button>
         </div>
       </div>
+      <Footer></Footer>
     </div>
   );
 }

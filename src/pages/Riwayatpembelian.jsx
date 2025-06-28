@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../supabase.js';
+import Navbar from "../Components/Navbar";
+import Footer from "../Components/Footer";
 
 function RiwayatPembelian() {
   const [pembelian, setPembelian] = useState([]);
@@ -12,6 +14,13 @@ function RiwayatPembelian() {
     harga: 0,
     status: 'Selesai',
   });
+     const role = localStorage.getItem("role");
+
+      const handleLogout = () => {
+    localStorage.removeItem("role");
+    window.dispatchEvent(new Event("roleChanged"));
+    navigate("/login");
+  };
 
   const fetchData = async () => {
     const { data, error } = await supabase
@@ -80,6 +89,8 @@ function RiwayatPembelian() {
   };
 
   return (
+    <div className="">
+      <Navbar role={role} handleLogout={handleLogout} />
     <div className="max-w-4xl mx-auto mt-10 bg-white p-6 rounded shadow font-sans">
       <h2 className="text-2xl font-semibold mb-4 text-red-700">Riwayat Pembelian</h2>
       <button
@@ -218,6 +229,8 @@ function RiwayatPembelian() {
           )}
         </tbody>
       </table>
+    </div>
+      <Footer></Footer>
     </div>
   );
 }

@@ -64,7 +64,7 @@ export default function HomePage() {
         {/* Right Image Section */}
         <div className="md:w-1/2 flex justify-center">
           <img
-            src="src/frontend/assets/bg.png"
+            src="https://i.ibb.co/yFW1T4P4/bg.png"
             alt="Girl Holding Books"
             className="w-64 md:w-80 drop-shadow-xl rounded-lg"
           />

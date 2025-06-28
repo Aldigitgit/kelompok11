@@ -1,10 +1,19 @@
 import React, { useState } from 'react';
 import { FaMapMarkerAlt, FaWhatsapp, FaInstagram, FaClock, FaSearch } from 'react-icons/fa';
+import Navbar from '../Components/Navbar';
+import Footer from '../Components/Footer';
 
 export default function About() {
   const [language, setLanguage] = useState('english');
   const [searchTerm, setSearchTerm] = useState('');
 
+   const role = localStorage.getItem("role");
+
+      const handleLogout = () => {
+    localStorage.removeItem("role");
+    window.dispatchEvent(new Event("roleChanged"));
+    navigate("/login");
+  };
   const content = {
     english: {
       title: "About Periplus",
@@ -137,6 +146,10 @@ export default function About() {
   );
 
   return (
+    <div>
+
+        <Navbar role={role} handleLogout={handleLogout} />
+    
     <section className="bg-gray-50 py-12 px-6 md:px-10 lg:px-32">
       <div className="max-w-6xl mx-auto">
         {/* Language Toggle */}
@@ -318,12 +331,10 @@ export default function About() {
           </div>
         </div>
 
-        {/* Footer */}
-        <div className="mt-8 text-center text-sm text-gray-500">
-          {language === 'english' ? 'Last updated: June 2024' : 'Terakhir diperbarui: Juni 2024'}
-        </div>
       </div>
-      <Footer></Footer>
+      
     </section>
+      <Footer></Footer>
+    </div>
   );
 }
