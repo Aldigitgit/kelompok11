@@ -15,6 +15,7 @@ import Footer from "../Components/Footer";
 import Navbar from "../Components/Navbar";
 import NewArrivals from "../Components/NewArrival";
 import PopularBooks from "../Components/PopularBooks";
+import { Link2 } from "lucide-react";
 
 export default function HomePage() {
   const [category, setCategory] = useState("All");
@@ -37,7 +38,6 @@ export default function HomePage() {
 
   return (
     <div className="font-sans text-gray-800">
-      
       <Navbar role={role} handleLogout={handleLogout} />
 
       {/* Hero */}
@@ -56,10 +56,14 @@ export default function HomePage() {
             enrich your journey. From timeless classics to modern masterpieces,
             find the perfect read for every moment.
           </p>
-          <button className="bg-red-200 hover:bg-red-300 text-red-800 px-6 py-2 rounded-full font-medium transition">
-            Explore Now
-          </button>
+          
+          <Link to="/shop">
+            <button className="bg-red-200 hover:bg-red-300 text-red-800 px-6 py-2 rounded-full font-medium transition">
+              Explore Now
+            </button>
+          </Link>
         </div>
+
 
         {/* Right Image Section */}
         <div className="md:w-1/2 flex justify-center">
@@ -73,7 +77,7 @@ export default function HomePage() {
 
       {/* New arrival */}
 
-     <NewArrivals></NewArrivals>
+      <NewArrivals></NewArrivals>
 
       {/* Features */}
       <section className="bg-red-50 py-12 px-6 text-center">
@@ -104,9 +108,8 @@ export default function HomePage() {
 
       {/* Popular Books */}
       <PopularBooks></PopularBooks>
-     
 
-     <Footer></Footer>
+      <Footer></Footer>
     </div>
   );
 }

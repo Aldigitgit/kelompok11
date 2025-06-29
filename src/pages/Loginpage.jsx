@@ -9,41 +9,47 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleSignIn = async (e) => {
-    e.preventDefault();
-    setError("");
+const handleSignIn = async (e) => {
+  e.preventDefault();
+  setError("");
 
-    const { data, error } = await supabase
-      .from("account")
-      .select("*")
-      .eq("email", email)
-      .eq("password", password)
-      .maybeSingle();
+  try {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
 
     if (error) {
-      console.error("Login error:", error.message);
-      setError("Terjadi kesalahan saat login.");
-      return;
-    }
-
-    if (!data) {
       setError("Email atau password salah.");
       return;
     }
 
-    // Simpan ke localStorage
-    localStorage.setItem("account_id", data.id);      // ✅ benar
-    localStorage.setItem("role", data.role);
-    localStorage.setItem("email", data.email);
+    // Ambil informasi user dari tabel account (berdasarkan email login)
+    const { data: user } = await supabase
+      .from("account")
+      .select("*")
+      .eq("email", email)
+      .single();
+
+    if (!user) {
+      setError("Akun tidak ditemukan di database.");
+      return;
+    }
+
+    // Simpan informasi user ke localStorage
+    localStorage.setItem("account_id", user.id);
+    localStorage.setItem("role", user.role);
+    localStorage.setItem("email", user.email);
     window.dispatchEvent(new Event("roleChanged"));
 
-    // Arahkan berdasarkan peran
-    if (data.role === "admin") {
-      navigate("/dashboard");
-    } else {
-      navigate("/");
-    }
-  };
+    // Redirect berdasarkan role
+    navigate(user.role === "admin" ? "/dashboard" : "/");
+  } catch (err) {
+    console.error("Unexpected error:", err.message);
+    setError("Terjadi kesalahan sistem.");
+  }
+};
+
 
   const handleSignUp = () => {
     navigate("/register");
@@ -54,9 +60,7 @@ export default function LoginPage() {
       <div className="bg-white rounded-xl shadow-2xl flex w-full max-w-5xl overflow-hidden">
         {/* Kiri - Login */}
         <div className="w-1/2 p-10 flex flex-col justify-center">
-          <h2 className="text-4xl font-bold mb-6 text-gray-800 text-center">
-            Sign in
-          </h2>
+          <h2 className="text-4xl font-bold mb-6 text-gray-800 text-center">Sign in</h2>
 
           <div className="flex justify-center space-x-4 mb-6">
             <button className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center hover:scale-105 transition">

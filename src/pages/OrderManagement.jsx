@@ -24,49 +24,56 @@ export default function AdminOrdersPage() {
     setOrderItems(itemsData || []);
   };
 
-  const handleDownloadCSV = () => {
-    const header = [
-      "Order ID",
-      "Account Name",
-      "Email",
-      "Produk",
-      "Harga Satuan",
-      "Quantity",
-      "Subtotal",
-      "Tanggal Order",
-    ];
-    const rows = [];
+const handleDownloadCSV = () => {
+  const header = [
+    "Order ID",
+    "Account Name",
+    "Email",
+    "Produk",
+    "Harga Satuan",
+    "Quantity",
+    "Subtotal",
+    "Tanggal Order",
+  ];
+  const rows = [header];
 
-    orderItems.forEach((item) => {
-      const order = orders.find((o) => o.id === item.order_id);
+  orders.forEach((order) => {
+    const relatedItems = orderItems.filter(item => item.order_id === order.id);
+    if (relatedItems.length === 0) return;
+
+    relatedItems.forEach((item, index) => {
       const harga = item.harga_satuan ?? item.produk?.harga ?? 0;
       const subtotal = item.subtotal ?? harga * item.quantity;
-
       rows.push([
-        item.order_id,
-        order?.account?.name || "-",
-        order?.account?.email || "-",
+        index === 0 ? order.id : "", // hanya tampilkan order_id di baris pertama
+        index === 0 ? order.account?.name : "",
+        index === 0 ? order.account?.email : "",
         item.produk?.judul || "-",
         harga,
         item.quantity,
         subtotal,
-        order ? new Date(order.created_at).toLocaleString("id-ID") : "-",
+        index === 0 ? new Date(order.created_at).toLocaleString("id-ID") : ""
       ]);
     });
 
-    const csvContent = [header, ...rows]
-      .map((row) => row.join(","))
-      .join("\n");
+    // Tambahkan baris kosong antar order (opsional)
+    rows.push(["", "", "", "", "", "", "", ""]);
+  });
 
-    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-    const url = URL.createObjectURL(blob);
-    const tempLink = document.createElement("a");
-    tempLink.href = url;
-    tempLink.setAttribute("download", "data_order.csv");
-    document.body.appendChild(tempLink);
-    tempLink.click();
-    document.body.removeChild(tempLink);
-  };
+  const csvContent = rows.map(row =>
+    row.map(val => `"${val}"`).join(",")
+  ).join("\n");
+
+  const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const tempLink = document.createElement("a");
+  tempLink.href = url;
+  tempLink.setAttribute("download", "data_order.csv");
+  document.body.appendChild(tempLink);
+  tempLink.click();
+  document.body.removeChild(tempLink);
+};
+
 
   return (
     <div className="p-6 max-w-7xl mx-auto">

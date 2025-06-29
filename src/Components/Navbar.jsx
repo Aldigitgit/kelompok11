@@ -12,32 +12,35 @@ const Navbar = ({ role, handleLogout }) => {
   const [userData, setUserData] = useState(null);
   const accountId = localStorage.getItem("account_id");
 
+  // Fetch profile jika accountId valid
   useEffect(() => {
     if (accountId) {
       fetchUserProfile();
     }
   }, [accountId]);
 
-const fetchUserProfile = async () => {
-  const { data, error } = await supabase
-    .from("account")
-    .select("name, foto_profil")
-    .eq("id", accountId)
-    .single();
+  const fetchUserProfile = async () => {
+    try {
+      const { data, error } = await supabase
+        .from("account")
+        .select("name, foto_profil")
+        .eq("id", accountId)
+        .single();
 
-  console.log("Account ID:", accountId);
-  console.log("Supabase error:", error);
-  console.log("Fetched user data:", data);
+      console.log("Account ID:", accountId);
+      if (error) {
+        console.error("Gagal ambil data akun:", error.message);
+      } else if (!data) {
+        console.warn("Data akun tidak ditemukan");
+      } else {
+        setUserData(data);
+      }
+    } catch (err) {
+      console.error("Kesalahan saat ambil data akun:", err);
+    }
+  };
 
-  if (error) {
-    console.error("Gagal ambil data akun:", error);
-  } else {
-    setUserData(data);
-  }
-};
-
-
-
+  // Menutup dropdown jika klik di luar elemen
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -79,14 +82,14 @@ const fetchUserProfile = async () => {
           </Link>
         </nav>
 
-        {/* Cart & User */}
+        {/* Keranjang & Akun */}
         <div className="flex items-center gap-4 relative">
           {/* Keranjang */}
           <Link to="/cart" className="text-red-700 hover:text-red-800 text-xl">
             <FiShoppingCart />
           </Link>
 
-          {/* Profil / Login */}
+          {/* Login/Profil */}
           {!accountId ? (
             <Link
               to="/login"

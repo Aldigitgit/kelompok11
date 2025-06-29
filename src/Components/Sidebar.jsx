@@ -29,7 +29,7 @@ const menuItems = [
   // { name: 'Tracking Order', icon: <PackageCheck />, path: '/dashboard/tracking' },
   // { name: 'Kontak', icon: <Mail />, path: '/dashboard/kontak' },
   { name: 'Campaign Analytics', icon: <PieChart />, path: '/dashboard/campaign-analytics' },
-  { name: 'Content Management', icon: <FileText />, path: '/dashboard/content-management' },
+  // { name: 'Content Management', icon: <FileText />, path: '/dashboard/content-management' },
   { name: 'Market Segmentation', icon: <BarChart2 />, path: '/dashboard/market-segmentation' },
   { name: 'List Account', icon: <BarChart2 />, path: '/dashboard/ListAccount' },
   { name: 'OrderManagement', icon: <BarChart2 />, path: '/dashboard/OrderManagement' },
