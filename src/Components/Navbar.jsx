@@ -9,30 +9,27 @@ const Navbar = ({ role, handleLogout }) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [userData, setUserData] = useState(null);
   const dropdownRef = useRef();
-
   const accountId = localStorage.getItem("account_id");
 
   useEffect(() => {
-    if (accountId) {
-      fetchUserProfile();
-    }
+    if (accountId) fetchUserProfile();
   }, [accountId]);
 
   const fetchUserProfile = async () => {
-    const { data, error } = await supabase
-      .from("account")
-      .select("name, foto_profil")
-      .eq("id", accountId)
-      .single();
+    try {
+      const { data, error } = await supabase
+        .from("account")
+        .select("name, foto_profil")
+        .eq("id", accountId)
+        .single();
 
-    console.log("Account ID:", accountId);
-    console.log("Supabase error:", error);
-    console.log("Fetched user data:", data);
-
-    if (error) {
-      console.error("Gagal ambil data akun:", error);
-    } else {
-      setUserData(data);
+      if (error) {
+        console.error("Gagal ambil data akun:", error.message);
+      } else {
+        setUserData(data);
+      }
+    } catch (err) {
+      console.error("Kesalahan saat ambil data akun:", err.message);
     }
   };
 
@@ -77,20 +74,22 @@ const Navbar = ({ role, handleLogout }) => {
           </Link>
         </nav>
 
-        {/* Cart & Login/Profil */}
+        {/* Cart & Profil/Login */}
         <div className="flex items-center gap-4 relative">
           <Link to="/cart" className="text-red-700 hover:text-red-800 text-xl">
             <FiShoppingCart />
           </Link>
 
+          {/* Kondisi: Belum Login */}
           {!accountId ? (
-            <Link
-              to="/login"
+            <button
+              onClick={() => navigate("/login")}
               className="text-sm px-4 py-2 rounded-full border border-red-500 text-red-500 hover:bg-red-50 transition"
             >
               Login
-            </Link>
+            </button>
           ) : role && userData ? (
+            // Kondisi: Sudah login & userData tersedia
             <div className="relative" ref={dropdownRef}>
               <img
                 src={photoURL}
@@ -119,9 +118,13 @@ const Navbar = ({ role, handleLogout }) => {
               )}
             </div>
           ) : (
-            <div className="px-3 py-1 rounded-full bg-gray-100 text-gray-500 text-sm">
-              Belum Login
-            </div>
+            // Kondisi: Sudah login tapi userData belum tersedia
+            <button
+              onClick={() => navigate("/login")}
+              className="px-4 py-2 rounded-full border border-red-500 text-red-500 hover:bg-red-50 transition text-sm"
+            >
+              Login
+            </button>
           )}
         </div>
       </div>
@@ -130,3 +133,4 @@ const Navbar = ({ role, handleLogout }) => {
 };
 
 export default Navbar;
+  
