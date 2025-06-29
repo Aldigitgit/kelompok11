@@ -7,30 +7,32 @@ import { supabase } from "../supabase";
 const Navbar = ({ role, handleLogout }) => {
   const navigate = useNavigate();
   const [showDropdown, setShowDropdown] = useState(false);
+  const [userData, setUserData] = useState(null);
   const dropdownRef = useRef();
 
-  const [userData, setUserData] = useState(null);
   const accountId = localStorage.getItem("account_id");
 
   useEffect(() => {
-    if (accountId) fetchUserProfile();
+    if (accountId) {
+      fetchUserProfile();
+    }
   }, [accountId]);
 
   const fetchUserProfile = async () => {
-    try {
-      const { data, error } = await supabase
-        .from("account")
-        .select("name, foto_profil")
-        .eq("id", accountId)
-        .single();
+    const { data, error } = await supabase
+      .from("account")
+      .select("name, foto_profil")
+      .eq("id", accountId)
+      .single();
 
-      if (error) {
-        console.error("Gagal ambil data akun:", error.message);
-      } else {
-        setUserData(data);
-      }
-    } catch (err) {
-      console.error("Kesalahan saat ambil data akun:", err);
+    console.log("Account ID:", accountId);
+    console.log("Supabase error:", error);
+    console.log("Fetched user data:", data);
+
+    if (error) {
+      console.error("Gagal ambil data akun:", error);
+    } else {
+      setUserData(data);
     }
   };
 
@@ -59,7 +61,7 @@ const Navbar = ({ role, handleLogout }) => {
           PeriPlus
         </Link>
 
-        {/* Menu Navigasi */}
+        {/* Navigasi */}
         <nav className="space-x-6 text-sm font-medium flex items-center">
           <Link to="/" className="text-red-700 hover:text-red-800 flex items-center gap-1">
             <FaHome /> Home
@@ -75,25 +77,20 @@ const Navbar = ({ role, handleLogout }) => {
           </Link>
         </nav>
 
-        {/* Login / Cart / Profile */}
+        {/* Cart & Login/Profil */}
         <div className="flex items-center gap-4 relative">
-          {/* Tombol Login jika belum login */}
-          {!accountId && (
+          <Link to="/cart" className="text-red-700 hover:text-red-800 text-xl">
+            <FiShoppingCart />
+          </Link>
+
+          {!accountId ? (
             <Link
               to="/login"
               className="text-sm px-4 py-2 rounded-full border border-red-500 text-red-500 hover:bg-red-50 transition"
             >
               Login
             </Link>
-          )}
-
-          {/* Keranjang */}
-          <Link to="/cart" className="text-red-700 hover:text-red-800 text-xl">
-            <FiShoppingCart />
-          </Link>
-
-          {/* Dropdown Profil */}
-          {accountId && role && userData && (
+          ) : role && userData ? (
             <div className="relative" ref={dropdownRef}>
               <img
                 src={photoURL}
@@ -120,6 +117,10 @@ const Navbar = ({ role, handleLogout }) => {
                   </button>
                 </div>
               )}
+            </div>
+          ) : (
+            <div className="px-3 py-1 rounded-full bg-gray-100 text-gray-500 text-sm">
+              Belum Login
             </div>
           )}
         </div>
