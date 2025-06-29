@@ -1,8 +1,5 @@
-// CartPage.jsx
 import React, { useEffect, useState } from "react";
 import { supabase } from "../supabase";
-import { FiShoppingCart } from "react-icons/fi";
-import { FaHome, FaStore, FaPhone } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../Components/Navbar";
 import Footer from "../Components/Footer";
@@ -10,12 +7,12 @@ import Footer from "../Components/Footer";
 export default function CartPage() {
   const [cartItems, setCartItems] = useState([]);
   const [total, setTotal] = useState(0);
-  const userId = localStorage.getItem("user_id");
   const navigate = useNavigate();
- 
-  const role = localStorage.getItem("role");
 
-      const handleLogout = () => {
+  const role = localStorage.getItem("role");
+  const accountId = localStorage.getItem("account_id"); // ✅ ganti user_id jadi account_id
+
+  const handleLogout = () => {
     localStorage.removeItem("role");
     window.dispatchEvent(new Event("roleChanged"));
     navigate("/login");
@@ -26,7 +23,7 @@ export default function CartPage() {
       const { data, error } = await supabase
         .from("cart_items")
         .select("id, quantity, produk:produk_id (id, judul, harga, url_gambar, status)")
-        .eq("user_id", userId);
+        .eq("account_id", accountId); // ✅ ganti user_id
 
       if (error) {
         console.error("Gagal ambil keranjang:", error);
@@ -34,85 +31,74 @@ export default function CartPage() {
         setCartItems(data);
 
         const totalHarga = data.reduce((sum, item) => {
-          if (item.produk) {
-            return sum + item.quantity * item.produk.harga;
-          }
-          return sum;
+          return item.produk ? sum + item.quantity * item.produk.harga : sum;
         }, 0);
 
         setTotal(totalHarga);
       }
     };
 
-    if (userId) fetchCartItems();
-  }, [userId]);
+    if (accountId) fetchCartItems();
+  }, [accountId]);
 
- const handleCheckout = async () => {
-  try {
-    if (!cartItems.length) return alert("Keranjang kosong!");
+  const handleCheckout = async () => {
+    try {
+      if (!cartItems.length) return alert("Keranjang kosong!");
+      if (!accountId) return alert("Belum login!");
 
-    const userId = localStorage.getItem("user_id");
-    if (!userId) {
-      alert("User belum login");
-      return;
+      // Step 1: Insert ke orders
+      const { data: order, error: orderError } = await supabase
+        .from("orders")
+        .insert([
+          {
+            account_id: accountId,
+            total: total,
+            total_amount: total,
+            created_at: new Date().toISOString(),
+          },
+        ])
+        .select()
+        .single();
+
+      if (orderError) throw orderError;
+
+      // Step 2: Insert ke order_items
+      const orderItems = cartItems
+        .filter((item) => item.produk)
+        .map((item) => ({
+          order_id: order.id,
+          produk_id: item.produk.id,
+          quantity: item.quantity,
+          subtotal: item.quantity * item.produk.harga,
+        }));
+
+      const { error: itemsError } = await supabase
+        .from("order_items")
+        .insert(orderItems);
+
+      if (itemsError) throw itemsError;
+
+      // Step 3: Kosongkan keranjang
+      const { error: deleteError } = await supabase
+        .from("cart_items")
+        .delete()
+        .eq("account_id", accountId);
+
+      if (deleteError) throw deleteError;
+
+      alert("Checkout berhasil!");
+      setCartItems([]);
+      setTotal(0);
+      navigate("/user/orders");
+    } catch (err) {
+      console.error("Checkout error:", err);
+      alert("Gagal checkout: " + err.message);
     }
-
-    // Step 1: Buat order
-    const { data: order, error: orderError } = await supabase
-      .from("orders")
-      .insert([
-        {
-          account_id: userId, // sesuai dengan kolom `account_id` di tabel orders
-          total: total,        // kamu punya kolom `total` dan `total_amount`, isi dua-duanya kalau mau
-          total_amount: total,
-          created_at: new Date().toISOString(),
-        },
-      ])
-      .select()
-      .single();
-
-    if (orderError) throw orderError;
-
-    // Step 2: Insert ke order_items
-    const orderItems = cartItems
-      .filter((item) => item.produk)
-      .map((item) => ({
-        order_id: order.id,
-        produk_id: item.produk.id, // produk.id = int8
-        quantity: item.quantity,
-        subtotal: item.quantity * item.produk.harga, // kamu punya kolom subtotal
-      }));
-
-    const { error: itemError } = await supabase
-      .from("order_items")
-      .insert(orderItems);
-
-    if (itemError) throw itemError;
-
-    // Step 3: Kosongkan keranjang
-    const { error: deleteError } = await supabase
-      .from("cart_items")
-      .delete()
-      .eq("user_id", userId);
-
-    if (deleteError) throw deleteError;
-
-    alert("Checkout berhasil!");
-    setCartItems([]);
-    setTotal(0);
-    navigate("/");
-
-  } catch (err) {
-    console.error("Checkout error detail:", err);
-    alert("Gagal checkout: " + err.message);
-  }
-};
-
-
+  };
 
   return (
     <div className="bg-gray-50 min-h-screen">
-        <Navbar role={role} handleLogout={handleLogout} />
+      <Navbar role={role} handleLogout={handleLogout} />
 
       <main className="px-6 md:px-16 py-10">
         <h2 className="text-3xl font-bold mb-6">Cart <span className="text-red-600">List</span></h2>
@@ -136,8 +122,8 @@ export default function CartPage() {
                         >
                           {item.produk.judul}
                         </p>
-                        <p className="text-sm text-gray-500">Category: {item.produk.status}</p>
-                        <p className="text-sm text-gray-600">Qty: {item.quantity}</p>
+                        <p className="text-sm text-gray-500">Kategori: {item.produk.status}</p>
+                        <p className="text-sm text-gray-600">Jumlah: {item.quantity}</p>
                       </div>
                     </div>
                     <p className="font-semibold text-lg text-red-600">
@@ -155,10 +141,12 @@ export default function CartPage() {
             <h2 className="text-3xl font-bold mt-10 mb-4">Cart <span className="text-red-600">Total</span></h2>
             <div className="bg-white p-6 rounded shadow max-w-md">
               <div className="flex justify-between mb-2">
-                <span>SubTotal:</span><span>Rp {total.toLocaleString("id-ID")}</span>
+                <span>SubTotal:</span>
+                <span>Rp {total.toLocaleString("id-ID")}</span>
               </div>
               <div className="flex justify-between border-t pt-2 mt-2 font-semibold">
-                <span>Total:</span><span>Rp {total.toLocaleString("id-ID")}</span>
+                <span>Total:</span>
+                <span>Rp {total.toLocaleString("id-ID")}</span>
               </div>
               <button
                 onClick={handleCheckout}
@@ -170,7 +158,8 @@ export default function CartPage() {
           </>
         )}
       </main>
-      <Footer></Footer>
+
+      <Footer />
     </div>
   );
 }
