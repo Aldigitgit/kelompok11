@@ -12,11 +12,8 @@ const Navbar = ({ role, handleLogout }) => {
   const [userData, setUserData] = useState(null);
   const accountId = localStorage.getItem("account_id");
 
-  // Fetch profile jika accountId valid
   useEffect(() => {
-    if (accountId) {
-      fetchUserProfile();
-    }
+    if (accountId) fetchUserProfile();
   }, [accountId]);
 
   const fetchUserProfile = async () => {
@@ -27,11 +24,8 @@ const Navbar = ({ role, handleLogout }) => {
         .eq("id", accountId)
         .single();
 
-      console.log("Account ID:", accountId);
       if (error) {
         console.error("Gagal ambil data akun:", error.message);
-      } else if (!data) {
-        console.warn("Data akun tidak ditemukan");
       } else {
         setUserData(data);
       }
@@ -40,7 +34,6 @@ const Navbar = ({ role, handleLogout }) => {
     }
   };
 
-  // Menutup dropdown jika klik di luar elemen
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -82,22 +75,25 @@ const Navbar = ({ role, handleLogout }) => {
           </Link>
         </nav>
 
-        {/* Keranjang & Akun */}
+        {/* Login / Cart / Profile */}
         <div className="flex items-center gap-4 relative">
-          {/* Keranjang */}
-          <Link to="/cart" className="text-red-700 hover:text-red-800 text-xl">
-            <FiShoppingCart />
-          </Link>
-
-          {/* Login/Profil */}
-          {!accountId ? (
+          {/* Tombol Login jika belum login */}
+          {!accountId && (
             <Link
               to="/login"
               className="text-sm px-4 py-2 rounded-full border border-red-500 text-red-500 hover:bg-red-50 transition"
             >
               Login
             </Link>
-          ) : role && userData ? (
+          )}
+
+          {/* Keranjang */}
+          <Link to="/cart" className="text-red-700 hover:text-red-800 text-xl">
+            <FiShoppingCart />
+          </Link>
+
+          {/* Dropdown Profil */}
+          {accountId && role && userData && (
             <div className="relative" ref={dropdownRef}>
               <img
                 src={photoURL}
@@ -124,10 +120,6 @@ const Navbar = ({ role, handleLogout }) => {
                   </button>
                 </div>
               )}
-            </div>
-          ) : (
-            <div className="px-3 py-1 rounded-full bg-gray-100 text-gray-500 text-sm">
-              Belum Login
             </div>
           )}
         </div>
