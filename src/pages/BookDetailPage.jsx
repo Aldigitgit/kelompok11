@@ -65,9 +65,25 @@ export default function BookDetail() {
     navigate("/cart");
   };
 
-  const handleCheckout = () => {
-    navigate("/checkout", { state: { produk } });
-  };
+const handleCheckout = () => {
+  if (!produk) {
+    alert("Produk belum dimuat.");
+    return;
+  }
+  navigate("/checkout", {
+    state: {
+      cartItems: [
+        {
+          id: produk.id,
+          quantity: 1,
+          produk: produk,
+        },
+      ],
+      total: produk.harga,
+    },
+  });
+};
+
 
   if (loading) return <div className="p-10 text-center">Loading...</div>;
   if (!produk) return <div className="p-10 text-red-600">Produk tidak ditemukan.</div>;

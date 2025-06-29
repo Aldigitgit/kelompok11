@@ -1,46 +1,106 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Navbar from "../Components/Navbar";
 import Footer from "../Components/Footer";
+import { supabase } from "../supabase";
+import { useState } from "react";
 
-export default function CheckoutPage() {
+export default function PaymentPage() {
   const { state } = useLocation();
-  const produk = state?.produk;
-     const role = localStorage.getItem("role");
+  const navigate = useNavigate();
+  const role = localStorage.getItem("role");
+  const accountId = localStorage.getItem("account_id");
+  const [loading, setLoading] = useState(false);
 
-      const handleLogout = () => {
-    localStorage.removeItem("role");
-    window.dispatchEvent(new Event("roleChanged"));
-    navigate("/login");
+  const cartItems = state?.cartItems || [];
+  const total = state?.total || 0;
+
+  const handlePay = async () => {
+    try {
+      if (!accountId || cartItems.length === 0) return;
+
+      setLoading(true);
+
+      const { data: order, error: orderError } = await supabase
+        .from("orders")
+        .insert([
+          {
+            account_id: accountId,
+            total: total,
+            total_amount: total,
+            created_at: new Date().toISOString(),
+          },
+        ])
+        .select()
+        .single();
+
+      if (orderError) throw orderError;
+
+      const orderItems = cartItems.map((item) => ({
+        order_id: order.id,
+        produk_id: item.produk.id,
+        quantity: item.quantity,
+        subtotal: item.quantity * item.produk.harga,
+      }));
+
+      const { error: itemsError } = await supabase
+        .from("order_items")
+        .insert(orderItems);
+      if (itemsError) throw itemsError;
+
+      await supabase.from("cart_items").delete().eq("account_id", accountId);
+
+      alert("Pembayaran berhasil!");
+      navigate("/userorder");
+    } catch (err) {
+      alert("Gagal menyelesaikan pembayaran: " + err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  if (!produk) return <div className="p-6">Tidak ada produk yang dipilih.</div>;
-
   return (
-    <div>
+    <div className="bg-gray-50 min-h-screen">
+      <Navbar role={role} />
 
-        <Navbar role={role} handleLogout={handleLogout} /> 
- 
-    <div className="p-6 max-w-3xl mx-auto">
-      <h2 className="text-2xl font-bold mb-4">Checkout</h2>
-      <div className="bg-white rounded shadow p-6 mb-6">
-        <img
-          src={produk.url_gambar}
-          alt={produk.judul}
-          className="w-32 h-40 object-cover rounded mb-4"
-        />
-        <h3 className="text-lg font-semibold">{produk.judul}</h3>
-        <p className="text-sm text-gray-500">Penulis: {produk.penulis}</p>
-        <p className="text-sm text-gray-500">Penerbit: {produk.penerbit}</p>
-        <p className="text-red-600 font-bold text-lg mt-2">
-          Rp {parseInt(produk.harga).toLocaleString("id-ID")}
-        </p>
+      <div className="max-w-4xl mx-auto px-6 py-10">
+        <h2 className="text-3xl font-bold mb-6">Pembayaran</h2>
+
+        <div className="bg-white rounded-lg shadow p-6 mb-6 space-y-4">
+          {cartItems.map((item) => (
+            <div key={item.id} className="flex justify-between items-center border-b pb-4">
+              <div className="flex items-center gap-4">
+                <img
+                  src={item.produk.url_gambar}
+                  alt={item.produk.judul}
+                  className="w-16 h-24 object-cover rounded border"
+                />
+                <div>
+                  <h3 className="font-medium">{item.produk.judul}</h3>
+                  <p className="text-sm text-gray-500">Jumlah: {item.quantity}</p>
+                </div>
+              </div>
+              <p className="text-red-600 font-semibold">
+                Rp {(item.quantity * item.produk.harga).toLocaleString("id-ID")}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        <div className="bg-white p-6 rounded-lg shadow flex justify-between text-lg font-semibold">
+          <span>Total Pembayaran:</span>
+          <span className="text-red-600">Rp {total.toLocaleString("id-ID")}</span>
+        </div>
+
+        <button
+          onClick={handlePay}
+          disabled={loading}
+          className="w-full mt-6 bg-green-600 text-white py-3 rounded-full hover:bg-green-700 font-semibold transition"
+        >
+          {loading ? "Memproses..." : "Bayar Sekarang"}
+        </button>
       </div>
 
-      <button className="w-full bg-green-600 text-white py-3 rounded hover:bg-green-700 font-semibold">
-        Konfirmasi & Bayar
-      </button>
+      <Footer />
     </div>
-      <Footer></Footer>
-       </div>
   );
 }
