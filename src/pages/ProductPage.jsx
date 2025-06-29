@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabase';
 import { Pencil, Trash2 } from 'lucide-react';
-import Navbar from "../Components/Navbar";
-import Footer from "../Components/Footer";
 
 export default function ProductManagement() {
   const [produk, setProduk] = useState([]);
@@ -97,7 +95,7 @@ export default function ProductManagement() {
 
   return (
     <div className="">
-        <Navbar role={role} handleLogout={handleLogout} />
+       
     <div className="min-h-screen bg-gray-100 py-10 px-4 font-sans">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-4xl font-bold text-red-700 mb-8 text-center">Manajemen Produk</h1>
@@ -206,7 +204,7 @@ export default function ProductManagement() {
         </div>
       </div>
     </div>
-    <Footer></Footer>
+
     </div>
   );
 }

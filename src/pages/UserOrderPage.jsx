@@ -24,7 +24,6 @@ export default function UserOrdersPage() {
   }, [accountId]);
 
   const fetchUserOrders = async () => {
-    // Ambil semua pesanan user
     const { data: ordersData, error: orderError } = await supabase
       .from("orders")
       .select("*")
@@ -37,10 +36,9 @@ export default function UserOrdersPage() {
     }
     setOrders(ordersData || []);
 
-    // Ambil semua item dalam pesanan user
     const { data: itemsData, error: itemsError } = await supabase
       .from("order_items")
-      .select("*, produk(judul, harga)")
+      .select("*, produk(judul, harga, url_gambar)")
       .in("order_id", ordersData.map((order) => order.id));
 
     if (itemsError) {
@@ -51,81 +49,73 @@ export default function UserOrdersPage() {
   };
 
   return (
-    <div>
+    <div className="bg-gray-100 min-h-screen">
       <Navbar role={role} handleLogout={handleLogout} />
-
       <div className="p-6 max-w-6xl mx-auto">
         <h1 className="text-3xl font-bold mb-6 text-red-700 flex items-center gap-2">
           <FaClipboardList /> Riwayat Pesanan Anda
         </h1>
 
-        {/* Orders Table */}
-        <section className="mb-10">
-          <h2 className="text-xl font-semibold mb-2 text-gray-700">Daftar Pesanan</h2>
-          <div className="overflow-x-auto">
-            <table className="w-full table-auto border text-sm">
-              <thead className="bg-gray-100">
-                <tr>
-                  <th className="p-2 border">Order ID</th>
-                  <th className="p-2 border">Total</th>
-                  <th className="p-2 border">Tanggal</th>
-                </tr>
-              </thead>
-              <tbody>
-                {orders.length === 0 ? (
-                  <tr>
-                    <td colSpan="3" className="p-4 text-center text-gray-500">Belum ada pesanan.</td>
-                  </tr>
-                ) : (
-                  orders.map((order) => (
-                    <tr key={order.id} className="hover:bg-gray-50">
-                      <td className="p-2 border">{order.id}</td>
-                      <td className="p-2 border">Rp {parseInt(order.total).toLocaleString("id-ID")}</td>
-                      <td className="p-2 border">{new Date(order.created_at).toLocaleString()}</td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
+        {orders.length === 0 ? (
+          <div className="text-center text-gray-500 p-10 bg-white rounded shadow">
+            Belum ada pesanan.
           </div>
-        </section>
+        ) : (
+          <div className="space-y-6">
+            {orders.map((order) => {
+              const itemsInOrder = orderItems.filter((item) => item.order_id === order.id);
 
-        {/* Order Items Table */}
-        {orderItems.length > 0 && (
-          <section>
-            <h2 className="text-xl font-semibold mb-2 text-gray-700 flex items-center gap-1">
-              <FaBox /> Rincian Produk
-            </h2>
-            <div className="overflow-x-auto">
-              <table className="w-full table-auto border text-sm">
-                <thead className="bg-gray-100">
-                  <tr>
-                    <th className="p-2 border">Judul Buku</th>
-                    <th className="p-2 border">Harga</th>
-                    <th className="p-2 border">Jumlah</th>
-                    <th className="p-2 border">Subtotal</th>
-                    <th className="p-2 border">Order ID</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {orderItems.map((item) => (
-                    <tr key={item.id} className="hover:bg-gray-50">
-                      <td className="p-2 border">{item.produk?.judul || 'Produk tidak ditemukan'}</td>
-                      <td className="p-2 border">Rp {item.produk?.harga?.toLocaleString("id-ID")}</td>
-                      <td className="p-2 border">{item.quantity}</td>
-                      <td className="p-2 border">
-                        Rp {(item.produk?.harga * item.quantity).toLocaleString("id-ID")}
-                      </td>
-                      <td className="p-2 border">{item.order_id}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </section>
+              return (
+                <div key={order.id} className="bg-white rounded-lg shadow-md p-4">
+                  <div className="flex justify-between items-center border-b pb-2 mb-3">
+                    <span className="text-gray-600 text-sm">
+                      Order ID: <span className="font-semibold">{order.id}</span>
+                    </span>
+                    <span className="bg-green-100 text-green-700 text-sm font-semibold px-3 py-1 rounded-full">
+                      Selesai
+                    </span>
+                  </div>
+
+                  <div className="space-y-3">
+                    {itemsInOrder.map((item) => (
+                      <div key={item.id} className="flex items-center gap-4 border-b pb-2">
+                        <img
+                          src={item.produk?.url_gambar || "/placeholder.jpg"}
+                          alt={item.produk?.judul}
+                          className="w-16 h-20 object-cover rounded"
+                        />
+                        <div className="flex-1">
+                          <h3 className="font-medium">{item.produk?.judul || "Produk tidak ditemukan"}</h3>
+                          <p className="text-sm text-gray-500">Jumlah: {item.quantity}</p>
+                        </div>
+                        <div className="text-right text-sm">
+                          <p className="text-gray-600">Harga:</p>
+                          <p className="text-red-600 font-semibold">
+                            Rp {item.produk?.harga?.toLocaleString("id-ID")}
+                          </p>
+                          <p className="text-gray-600 mt-1">Subtotal:</p>
+                          <p className="font-semibold">
+                            Rp {(item.quantity * (item.produk?.harga || 0)).toLocaleString("id-ID")}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="text-right mt-4">
+                    <p className="text-gray-600 text-sm">
+                      Tanggal Pesan: {new Date(order.created_at).toLocaleString()}
+                    </p>
+                    <p className="text-lg font-bold text-red-700 mt-1">
+                      Total: Rp {parseInt(order.total).toLocaleString("id-ID")}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         )}
       </div>
-
       <Footer />
     </div>
   );
