@@ -4,13 +4,16 @@ import { FaHome, FaStore, FaPhone } from "react-icons/fa";
 import { FiShoppingCart } from "react-icons/fi";
 import { supabase } from "../supabase";
 
-const Navbar = ({ role, handleLogout }) => {
+const Navbar = () => {
   const navigate = useNavigate();
   const [showDropdown, setShowDropdown] = useState(false);
   const [userData, setUserData] = useState(null);
   const dropdownRef = useRef();
-  const accountId = localStorage.getItem("account_id");
 
+  const accountId = localStorage.getItem("account_id");
+  const role = localStorage.getItem("role");
+
+  // Ambil data user saat login
   useEffect(() => {
     if (accountId) fetchUserProfile();
   }, [accountId]);
@@ -33,6 +36,7 @@ const Navbar = ({ role, handleLogout }) => {
     }
   };
 
+  // Deteksi klik di luar dropdown untuk menutup
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -48,6 +52,18 @@ const Navbar = ({ role, handleLogout }) => {
     setShowDropdown(false);
   };
 
+  const handleLogout = () => {
+    // Hapus data dari localStorage
+    localStorage.removeItem("account_id");
+    localStorage.removeItem("role");
+
+    // Jika kamu menggunakan state global bisa dispatch event
+    window.dispatchEvent(new Event("roleChanged"));
+
+    // Redirect ke halaman login
+    navigate("/login");
+  };
+
   const photoURL = userData?.foto_profil || "https://via.placeholder.com/40";
 
   return (
@@ -58,7 +74,7 @@ const Navbar = ({ role, handleLogout }) => {
           PeriPlus
         </Link>
 
-        {/* Navigasi */}
+        {/* Navigasi Menu */}
         <nav className="space-x-6 text-sm font-medium flex items-center">
           <Link to="/" className="text-red-700 hover:text-red-800 flex items-center gap-1">
             <FaHome /> Home
@@ -74,13 +90,13 @@ const Navbar = ({ role, handleLogout }) => {
           </Link>
         </nav>
 
-        {/* Cart & Profil/Login */}
+        {/* Cart dan Profil/Login */}
         <div className="flex items-center gap-4 relative">
           <Link to="/cart" className="text-red-700 hover:text-red-800 text-xl">
             <FiShoppingCart />
           </Link>
 
-          {/* Kondisi: Belum Login */}
+          {/* Belum Login */}
           {!accountId ? (
             <button
               onClick={() => navigate("/login")}
@@ -89,7 +105,7 @@ const Navbar = ({ role, handleLogout }) => {
               Login
             </button>
           ) : role && userData ? (
-            // Kondisi: Sudah login & userData tersedia
+            // Sudah login dan data user tersedia
             <div className="relative" ref={dropdownRef}>
               <img
                 src={photoURL}
@@ -118,7 +134,7 @@ const Navbar = ({ role, handleLogout }) => {
               )}
             </div>
           ) : (
-            // Kondisi: Sudah login tapi userData belum tersedia
+            // Sudah login tapi belum dapat data user
             <button
               onClick={() => navigate("/login")}
               className="px-4 py-2 rounded-full border border-red-500 text-red-500 hover:bg-red-50 transition text-sm"
@@ -133,4 +149,3 @@ const Navbar = ({ role, handleLogout }) => {
 };
 
 export default Navbar;
-  
