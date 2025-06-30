@@ -213,7 +213,7 @@ export default function Events() {
                 </div>
                 <Link
                   to={`/events/${event.id}`}
-                  className="block w-full text-center bg-red-700 text-white py-3 rounded-lg font-bold hover:bg-red-800 transition duration-300 text-md shadow-md mt-4" // Adjusted button size
+                  className="block w-full text-center bg-red-700 !text-white py-3 rounded-lg font-bold hover:bg-red-800 transition duration-300 text-md shadow-md mt-4" // Adjusted button size
                 >
                   View Details
                 </Link>
