@@ -6,8 +6,8 @@ import { Link, useLocation } from 'react-router-dom'
 
 const menuItems = [
   { name: 'Dashboard', icon: <LayoutDashboard />, path: '/dashboard' },
-  { name: 'Sales Management', icon: <ShoppingCart />, path: '/dashboard/penjualan' },
-  { name: 'Customer Management', icon: <Users />, path: '/dashboard/pelanggan' },
+  // { name: 'Sales Management', icon: <ShoppingCart />, path: '/dashboard/penjualan' },
+  // { name: 'Customer Management', icon: <Users />, path: '/dashboard/pelanggan' },
   { name: 'Produk', icon: <Box />, path: '/dashboard/produk' },
   { name: 'FAQ', icon: <MessageCircleQuestion />, path: '/dashboard/faq' },
   { name: 'Kontak', icon: <Mail />, path: '/dashboard/kontak' },
@@ -18,7 +18,7 @@ const menuItems = [
 ]
 
 const accountItems = [
-  { name: 'Pengaturan Akun', icon: <Settings />, path: '/dashboard/accountmanagement' },
+  // { name: 'Pengaturan Akun', icon: <Settings />, path: '/dashboard/accountmanagement' },
 ]
 
 const Sidebar = () => {
@@ -60,7 +60,6 @@ const Sidebar = () => {
 
       {/* Account Section */}
       <div>
-        <div className="text-xs font-semibold text-gray-400 uppercase mb-2">Akun</div>
         <nav className="space-y-1">
           {accountItems.map((item) => (
             <Link

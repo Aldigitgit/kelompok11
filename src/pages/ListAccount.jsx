@@ -1,10 +1,25 @@
-import { useEffect, useState } from 'react';
-import { supabase } from '../supabase.js'; 
-import AccountForm from '../Components/AccountForm';
+import React, { useState, useEffect } from 'react';
+import { supabase } from '../supabase';
+import { Pencil, Trash2 } from 'lucide-react';
 
-function Account() {
+export default function AccountManagement() {
   const [accounts, setAccounts] = useState([]);
+  const [search, setSearch] = useState('');
+  const [showForm, setShowForm] = useState(false);
   const [editingAccount, setEditingAccount] = useState(null);
+
+  const [form, setForm] = useState({
+    name: '',
+    email: '',
+    password: '',
+    wilayah: '',
+    foto_profil: '',
+    role: '',
+  });
+
+  useEffect(() => {
+    fetchAccounts();
+  }, []);
 
   const fetchAccounts = async () => {
     const { data, error } = await supabase
@@ -19,98 +34,231 @@ function Account() {
     }
   };
 
-  const addAccount = async (account) => {
-    const { error } = await supabase.from('account').insert(account);
-    if (error) {
-      console.error(error);
-    } else {
-      fetchAccounts();
-    }
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const updateAccount = async (account) => {
-    if (!account?.id) return;
-    const { error } = await supabase
-      .from('account')
-      .update(account)
-      .eq('id', account.id);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!form.name || !form.email) {
+      alert('Nama dan email wajib diisi!');
+      return;
+    }
+
+    let error;
+    if (editingAccount) {
+      ({ error } = await supabase.from('account').update(form).eq('id', editingAccount.id));
+    } else {
+      ({ error } = await supabase.from('account').insert([form]));
+    }
 
     if (error) {
-      console.error(error);
+      alert('Gagal menyimpan data: ' + error.message);
     } else {
       fetchAccounts();
+      setForm({
+        name: '',
+        email: '',
+        password: '',
+        wilayah: '',
+        foto_profil: '',
+        role: '',
+      });
       setEditingAccount(null);
+      setShowForm(false);
     }
   };
 
-  const deleteAccount = async (id) => {
-    const { error } = await supabase
-      .from('account')
-      .delete()
-      .eq('id', id);
+  const handleEdit = (item) => {
+    const { segmentasi, ...formData } = item; // exclude segmentasi
+    setForm(formData);
+    setEditingAccount(item);
+    setShowForm(true);
+  };
 
-    if (error) {
-      console.error(error);
-    } else {
-      fetchAccounts();
+  const handleDelete = async (id) => {
+    if (confirm('Hapus akun ini?')) {
+      const { error } = await supabase.from('account').delete().eq('id', id);
+      if (error) alert('Gagal hapus: ' + error.message);
+      else fetchAccounts();
     }
   };
 
-  useEffect(() => {
-    fetchAccounts();
-  }, []);
+  const filteredAccounts = accounts.filter((a) =>
+    a.name.toLowerCase().includes(search.toLowerCase())
+  );
+
+  const getBadgeClass = (value) => {
+    switch (value?.toLowerCase()) {
+      case 'admin':
+        return 'bg-blue-100 text-blue-700 border border-blue-300';
+      case 'user':
+        return 'bg-green-100 text-green-700 border border-green-300';
+      default:
+        return 'bg-gray-200 text-gray-700 border border-gray-300';
+    }
+  };
 
   return (
-    <div className="max-w-5xl mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-4">CRUD Pengguna dengan Supabase</h1>
-      <AccountForm
-        addAccount={addAccount}
-        updateAccount={updateAccount}
-        editingAccount={editingAccount}
-      />
+    <div className="min-h-screen bg-gray-100 py-10 px-4 font-sans">
+      <div className="max-w-7xl mx-auto">
+        <h1 className="text-4xl font-bold text-red-700 mb-8 text-center">
+          📋 Manajemen Akun Pengguna
+        </h1>
 
-      <div className="overflow-x-auto mt-6">
-        <table className="w-full border-collapse table-auto">
-          <thead className="bg-gray-100">
-            <tr>
-              <th className="border p-2 text-left">Nama</th>
-              <th className="border p-2 text-left">Email</th>
-              <th className="border p-2 text-left">Role</th>
-              <th className="border p-2 text-left">Aksi</th>
-            </tr>
-          </thead>
-          <tbody>
-            {accounts.map(account => (
-              <tr key={account.id} className="hover:bg-gray-50">
-                <td className="border p-2">{account.name}</td>
-                <td className="border p-2">{account.email}</td>
-                <td className="border p-2">{account.role || '-'}</td>
-                <td className="border p-2 space-x-2">
-                  <button
-                    onClick={() => setEditingAccount(account)}
-                    className="text-blue-600 hover:underline"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => deleteAccount(account.id)}
-                    className="text-red-600 hover:underline"
-                  >
-                    Hapus
-                  </button>
-                </td>
-              </tr>
-            ))}
-            {accounts.length === 0 && (
+        <div className="flex justify-between items-center mb-6">
+          <input
+            type="text"
+            placeholder="🔍 Cari pengguna..."
+            className="p-3 border rounded w-1/2 shadow-sm focus:outline-none focus:ring-2 focus:ring-red-400 transition"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          <button
+            onClick={() => {
+              setShowForm(!showForm);
+              if (!showForm) {
+                setForm({
+                  name: '',
+                  email: '',
+                  password: '',
+                  wilayah: '',
+                  foto_profil: '',
+                  role: '',
+                });
+                setEditingAccount(null);
+              }
+            }}
+            className="bg-red-600 text-white px-5 py-2 rounded hover:bg-red-700 font-semibold transition"
+          >
+            {showForm ? 'Batal' : '➕ Tambah'}
+          </button>
+        </div>
+
+        {showForm && (
+          <form
+            onSubmit={handleSubmit}
+            className="bg-white p-6 rounded-lg shadow-md mb-8 border space-y-4"
+          >
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <input
+                name="name"
+                placeholder="Nama"
+                value={form.name}
+                onChange={handleChange}
+                className="p-3 border rounded"
+              />
+              <input
+                name="email"
+                placeholder="Email"
+                value={form.email}
+                onChange={handleChange}
+                className="p-3 border rounded"
+              />
+              <input
+                name="password"
+                placeholder="Password"
+                value={form.password}
+                onChange={handleChange}
+                className="p-3 border rounded"
+              />
+              <input
+                name="wilayah"
+                placeholder="Wilayah"
+                value={form.wilayah}
+                onChange={handleChange}
+                className="p-3 border rounded"
+              />
+              <input
+                name="foto_profil"
+                placeholder="URL Foto Profil"
+                value={form.foto_profil}
+                onChange={handleChange}
+                className="p-3 border rounded"
+              />
+              <select
+                name="role"
+                value={form.role}
+                onChange={handleChange}
+                className="p-3 border rounded"
+              >
+                <option value="">Pilih Role</option>
+                <option value="admin">Admin</option>
+                <option value="user">User</option>
+              </select>
+            </div>
+            <button
+              type="submit"
+              className="bg-green-600 text-white px-5 py-2 rounded hover:bg-green-700 font-semibold"
+            >
+              {editingAccount ? '🔄 Perbarui' : '💾 Simpan'}
+            </button>
+          </form>
+        )}
+
+        <div className="overflow-x-auto bg-white shadow-lg rounded-xl">
+          <table className="min-w-full text-sm table-auto">
+            <thead className="bg-red-200 text-red-800 uppercase text-xs">
               <tr>
-                <td colSpan="4" className="p-4 text-center text-gray-500">Tidak ada data akun.</td>
+                <th className="px-4 py-3 text-left">Nama</th>
+                <th className="px-4 py-3 text-left">Email</th>
+                <th className="px-4 py-3 text-left">Wilayah</th>
+                <th className="px-4 py-3 text-left">Role</th>
+                <th className="px-4 py-3 text-left">Foto</th>
+                <th className="px-4 py-3 text-left">Aksi</th>
               </tr>
-            )}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="text-gray-800">
+              {filteredAccounts.map((item) => (
+                <tr key={item.id} className="border-b hover:bg-red-50 transition">
+                  <td className="px-4 py-2 font-medium">{item.name}</td>
+                  <td className="px-4 py-2">{item.email}</td>
+                  <td className="px-4 py-2">{item.wilayah}</td>
+                  <td className="px-4 py-2">
+                    <span
+                      className={`text-xs font-medium px-3 py-1 rounded-full ${getBadgeClass(item.role)}`}
+                    >
+                      {item.role || '-'}
+                    </span>
+                  </td>
+                  <td className="px-4 py-2">
+                    {item.foto_profil ? (
+                      <img
+                        src={item.foto_profil}
+                        alt="Foto"
+                        className="h-10 w-10 rounded-full object-cover"
+                      />
+                    ) : (
+                      <span className="text-gray-400">Tidak ada</span>
+                    )}
+                  </td>
+                  <td className="px-4 py-2 flex gap-2">
+                    <button
+                      className="text-blue-500 hover:text-blue-700"
+                      onClick={() => handleEdit(item)}
+                    >
+                      <Pencil size={18} />
+                    </button>
+                    <button
+                      className="text-red-500 hover:text-red-700"
+                      onClick={() => handleDelete(item.id)}
+                    >
+                      <Trash2 size={18} />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+              {filteredAccounts.length === 0 && (
+                <tr>
+                  <td colSpan={6} className="text-center py-4 text-gray-500">
+                    😕 Tidak ada data akun
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
 }
-
-export default Account;

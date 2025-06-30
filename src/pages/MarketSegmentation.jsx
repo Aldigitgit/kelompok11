@@ -1,142 +1,113 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
+import { supabase } from "../supabase";
 
-export default function MarketSegmentation() {
-  const [search, setSearch] = useState("");
+export default function MarketSegmentationDynamic() {
+  const [data, setData] = useState([]);
 
-  const dataPelanggan = [
-    {
-      nama: "Andi Wijaya",
-      umur: 28,
-      gender: "Pria",
-      lokasi: "Jakarta",
-      pendapatan: "Rp 5.000.000",
-      gayaHidup: "Pembelajar, digital savvy",
-      loyalitas: "Loyal",
-    },
-    {
-      nama: "Siti Rahma",
-      umur: 35,
-      gender: "Wanita",
-      lokasi: "Bandung",
-      pendapatan: "Rp 3.500.000",
-      gayaHidup: "Ibu rumah tangga, suka parenting",
-      loyalitas: "Semi-loyal",
-    },
-    {
-      nama: "Dewi Ayu",
-      umur: 21,
-      gender: "Wanita",
-      lokasi: "Surabaya",
-      pendapatan: "Rp 1.200.000",
-      gayaHidup: "Mahasiswa, suka novel",
-      loyalitas: "Loyal",
-    },
-    {
-      nama: "Budi Santoso",
-      umur: 41,
-      gender: "Pria",
-      lokasi: "Pekanbaru",
-      pendapatan: "Rp 8.000.000",
-      gayaHidup: "Karyawan, baca bisnis",
-      loyalitas: "Tidak loyal",
-    },
-    {
-      nama: "Rina Marlina",
-      umur: 30,
-      gender: "Wanita",
-      lokasi: "Makassar",
-      pendapatan: "Rp 6.500.000",
-      gayaHidup: "Freelancer, self-help dan spiritual",
-      loyalitas: "Semi-loyal",
-    },
-    {
-      nama: "Fajar Hidayat",
-      umur: 18,
-      gender: "Pria",
-      lokasi: "Medan",
-      pendapatan: "Rp 1.000.000",
-      gayaHidup: "Pelajar, baca buku TOEFL & motivasi",
-      loyalitas: "Loyal",
-    },
-  ];
+  useEffect(() => {
+    const fetchSegmentasi = async () => {
+      // Ambil semua akun
+      const { data: accounts, error: accErr } = await supabase
+        .from("account")
+        .select("id, name, email, wilayah, created_at");
 
-  const filtered = dataPelanggan.filter((item) =>
-    item.nama.toLowerCase().includes(search.toLowerCase())
-  );
+      if (accErr) {
+        console.error("Gagal ambil akun:", accErr.message);
+        return;
+      }
 
-  const getLoyaltyColor = (loyalty) => {
-    switch (loyalty) {
-      case "Loyal":
-        return "text-green-800 bg-green-100 border border-green-300";
-      case "Semi-loyal":
-        return "text-yellow-800 bg-yellow-100 border border-yellow-300";
-      case "Tidak loyal":
-        return "text-red-800 bg-red-100 border border-red-300";
+      const now = new Date();
+      const twelveMonthsAgo = new Date(now.setFullYear(now.getFullYear() - 1));
+
+      // Ambil semua orders 12 bulan terakhir
+      const { data: orders, error: orderErr } = await supabase
+        .from("orders")
+        .select("account_id, total, created_at")
+        .gte("created_at", twelveMonthsAgo.toISOString());
+
+      if (orderErr) {
+        console.error("Gagal ambil orders:", orderErr.message);
+        return;
+      }
+
+      // Gabungkan dan hitung total per user
+      const result = accounts.map((acc) => {
+        const orderUser = orders.filter((o) => o.account_id === acc.id);
+        const total = orderUser.reduce((sum, o) => sum + o.total, 0);
+
+        let segmentasi = "Silver";
+        if (total >= 5000000) segmentasi = "Platinum";
+        else if (total >= 2000000) segmentasi = "Gold";
+
+        return {
+          ...acc,
+          totalTransaksi: total,
+          segmentasi,
+        };
+      });
+
+      setData(result);
+    };
+
+    fetchSegmentasi();
+  }, []);
+
+  const getSegmentColor = (level) => {
+    switch (level) {
+      case "Platinum":
+        return "bg-yellow-100 text-yellow-800 border border-yellow-300";
+      case "Gold":
+        return "bg-orange-100 text-orange-800 border border-orange-300";
+      case "Silver":
+        return "bg-gray-100 text-gray-800 border border-gray-300";
       default:
         return "";
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 py-10 px-4">
-      <div className="max-w-7xl mx-auto">
-        <h1 className="text-2xl font-semibold mb-4 text-center tracking-tight">
-          Segmentasi Pasar Pelanggan
-        </h1>
-
-        <div className="mb-6">
-          <input
-            type="text"
-            placeholder="🔍 Cari berdasarkan nama pelanggan..."
-            className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-red-400 transition"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-        </div>
-
-        <div className="overflow-x-auto bg-white shadow-lg rounded-xl">
-          <table className="min-w-full text-sm table-auto">
-            <thead className="bg-red-200 text-red-800 uppercase text-xs">
-              <tr>
-                <th className="px-6 py-4 text-left">Nama</th>
-                <th className="px-6 py-4 text-left">Umur</th>
-                <th className="px-6 py-4 text-left">Gender</th>
-                <th className="px-6 py-4 text-left">Lokasi</th>
-                <th className="px-6 py-4 text-left">Pendapatan</th>
-                <th className="px-6 py-4 text-left">Gaya Hidup</th>
-                <th className="px-6 py-4 text-left">Loyalitas</th>
+    <div className="p-6 max-w-7xl mx-auto">
+      <h2 className="text-2xl font-bold mb-4 text-center">
+        Segmentasi Pelanggan Berdasarkan Total Transaksi
+      </h2>
+      <div className="overflow-x-auto bg-white shadow-lg rounded-xl">
+        <table className="min-w-full table-auto text-sm">
+          <thead className="bg-red-200 text-red-800 uppercase text-xs">
+            <tr>
+              <th className="px-6 py-4 text-left">Nama</th>
+              <th className="px-6 py-4 text-left">Email</th>
+              <th className="px-6 py-4 text-left">Wilayah</th>
+              <th className="px-6 py-4 text-left">Total Transaksi</th>
+              <th className="px-6 py-4 text-left">Segmentasi</th>
+            </tr>
+          </thead>
+          <tbody>
+            {data.map((user, i) => (
+              <tr key={i} className="border-b hover:bg-red-50 transition">
+                <td className="px-6 py-3">{user.name}</td>
+                <td className="px-6 py-3">{user.email}</td>
+                <td className="px-6 py-3">{user.wilayah}</td>
+                <td className="px-6 py-3">
+                  Rp {user.totalTransaksi.toLocaleString("id-ID")}
+                </td>
+                <td className="px-6 py-3">
+                  <span
+                    className={`px-3 py-1 rounded-full font-semibold text-xs ${getSegmentColor(
+                      user.segmentasi
+                    )}`}
+                  >
+                    {user.segmentasi}
+                  </span>
+                </td>
               </tr>
-            </thead>
-            <tbody className="text-gray-800">
-              {filtered.map((cust, i) => (
-                <tr key={i} className="border-b hover:bg-red-50 transition">
-                  <td className="px-6 py-3 font-medium">{cust.nama}</td>
-                  <td className="px-6 py-3">{cust.umur}</td>
-                  <td className="px-6 py-3">{cust.gender}</td>
-                  <td className="px-6 py-3">{cust.lokasi}</td>
-                  <td className="px-6 py-3">{cust.pendapatan}</td>
-                  <td className="px-6 py-3">{cust.gayaHidup}</td>
-                  <td className="px-6 py-3">
-                    <span
-                      className={`px-3 py-1 rounded-full font-semibold text-xs ${getLoyaltyColor(
-                        cust.loyalitas
-                      )}`}
-                    >
-                      {cust.loyalitas}
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-
-          {filtered.length === 0 && (
-            <div className="py-8 text-center text-gray-500">
-              <p className="text-lg">😕 Tidak ada data yang cocok.</p>
-              <p className="text-sm mt-1">Coba gunakan kata kunci yang lain.</p>
-            </div>
-          )}
-        </div>
+            ))}
+          </tbody>
+        </table>
+        {data.length === 0 && (
+          <div className="py-8 text-center text-gray-500">
+            <p className="text-lg">Data pelanggan belum tersedia.</p>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -38,10 +38,10 @@ import PrivacyPolicy from "./pages/PrivacyPolicy.jsx";
 import Terms from "./pages/Terms.jsx";
 import Blog from "./pages/Blog.jsx";
 import Events from "./pages/Events.jsx";
-import Forum from "./pages/Forum.jsx";
+
 import HelpCenter from "./pages/HelpCenter.jsx";
 import LiveChat from "./pages/LiveChat.jsx";
-import AccountForm from "./Components/AccountForm.jsx";
+
 import Account from "./pages/ListAccount.jsx";
 import FaqPageUser from "./pages/FaqPageUser.jsx";
 import BookDetail from "./pages/BookDetailPage.jsx";
