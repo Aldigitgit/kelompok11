@@ -91,18 +91,7 @@ export default function CampaignAnalytics() {
 
   return (
     <div className="min-h-screen bg-gray-100 p-6 font-sans text-gray-800">
-      {/* Header Dashboard */}
-      <header className="bg-white shadow-sm py-4 px-8 rounded-lg mb-6 flex justify-between items-center">
-        <div className="flex items-center">
-          <img src="https://images.search.yahoo.com/images/view;_ylt=AwrjaBloUWJozMYXoBeJzbkF;_ylu=c2VjA3NyBHNsawNpbWcEb2lkAzc3NDdjYmY4MjIzMTc0Y2QxNTZjMjYxMDVhYWQ1OTU4BGdwb3MDNQRpdANiaW5n?back=https%3A%2F%2Fimages.search.yahoo.com%2Fsearch%2Fimages%3Fp%3Dperiplus%2Blogo%26fr%3Dmcafee%26tab%3Dorganic%26ri%3D5&w=512&h=512&imgurl=play-lh.googleusercontent.com%2FZmeXplO0bNUDSHWyHwQQAPh-4CyOotB5Fce5zsKNFI4gGAcYy8-Z-SJi9YymQUcl-Q&rurl=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.bookindo.periplus.periplus%26hl%3Den&size=39KB&p=periplus+logo&oid=7747cbf8223174cd156c26105aad5958&fr2=&fr=mcafee&tt=Periplus+Online+Bookstore+-+Apps+on+Google+Play&b=0&ni=140&no=5&ts=&tab=organic&sigr=vKrNaHLRHts0&sigb=K5n4GY6fZjt6&sigi=mCE_8jhUAxuR&sigt=fKnQkg9M2ir.&.crumb=ErmrnFhoYNe&fr=mcafee" alt="Periplus Logo" className="h-10 mr-4" />
-          <h1 className="text-3xl font-extrabold text-gray-900">
-            Periplus Campaign Hub
-          </h1>
-        </div>
-        <div className="flex items-center space-x-4">
-          <span className="text-gray-600">Terakhir diperbarui: {new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
-        </div>
-      </header>
+      
 
       {/* Main Content */}
       <div className="container mx-auto">

@@ -240,27 +240,7 @@ export default function EmployeeDashboard() {
   return (
     <div className="min-h-screen bg-gray-50 font-sans text-gray-800">
       {/* Top Header/Navbar */}
-      <header className="bg-white shadow-sm py-4 px-8 flex justify-between items-center border-b border-gray-200">
-        <div className="flex items-center">
-          <img src="https://via.placeholder.com/40x40/004d40/ffffff?text=P" alt="Periplus Logo" className="h-10 mr-4" /> {/* Placeholder for your logo */}
-          <h1 className="text-2xl font-bold text-gray-900">Dashboard Karyawan</h1>
-        </div>
-        <div className="flex items-center space-x-4">
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Cari karyawan..."
-              className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
-            />
-            <svg className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-          </div>
-          <div className="flex items-center space-x-2 cursor-pointer">
-            <img src="https://via.placeholder.com/32x32/A0AEC0/ffffff?text=JD" alt="User Avatar" className="rounded-full w-8 h-8" />
-            <span className="font-medium text-gray-700">John Doe</span>
-            <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
-          </div>
-        </div>
-      </header>
+    
 
       <div className="container mx-auto p-8">
         {/* Key Metrics Cards */}
