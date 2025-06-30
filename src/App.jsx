@@ -49,6 +49,7 @@ import CheckoutPage from "./pages/CheckOutPage.jsx";
 import EventDetail from "./pages/EventDetail.jsx";
 import UserOrdersPage from "./pages/UserOrderPage.jsx";
 import ProfilePage from "./pages/Profil.jsx";
+import EmployeeDashboard from "./pages/Employee.jsx";
 
 function App() {
   const [role, setRole] = useState(localStorage.getItem("role"));
@@ -130,6 +131,7 @@ function App() {
         <Route path="/dashboard" element={<MainLayout />}>
           <Route index element={<Dashboard />} />
           <Route path="penjualan" element={<SalesManagement />} />
+          <Route path="employee" element={<EmployeeDashboard />} />
           <Route path="pelanggan" element={<CustomerManagement />} />
           <Route path="riwayat" element={<RiwayatPembelian />} />
           <Route path="review" element={<ReviewPage />} />

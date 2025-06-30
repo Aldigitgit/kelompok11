@@ -1,11 +1,13 @@
 import {
   LayoutDashboard, Users, ShoppingCart, Box, BarChart2, Settings,
-  LogIn, MessageCircleQuestion, UserPlus, Mail, PieChart
+  LogIn, MessageCircleQuestion, UserPlus, Mail, PieChart, Feather, FeatherIcon
 } from 'lucide-react'
+import { FaUserTie } from 'react-icons/fa'
 import { Link, useLocation } from 'react-router-dom'
 
 const menuItems = [
   { name: 'Dashboard', icon: <LayoutDashboard />, path: '/dashboard' },
+  { name: 'Karyawan', icon: <FaUserTie />, path: '/dashboard/employee' },
   { name: 'Sales Management', icon: <ShoppingCart />, path: '/dashboard/penjualan' },
   { name: 'Customer Management', icon: <Users />, path: '/dashboard/pelanggan' },
   { name: 'Produk', icon: <Box />, path: '/dashboard/produk' },
