@@ -1,31 +1,30 @@
 import {
-  LayoutDashboard, Users, ShoppingCart, Box, BarChart2, Settings,
-  LogIn, MessageCircleQuestion, UserPlus, Mail, PieChart, Feather, FeatherIcon
-} from 'lucide-react'
-import { FaUserTie } from 'react-icons/fa'
-import { Link, useLocation } from 'react-router-dom'
+  LayoutDashboard, Users, ShoppingCart, Box, BarChart2, PieChart,
+  MessageCircleQuestion, Mail, List, ClipboardList, Settings
+} from 'lucide-react';
+import { FaUserTie } from 'react-icons/fa';
+import { Link, useLocation } from 'react-router-dom';
 
 const menuItems = [
-  { name: 'Dashboard', icon: <LayoutDashboard />, path: '/dashboard' },
-  { name: 'Karyawan', icon: <FaUserTie />, path: '/dashboard/employee' },
-  // { name: 'Sales Management', icon: <ShoppingCart />, path: '/dashboard/penjualan' },
-  // { name: 'Customer Management', icon: <Users />, path: '/dashboard/pelanggan' },
-  { name: 'Produk', icon: <Box />, path: '/dashboard/produk' },
-  { name: 'FAQ', icon: <MessageCircleQuestion />, path: '/dashboard/faq' },
-  { name: 'Kontak', icon: <Mail />, path: '/dashboard/kontak' },
-  { name: 'Campaign Analytics', icon: <PieChart />, path: '/dashboard/campaign-analytics' },
-  { name: 'Market Segmentation', icon: <BarChart2 />, path: '/dashboard/market-segmentation' },
-  { name: 'List Account', icon: <BarChart2 />, path: '/dashboard/ListAccount' },
-  { name: 'OrderManagement', icon: <BarChart2 />, path: '/dashboard/OrderManagement' },
-]
+  { name: 'Dashboard', icon: <LayoutDashboard size={20} />, path: '/dashboard' },
+  { name: 'Karyawan', icon: <FaUserTie size={18} />, path: '/dashboard/employee' },
+  { name: 'Customer Management', icon: <Users size={20} />, path: '/dashboard/pelanggan' },
+  { name: 'Produk', icon: <Box size={20} />, path: '/dashboard/produk' },
+  { name: 'FAQ', icon: <MessageCircleQuestion size={20} />, path: '/dashboard/faq' },
+  { name: 'Kontak', icon: <Mail size={20} />, path: '/dashboard/kontak' },
+  { name: 'Campaign Analytics', icon: <PieChart size={20} />, path: '/dashboard/campaign-analytics' },
+  { name: 'Market Segmentation', icon: <BarChart2 size={20} />, path: '/dashboard/market-segmentation' },
+  { name: 'List Account', icon: <List size={20} />, path: '/dashboard/ListAccount' },
+  { name: 'Order Management', icon: <ClipboardList size={20} />, path: '/dashboard/OrderManagement' },
+];
 
 const accountItems = [
-  // { name: 'Pengaturan Akun', icon: <Settings />, path: '/dashboard/accountmanagement' },
-]
+  // { name: 'Pengaturan Akun', icon: <Settings size={20} />, path: '/dashboard/accountmanagement' },
+];
 
 const Sidebar = () => {
-  const location = useLocation()
-  const isActive = (path) => location.pathname === path
+  const location = useLocation();
+  const isActive = (path) => location.pathname === path;
 
   return (
     <aside className="bg-white w-64 min-h-screen shadow-md border-r px-6 py-6 fixed hidden md:flex flex-col justify-between text-red-700">
@@ -41,7 +40,7 @@ const Sidebar = () => {
           </Link>
         </div>
 
-        {/* Main Menu */}
+        {/* Menu Utama */}
         <nav className="space-y-1">
           {menuItems.map((item) => (
             <Link
@@ -60,7 +59,7 @@ const Sidebar = () => {
         </nav>
       </div>
 
-      {/* Account Section */}
+      {/* Bagian Akun */}
       <div>
         <nav className="space-y-1">
           {accountItems.map((item) => (
@@ -80,7 +79,7 @@ const Sidebar = () => {
         </nav>
       </div>
     </aside>
-  )
-}
+  );
+};
 
-export default Sidebar
+export default Sidebar;

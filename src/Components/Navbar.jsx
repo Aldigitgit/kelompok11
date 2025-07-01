@@ -13,7 +13,14 @@ const Navbar = () => {
   const accountId = localStorage.getItem("account_id");
   const role = localStorage.getItem("role");
 
-  // Ambil data user saat login
+  // Warna badge untuk segmentasi
+  const segmentasiBadge = {
+    Silver: "bg-gray-100 text-gray-700 border-gray-300",
+    Gold: "bg-yellow-200 text-yellow-800 border-yellow-400",
+    Platinum: "bg-indigo-100 text-indigo-700 border-indigo-400",
+  };
+
+  // Ambil data user
   useEffect(() => {
     if (accountId) fetchUserProfile();
   }, [accountId]);
@@ -22,7 +29,7 @@ const Navbar = () => {
     try {
       const { data, error } = await supabase
         .from("account")
-        .select("name, foto_profil")
+        .select("name, foto_profil, segmentasi")
         .eq("id", accountId)
         .single();
 
@@ -36,7 +43,7 @@ const Navbar = () => {
     }
   };
 
-  // Deteksi klik di luar dropdown untuk menutup
+  // Tutup dropdown jika klik di luar
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -53,14 +60,9 @@ const Navbar = () => {
   };
 
   const handleLogout = () => {
-    // Hapus data dari localStorage
     localStorage.removeItem("account_id");
     localStorage.removeItem("role");
-
-    // Jika kamu menggunakan state global bisa dispatch event
     window.dispatchEvent(new Event("roleChanged"));
-
-    // Redirect ke halaman login
     navigate("/login");
   };
 
@@ -74,7 +76,7 @@ const Navbar = () => {
           PeriPlus
         </Link>
 
-        {/* Navigasi Menu */}
+        {/* Menu */}
         <nav className="space-x-6 text-sm font-medium flex items-center">
           <Link to="/" className="text-red-700 hover:text-red-800 flex items-center gap-1">
             <FaHome /> Home
@@ -90,13 +92,13 @@ const Navbar = () => {
           </Link>
         </nav>
 
-        {/* Cart dan Profil/Login */}
+        {/* Cart & User */}
         <div className="flex items-center gap-4 relative">
           <Link to="/cart" className="text-red-700 hover:text-red-800 text-xl">
             <FiShoppingCart />
           </Link>
 
-          {/* Belum Login */}
+          {/* Login/Logout/Profile */}
           {!accountId ? (
             <button
               onClick={() => navigate("/login")}
@@ -105,18 +107,40 @@ const Navbar = () => {
               Login
             </button>
           ) : role && userData ? (
-            // Sudah login dan data user tersedia
             <div className="relative" ref={dropdownRef}>
-              <img
-                src={photoURL}
-                alt="Profile"
-                onClick={() => setShowDropdown(!showDropdown)}
-                className="w-9 h-9 rounded-full cursor-pointer object-cover border-2 border-red-600"
-              />
+              <div className="flex items-center gap-2">
+                <img
+                  src={photoURL}
+                  alt="Profile"
+                  onClick={() => setShowDropdown(!showDropdown)}
+                  className="w-9 h-9 rounded-full cursor-pointer object-cover border-2 border-red-600"
+                />
+                {userData.segmentasi && (
+                  <Link
+                    to="/membership"
+                    className={`text-xs px-2 py-1 rounded-full border cursor-pointer hover:underline ${
+                      segmentasiBadge[userData.segmentasi] || "bg-gray-200 text-gray-700 border-gray-300"
+                    }`}
+                  >
+                    {userData.segmentasi}
+                  </Link>
+                )}
+              </div>
+
               {showDropdown && (
                 <div className="absolute right-0 top-12 mt-1 bg-white shadow-md rounded-md w-48 text-sm z-50">
-                  <div className="px-4 py-3 border-b font-semibold text-gray-700">
-                    {userData.name}
+                  <div className="px-4 py-3 border-b text-gray-700">
+                    <div className="font-semibold">{userData.name}</div>
+                    {userData.segmentasi && (
+                      <Link
+                        to="/membership"
+                        className={`inline-block mt-1 px-2 py-1 text-xs rounded-full border font-medium hover:underline ${
+                          segmentasiBadge[userData.segmentasi]
+                        }`}
+                      >
+                        {userData.segmentasi}
+                      </Link>
+                    )}
                   </div>
                   <button
                     onClick={goToProfile}
@@ -134,7 +158,6 @@ const Navbar = () => {
               )}
             </div>
           ) : (
-            // Sudah login tapi belum dapat data user
             <button
               onClick={() => navigate("/login")}
               className="px-4 py-2 rounded-full border border-red-500 text-red-500 hover:bg-red-50 transition text-sm"
