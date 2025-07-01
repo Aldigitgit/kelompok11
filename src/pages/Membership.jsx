@@ -1,6 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { supabase } from "../supabase";
 import { FaStar, FaCrown, FaGem } from "react-icons/fa";
+import Navbar from "../Components/Navbar";
+import Footer from "../Components/Footer";
+
+const role = localStorage.getItem("role");
+
+const handleLogout = () => {
+localStorage.removeItem("role");
+window.dispatchEvent(new Event("roleChanged"));
+navigate("/login");
+};
 
 const tiers = {
   Silver: {
@@ -58,6 +68,8 @@ export default function MemberSegmentPage() {
   const TierIcon = currentTier?.icon;
 
   return (
+    <div className="">
+      <Navbar role={role} onLogout={handleLogout}  />
     <div className="min-h-screen bg-gradient-to-tr from-white via-gray-50 to-white pt-28 pb-16 px-4">
       <div className="max-w-4xl mx-auto">
 
@@ -105,6 +117,8 @@ export default function MemberSegmentPage() {
           </div>
         </div>
       </div>
+    </div>
+    <Footer></Footer>
     </div>
   );
 }

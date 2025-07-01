@@ -8,7 +8,7 @@ import { Link, useLocation } from 'react-router-dom';
 const menuItems = [
   { name: 'Dashboard', icon: <LayoutDashboard size={20} />, path: '/dashboard' },
   { name: 'Karyawan', icon: <FaUserTie size={18} />, path: '/dashboard/employee' },
-  { name: 'Customer Management', icon: <Users size={20} />, path: '/dashboard/pelanggan' },
+  // { name: 'Customer Management', icon: <Users size={20} />, path: '/dashboard/pelanggan' },
   { name: 'Produk', icon: <Box size={20} />, path: '/dashboard/produk' },
   { name: 'FAQ', icon: <MessageCircleQuestion size={20} />, path: '/dashboard/faq' },
   { name: 'Kontak', icon: <Mail size={20} />, path: '/dashboard/kontak' },
