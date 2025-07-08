@@ -16,6 +16,7 @@ const menuItems = [
   { name: 'Market Segmentation', icon: <BarChart2 size={20} />, path: '/dashboard/market-segmentation' },
   { name: 'List Account', icon: <List size={20} />, path: '/dashboard/ListAccount' },
   { name: 'Order Management', icon: <ClipboardList size={20} />, path: '/dashboard/OrderManagement' },
+  { name: 'Loyalty Predictor', icon: <ClipboardList size={20} />, path: '/dashboard/LoyaltyPredictor' },
 ];
 
 const accountItems = [
