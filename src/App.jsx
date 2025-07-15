@@ -53,6 +53,7 @@ import EmployeeDashboard from "./pages/Employee.jsx";
 import MembershipProgress from "./pages/Membership.jsx";
 import MembershipPage from "./pages/Membership.jsx";
 import LoyaltyPredictor from "./pages/Loyal.jsx";
+import PredictTotalById from "./pages/PredictTotalBelanja.jsx";
 
 function App() {
   const [role, setRole] = useState(localStorage.getItem("role"));
@@ -158,6 +159,7 @@ function App() {
           <Route path="integrasi-stok" element={<IntegrasiStock />} />
           <Route path="ListAccount" element={<Account></Account>} />
           <Route path="LoyaltyPredictor" element={<LoyaltyPredictor></LoyaltyPredictor>} />
+          <Route path="TotalPredictor" element={<PredictTotalById></PredictTotalById>} />
         </Route>
       )}
       {/* ---------------- CATCH ALL ROUTE ---------------- */}

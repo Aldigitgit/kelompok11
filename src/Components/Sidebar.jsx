@@ -17,6 +17,7 @@ const menuItems = [
   { name: 'List Account', icon: <List size={20} />, path: '/dashboard/ListAccount' },
   { name: 'Order Management', icon: <ClipboardList size={20} />, path: '/dashboard/OrderManagement' },
   { name: 'Loyalty Predictor', icon: <ClipboardList size={20} />, path: '/dashboard/LoyaltyPredictor' },
+  { name: 'Total Predictor', icon: <ClipboardList size={20} />, path: '/dashboard/TotalPredictor' },
 ];
 
 const accountItems = [
