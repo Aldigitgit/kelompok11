@@ -54,7 +54,6 @@ import MembershipProgress from "./pages/Membership.jsx";
 import MembershipPage from "./pages/Membership.jsx";
 import LoyaltyPredictor from "./pages/Loyal.jsx";
 import PredictTotalById from "./pages/PredictTotalBelanja.jsx";
-
 function App() {
   const [role, setRole] = useState(localStorage.getItem("role"));
   const isAuthenticated = role === "admin" || role === "user";

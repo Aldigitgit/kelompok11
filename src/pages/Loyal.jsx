@@ -21,7 +21,7 @@ export default function PredictByCustomerId() {
     setResult(null);
 
     try {
-      const res = await axios.post("https://e2338038c8c9.ngrok-free.app/predict_by_id", {
+      const res = await axios.post("https://b83790029343.ngrok-free.app/predict_by_id", {
         customer_id: id
       });
       setResult(res.data);
